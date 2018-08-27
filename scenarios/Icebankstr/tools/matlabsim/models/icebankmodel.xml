@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>/* Timing Stuff */
+
+clock x,y;
+const int control_interval = 15 * 60; 
+const int offset = 0;
+int i = offset; // Unit of i = 15*60s. 
+const int timeHorizon = (60*60*2);
+
+// Integration parameters 
+const int numSteps = 15;
+
+/* INPUT VARIABLES */
+
+double Ienv = 10.0;
+double Isp = 100.0; // Ienv * 10
+double P = 0.0;
+double Ces = 100.0; // Isp
+double Tenv = 25.0;
+double V = 0.0;
+double Pe = 0.0;
+double Cs = 0.0;
+
+
+/////////////////////////MATLAB INPUTS///////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+//inputs from matlab simulator
+//PLACEHOLDER_Troom
+//PLACEHOLDER_TOut
+//PLACEHOLDER_Wir
+//PLACEHOLDER_CostSpot
+//PLACEHOLDER_Lib
+/////////////////////////////////////////////////////////////////////////////
+//uncomment the following to run stand-alone model
+//double Troom = 18.0;
+//double Lib = 10000.0;
+//TOut should be one day
+//const double TOut[96] = {20.0,13.2,13.3,13.3,13.1,13.3,13.7,14.1,14.5,14.8,15.0,14.8,14.8,14.7,14.8,14.9,15.1,15.5,15.8,16.2,16.2,16.2,16.5,16.9,17.8,19.2,21.2,20.6,21.8,22.7,22.6,22.4,23.2,22.1,23.5,23.3,23.9,24.6,25.5,26.3,24.1,24.2,23.9,22.8,22.4,23.8,23.8,24.2,23.4,22.9,22.2,22.1,22.1,21.8,21.5,21.0,20.5,19.1,19.1,19.1,19.0,18.8,18.7,18.8,18.9,18.8,18.7,18.5,18.4,18.3,18.2,18.2,18.3,18.4,18.5,18.4,18.6,18.8,18.9,18.8,19.1,19.3,19.4,19.4,18.4,17.8,17.4,17.1,16.8,16.7,16.7,16.5,16.4,16.4,16.3,16.2};
+//const double Wir[96] = {20.0,13.2,13.3,13.3,13.1,13.3,13.7,14.1,14.5,14.8,15.0,14.8,14.8,14.7,14.8,14.9,15.1,15.5,15.8,16.2,16.2,16.2,16.5,16.9,17.8,19.2,21.2,20.6,21.8,22.7,22.6,22.4,23.2,22.1,23.5,23.3,23.9,24.6,25.5,26.3,24.1,24.2,23.9,22.8,22.4,23.8,23.8,24.2,23.4,22.9,22.2,22.1,22.1,21.8,21.5,21.0,20.5,19.1,19.1,19.1,19.0,18.8,18.7,18.8,18.9,18.8,18.7,18.5,18.4,18.3,18.2,18.2,18.3,18.4,18.5,18.4,18.6,18.8,18.9,18.8,19.1,19.3,19.4,19.4,18.4,17.8,17.4,17.1,16.8,16.7,16.7,16.5,16.4,16.4,16.3,16.2};
+//const double CostSpot[96] = {200.0, 200.0, 200.0, 200.0, 200.0, 200.0, 200.0, 200.0,200.0, 200.0, 200.0, 200.0, 200.0, 200.0, 200.0, 200.0,200.0, 200.0, 200.0, 200.0, 200.0, 200.0, 200.0, 200.0,200.0, 200.0, 200.0, 200.0, 200.0, 200.0, 200.0, 200.0,200.0, 200.0, 200.0, 200.0, 200.0, 200.0, 200.0, 200.0,200.0, 200.0, 200.0, 200.0, 200.0, 200.0, 200.0, 200.0,200.0, 200.0, 200.0, 200.0, 200.0, 200.0, 200.0, 200.0,200.0, 200.0, 200.0, 200.0, 200.0, 200.0, 200.0, 200.0,200.0, 200.0, 200.0, 200.0, 200.0, 200.0, 200.0, 200.0,200.0, 200.0, 200.0, 200.0, 200.0, 200.0, 200.0, 200.0,200.0, 200.0, 200.0, 200.0, 200.0, 200.0, 200.0, 200.0,200.0, 200.0, 200.0, 200.0, 200.0, 200.0, 200.0, 200.0};
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+
+
+/* DIFFERENTIAL EQUATIONS */
+
+// Temperature
+const double cjc =  -0.0004;
+const double cr  =  0.00003;
+const double ci  =  0.000001;
+
+
+const double Tset = 20.0;
+const double Tdelta = 1.0;
+
+void update_temperature() {
+    const double Tdt = cjc * V + cr * (Tenv - Troom) + ci * Ienv;
+    Troom = Troom + Tdt;
+}
+
+// Ice bank
+//double lib = 10000.0;
+const double ulib = 1000000.0;
+const double llib = 5000.0;
+
+void update_icebank() {
+    //integration 
+    double flow = Pe - V;
+    Lib = Lib + flow;
+}
+
+// Energy spent
+double E = 0.0;
+void update_energy_used() {
+    E = E + P;
+}
+
+// Energy saved
+double Es = 0.0;
+void update_energy_saved() {
+    Es = Es + Ces;
+}
+
+// Cost
+double C = 0.0;
+void update_cost() {
+    C = C + Cs;
+}
+
+
+/* Generating Inputs */
+
+// Irradiance (Ienv)
+double get_irr() {
+    return Wir[i % 96];  
+}
+
+// Pump energy usage (P)
+const double PumpModes[3] = {0.0, 5000.0, 11000.0};
+const int min_setting = 0;
+const int max_setting = 2;
+
+typedef int[0,2] speed_t; 
+speed_t curr_speed = 0;
+
+double pumpController(speed_t pump_setting) {
+    if(Lib &lt;= llib) return PumpModes[max_setting];
+    else if(Lib &gt;= ulib) return PumpModes[min_setting];
+
+    return PumpModes[pump_setting];
+}
+
+// Current energy saved (Ces)
+double get_current_energy_saved() {
+    if(P &lt; Isp) 
+      return P;
+    else
+      return Isp;
+}
+
+// Outside temperature (Tenv)
+double get_outside_temperature() {
+  return TOut[i % 96];  
+}
+
+// Ventilator
+double ventilatorController() {
+    if (Troom &gt; Tset + Tdelta) {
+        return 4000/3600;
+    } else if (Troom &lt;= Tset - Tdelta){
+        return 0.0;
+    }
+    return V;
+}
+
+// Effective cooling power from pump (Pe)
+double get_pump_effective() {
+    return (P * 95) / 2000;
+}
+
+// Cost per second (Cs) 
+double get_cost_joule() {
+    return (CostSpot[i % 96])*(CostSpot[i % 96]);  // CostSpot in DKK/MWh. 1 MWh = 1000 kWh. 1 kWh =  3600000 joule.
+}
+
+double get_cost_rate() {
+    double val = get_cost_joule() * (P - Isp);
+    if (val &lt;= 0.0) 
+        return 0.0;
+    else
+        return val;
+}
+
+// Generating all inputs
+void generate_inputs(speed_t pump_setting) {
+    Ienv = get_irr();
+    Isp = Ienv * 10;
+    P = pumpController(pump_setting);
+    Ces = get_current_energy_saved();
+    Tenv = get_outside_temperature(); 
+    V = ventilatorController();
+    Pe = get_pump_effective();
+    Cs = get_cost_rate();
+}
+
+
+/* Simulation */
+void update_state(speed_t pump_setting) {
+    int j;
+    generate_inputs(pump_setting);
+
+    // Numeric integration for numSteps steps
+    for(j = 0; j &lt; numSteps; j++) {
+        update_temperature();
+        update_icebank();
+        update_energy_used(); 
+        update_energy_saved();
+        update_cost();
+    }
+}
+
+
+
+
+
+
+
+
+
+</declaration>
+	<template>
+		<name>HPController</name>
+		<declaration>
+
+
+
+</declaration>
+		<location id="id0" x="-2048" y="-2558">
+			<name x="-2091" y="-2593">Choose_speed</name>
+			<urgent/>
+		</location>
+		<location id="id1" x="-2048" y="-2414">
+			<name x="-2065" y="-2381">Wait</name>
+			<label kind="invariant" x="-2065" y="-2398">x &lt;= control_interval</label>
+		</location>
+		<init ref="id0"/>
+		<transition controllable="false">
+			<source ref="id1"/>
+			<target ref="id0"/>
+			<label kind="guard" x="-1980" y="-2507">x == control_interval</label>
+			<label kind="assignment" x="-1980" y="-2490">i++</label>
+			<nail x="-1989" y="-2414"/>
+			<nail x="-1989" y="-2558"/>
+		</transition>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<label kind="select" x="-2142" y="-2524">s: speed_t</label>
+			<label kind="assignment" x="-2150" y="-2507">curr_speed = s,
+update_state(s),
+x = 0</label>
+			<nail x="-2048" y="-2500"/>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+hpc = HPController();
+
+system hpc;</system>
+	<queries>
+		<query>
+			<formula>strategy Opt = minE (C) [&lt;=timeHorizon]: &lt;&gt; i &gt;= (timeHorizon/(15*60))
+			</formula>
+			<comment>
+			</comment>
+		</query>
+		<query>
+			<formula>simulate 1 [&lt;=timeHorizon] {C} under Opt
+			</formula>
+			<comment>
+			</comment>
+		</query>
+		<query>
+			<formula>simulate 100 [&lt;=timeHorizon] {C} under Opt
+			</formula>
+			<comment>
+			</comment>
+		</query>
+		<query>
+			<formula>simulate 100 [&lt;=timeHorizon/2] {i}
+			</formula>
+			<comment>
+			</comment>
+		</query>
+		<query>
+			<formula>simulate 1 [&lt;=timeHorizon] {curr_speed}
+			</formula>
+			<comment>
+			</comment>
+		</query>
+	</queries>
+</nta>

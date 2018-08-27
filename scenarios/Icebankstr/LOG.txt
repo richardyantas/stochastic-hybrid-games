@@ -1,0 +1,26 @@
+23-May-18
+=========
+Participants A.M. M.M.
+
+TODO:
+
+- describe real world (good case) scenario.
+
+  - cost profile for 1 day every hour.
+  
+  - weather profile: outdoor temperature and irradiance, 1 day in 15
+    minutes.
+
+- stratego model
+
+  - figure out whats going on with stratego
+
+  - control at different intervals, e.g. 15, 30, 60 minutes
+
+
+- matlab tool
+
+
+
+29-May-18
+=========
