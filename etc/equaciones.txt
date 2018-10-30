@@ -1,0 +1,42 @@
+Requerimientos
+==============
+La temperatura del tanque es siempre mayor a 30 
+CTL requirement AG T>30
+
+state x
+=======
+T temperatura
+V volumen
+E energia electrica usada
+
+Inputs u
+========
+(controlable) P posicion piston en 1 2 3, donde 1 es e.g. 1 es 100L, 2 es 200L, 3 es 300L
+V1 water in
+V2 water out
+Qu calor util
+(controlable) Qa calor auxiliar <- resistencia ON OFF si ON entonces 2000Watts OFF 0Watts
+pe presion evacuación
+pr presion agua
+I irrandiance afecta Qu
+
+Equaciones
+==========
+
+dV/dt = 
+
+si P = 1 
+   si V(t) > 100 entonces  - pe
+   si V(t) > 200 entonces  - pe
+
+si P = 2
+   si V(t) < 200 entonces  + pr
+   si V(t) > 200 entonces  - pe
+
+Si P = 3
+   si V(t) < 300 entonces - pe
+
+
+dT/dt = basado V R Qu 
+
+dE/dt = basado en R
