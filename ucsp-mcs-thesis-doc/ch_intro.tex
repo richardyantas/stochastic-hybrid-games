@@ -1,0 +1,61 @@
+\chapter{Introduction}
+\label{ch:intro}
+In \autoref{sec:motivation} we describe the motivation and context of our work, \autoref{sec:problem} presents our problem statement. \autoref{sec:objectives} shows the objectives of this work. Finally, \autoref{sec:outline} describes the structure of this thesis document.
+
+
+\section{Motivation and Context}
+\label{sec:motivation}
+%%%TODO: FALTA MAS TEXTO EN LA MOTIVATION
+Scientific charts are commonly used to visualize quantitative information because they show keypoints and trends among the data.
+Geographic maps are a popular form of data visualization, used to convey information within a geo-spatial context. The use of maps is not limited to experts such as geographers or cartographers: millions of maps are produced and used by scientists, students, governments, and companies for a variety of analytical purposes (\eg environmental, economic, political or social). A well-designed map encodes information so as to be interpretable by human viewers; however, these maps are often published as bitmap images, without access to the underlying data. Having access only to pixel-level information impedes automatic processing for tasks such as indexing, search, and analysis~\citep{Jung2017, Siegel2016} because metadata and pixel values do not include enough information about the content and data plotted on the chart. 
+For that reason, it is difficult to find and reuse map data using either spatial queries (\eg find all maps involving a specific country) or semantic queries (\eg find all maps with temperature values in a particular range)~\citep{Walter2013}. We need computational solutions to automatically process maps due to the existence of millions of maps that have been digitally scanned or digitally created~\citep{Chiang2014}.
+
+Existing methods for automatic chart interpretation focus on analyzing common statistical graphics such as bar, line, area, or pie charts. Some projects attempt to recover the underlying data~\citep{Savva2011, Gao2012, Al-Zaidy2015, Al-Zaidy2016, Jung2017, Siegel2016, Tummers2006}, while others focus on recovering the visual encodings~\citep{Harper2014, Poco2017}. However, these systems do not support analysis of geographic maps. In this work, we extend these prior approaches to recover visual encodings for map images with color-encoded scalar values.
+
+Our primary contribution is a map image analysis pipeline that (i) segments an input image into map and legend regions, and then for each region (ii) identifies text elements, extracts their content using \ac{OCR}, and classifies their roles (\eg legend labels, latitude label, longitude label, \etc). Next, our system (iii) determines the type of color legend (\eg continuous or quantized) and (iv) infers the map projection used (\eg Equirectangular, Miller, or Robinson).
+We leverage the extracted text, legend information, and map projection to recover a visual encoding specification in a declarative grammar similar to Vega-Lite~\citep{Satyanarayan2017}, a high-level grammar of graphics. 
+An additional contribution is a manually-annotated corpus of geographic map images (each containing a color legend) extracted from scientific papers in the field of climate change, which was used to evaluate our pipeline.
+
+We also present a web-based system named iGeoMap that uses the visual encoding inferred by our pipeline to enable user-interaction over bitmap images of map visualizations. The interactions offered by iGeoMap include recoloring, automatic caption generation, map reprojection and data extraction from map visualization images.
+
+
+\section{Problem Statement}
+\label{sec:problem}
+Nowadays, there is a large number of geographic map images available on scientific papers, news articles and on the Web; however, users do not have access to the underlying data, and to our knowledge, a method to extract the visual encoding from map visualizations does not exist. For that reason, we propose to apply reverse engineering to map visualizations with color-encoded scalar values and generate as output its corresponding visual encoding. In addition, we developed a web-based system that uses the extracted visual encoding to enable user-interaction from bitmap images of map visualizations.
+
+
+\section{Objectives}
+\label{sec:objectives}
+
+\subsection*{General Objective}
+Our main objective is to propose a pipeline to infer the visual encoding in \ac{JSON} format from a map image with color-encoded scalar values. 
+
+\subsection*{Specific Objectives}
+To achieve our main objective, we have the following specific objectives:
+\begin{itemize}
+ \item Extract spatial information from the map plotted on the image.
+ \item Extract color information from the color legend on the image.
+ \item Develop applications that use the extracted information and enable user-interaction.
+ \item Evaluate each step of the pipeline using map images from scientific documents.
+\end{itemize}
+
+
+\section{Contributions}
+This thesis proposes a novel map image analysis pipeline to recover the visual encoding from map visualizations with color-encoded scalar values. A map visualization has two important parts that need to be analyzed: geographic map and color legend. Our contributions are related to each part and are detailed below.
+
+\begin{itemize}
+ \item Extracting and Retargeting Color Mappings from Bitmap Images of Visualizations~\citep{Poco2017a}.
+ \begin{itemize}
+  \item We propose a method to semi-automatically extract color encodings from bitmap visualization images. This color mapping is recovered using color and text information from color legend.
+  \item We also demonstrate the utility of the proposed method through two user-facing applications: automatic recoloring and interactive overlays.
+ \end{itemize}
+ \item Extracting Visual Encodings from Map Chart Images with Color-encoded Scalar Values~\citep{Mayhua2018}.
+ \begin{itemize}
+  \item Under review in SIBGRAPI 2018.
+ \end{itemize}
+\end{itemize}
+
+
+\section{Outline}
+\label{sec:outline}
+This thesis document is divided into six chapters. After this introduction and problem formulation, in \autoref{ch:relatedWorks} we survey the literature on map interpretation, automatic chart interpretation and interactive applications from chart images. \autoref{ch:background} presents some basic concepts about the mapping of color and geographic map properties. Next, in Chapter x we describe in detail the corpus, techniques used by our pipeline and their evaluation results. Chapter y presents our web-based system named iGeoMap and its different modules. Finally, the limitations, future works, and conclusions of this work are presented in Chapter z.

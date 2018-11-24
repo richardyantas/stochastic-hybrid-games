@@ -1,0 +1,281 @@
+\begin{thebibliography}{}
+
+\bibitem[\protect\astroncite{Al-Zaidy et~al.}{2016}]{Al-Zaidy2016}
+Al-Zaidy, R.~A., Choudhury, S.~R., et~al. (2016).
+\newblock Automatic summary generation for scientific data charts.
+\newblock In {\em AAAI Workshop: Scholarly Big Data}.
+
+\bibitem[\protect\astroncite{Al-Zaidy and Giles}{2015}]{Al-Zaidy2015}
+Al-Zaidy, R.~A. and Giles, C.~L. (2015).
+\newblock Automatic extraction of data from bar charts.
+\newblock In {\em Proceedings of the 8th International Conference on Knowledge
+  Capture}, K-CAP 2015, pages 30:1--30:4. ACM.
+
+\bibitem[\protect\astroncite{Bostock}{2017}]{Bostock2017}
+Bostock, M. (2017).
+\newblock d3-geo-projection library.
+\newblock \url{https://github.com/d3/d3-geo-projection}.
+
+\bibitem[\protect\astroncite{Bostock et~al.}{2011}]{Bostock2011}
+Bostock, M., Ogievetsky, V., et~al. (2011).
+\newblock D3: Data-driven documents.
+\newblock {\em IEEE Transactions on Visualization and Computer Graphics},
+  17(12):2301--2309.
+
+\bibitem[\protect\astroncite{Breiman}{2001}]{randForest2001}
+Breiman, L. (2001).
+\newblock Random forests.
+\newblock {\em Machine Learning}, 45(1):5--32.
+
+\bibitem[\protect\astroncite{Chiang et~al.}{2014}]{Chiang2014}
+Chiang, Y.-Y., Leyk, S., et~al. (2014).
+\newblock A survey of digital map processing techniques.
+\newblock {\em ACM Computing Surveys}, 47(1):1--44.
+
+\bibitem[\protect\astroncite{Clark and Divvala}{2016}]{pdffigures2-2016}
+Clark, C. and Divvala, S. (2016).
+\newblock {PDFFigures} 2.0: Mining figures from research papers.
+\newblock In {\em Proceedings of the 16th ACM/IEEE-CS on Joint Conference on
+  Digital Libraries}, pages 143--152.
+
+\bibitem[\protect\astroncite{Cleveland and McGill}{1984}]{Cleveland1984}
+Cleveland, W.~S. and McGill, R. (1984).
+\newblock Graphical perception: Theory, experimentation, and application to the
+  development of graphical methods.
+\newblock {\em Journal of the American Statistical Association},
+  79(387):531--554.
+
+\bibitem[\protect\astroncite{Cortes and Vapnik}{1995}]{Cortes1995}
+Cortes, C. and Vapnik, V. (1995).
+\newblock Support-vector networks.
+\newblock {\em Machine Learning}, 20(3):273--297.
+
+\bibitem[\protect\astroncite{Demir et~al.}{2008}]{Demir2008}
+Demir, S., Carberry, S., et~al. (2008).
+\newblock Generating textual summaries of bar charts.
+\newblock In {\em Proceedings of the Fifth International Natural Language
+  Generation Conference}, INLG '08, pages 7--15, Stroudsburg, PA, USA.
+  Association for Computational Linguistics.
+
+\bibitem[\protect\astroncite{Dhar and Chanda}{2006}]{Dhar2006}
+Dhar, D.~B. and Chanda, B. (2006).
+\newblock Extraction and recognition of geographical features from paper maps.
+\newblock {\em International Journal of Document Analysis and Recognition},
+  8(4):232--245.
+
+\bibitem[\protect\astroncite{Eldersveld}{2017}]{Eldersveld2017}
+Eldersveld, D. (2017).
+\newblock {TopoJSON Collection}.
+\newblock \url{https://github.com/deldersveld/topojson}.
+
+\bibitem[\protect\astroncite{Fischler and Bolles}{1981}]{Fischler1981}
+Fischler, M.~A. and Bolles, R.~C. (1981).
+\newblock Random sample consensus: A paradigm for model fitting with
+  applications to image analysis and automated cartography.
+\newblock {\em Communications of the ACM}, 24(6):381--395.
+
+\bibitem[\protect\astroncite{Gao et~al.}{2012}]{Gao2012}
+Gao, J., Zhou, Y., et~al. (2012).
+\newblock {VIEW}: Visual information extraction widget for improving chart
+  images accessibility.
+\newblock In {\em 19th IEEE International Conference on Image Processing},
+  pages 2865--2868.
+
+\bibitem[\protect\astroncite{Greenbacker et~al.}{2011}]{Greenbacker2011}
+Greenbacker, C.~F., Wu, P., et~al. (2011).
+\newblock Abstractive summarization of line graphs from popular media.
+\newblock In {\em Proceedings of the Workshop on Automatic Summarization for
+  Different Genres, Media, and Languages}, WASDGML '11, pages 41--48,
+  Stroudsburg, PA, USA. Association for Computational Linguistics.
+
+\bibitem[\protect\astroncite{Harper and Agrawala}{2014}]{Harper2014}
+Harper, J. and Agrawala, M. (2014).
+\newblock Deconstructing and restyling d3 visualizations.
+\newblock In {\em Proceedings of the 27th Annual ACM Symposium on User
+  Interface Software and Technology}, UIST '14, pages 253--262, New York, NY,
+  USA. ACM.
+
+\bibitem[\protect\astroncite{Hou et~al.}{2013}]{Hou2013}
+Hou, X., Yuille, A., et~al. (2013).
+\newblock Boundary detection benchmarking: Beyond f-measures.
+\newblock In {\em 2013 IEEE Conference on Computer Vision and Pattern
+  Recognition}, pages 2123--2130.
+
+\bibitem[\protect\astroncite{Jia et~al.}{2014}]{jia2014caffe}
+Jia, Y., Shelhamer, E., et~al. (2014).
+\newblock Caffe: Convolutional architecture for fast feature embedding.
+\newblock {\em arXiv preprint arXiv:1408.5093}.
+
+\bibitem[\protect\astroncite{Jung et~al.}{2017}]{Jung2017}
+Jung, D., Kim, W., et~al. (2017).
+\newblock {ChartSense}: Interactive data extraction from chart images.
+\newblock In {\em Proceedings of the 2017 CHI Conference on Human Factors in
+  Computing Systems}, CHI '17, pages 6706--6717, New York, NY, USA. ACM.
+
+\bibitem[\protect\astroncite{Kong and Agrawala}{2012}]{Kong2012}
+Kong, N. and Agrawala, M. (2012).
+\newblock Graphical overlays: Using layered elements to aid chart reading.
+\newblock {\em IEEE Transactions on Visualization and Computer Graphics},
+  18(12):2631--2638.
+
+\bibitem[\protect\astroncite{Kong et~al.}{2014}]{Kong2014}
+Kong, N., Hearst, M.~A., et~al. (2014).
+\newblock Extracting references between text and charts via crowdsourcing.
+\newblock In {\em Proceedings of the SIGCHI Conference on Human Factors in
+  Computing Systems}, CHI '14, pages 31--40, New York, NY, USA. ACM.
+
+\bibitem[\protect\astroncite{Krizhevsky et~al.}{2012}]{NIPS2012_4824}
+Krizhevsky, A., Sutskever, I., et~al. (2012).
+\newblock {ImageNet} classification with deep convolutional neural networks.
+\newblock In {\em Advances in Neural Information Processing Systems 25}, pages
+  1097--1105.
+
+\bibitem[\protect\astroncite{Kruskal}{1956}]{Kruskal1956}
+Kruskal, J.~B. (1956).
+\newblock On the shortest spanning subtree of a graph and the traveling
+  salesman problem.
+\newblock {\em Proceedings of the American Mathematical Society}, 7:48--50.
+
+\bibitem[\protect\astroncite{LeCun and Bengio}{1998}]{LeCun1998}
+LeCun, Y. and Bengio, Y. (1998).
+\newblock Convolutional networks for images, speech, and time series.
+\newblock In Arbib, M.~A., editor, {\em The Handbook of Brain Theory and Neural
+  Networks}, pages 255--258. MIT Press, Cambridge, MA, USA.
+
+\bibitem[\protect\astroncite{Lucas et~al.}{2005}]{Lucas2005}
+Lucas, S.~M., Panaretos, A., et~al. (2005).
+\newblock Icdar 2003 robust reading competitions: Entries, results, and future
+  directions.
+\newblock {\em International Journal of Document Analysis and Recognition},
+  7(2-3):105--122.
+
+\bibitem[\protect\astroncite{Mayhua et~al.}{2018}]{Mayhua2018}
+Mayhua, A., Gómez, E., et~al. (2018).
+\newblock Extracting visual encodings from map chart images with color-encoded
+  scalar values.
+
+\bibitem[\protect\astroncite{M{\'e}ndez et~al.}{2016}]{Mendez2016}
+M{\'e}ndez, G.~G., Nacenta, M.~A., et~al. (2016).
+\newblock {iVoLVER}: Interactive visual language for visualization extraction
+  and reconstruction.
+\newblock In {\em Proceedings of the 2016 CHI Conference on Human Factors in
+  Computing Systems}, CHI'16, pages 4073--4085, New York, NY, USA. ACM.
+
+\bibitem[\protect\astroncite{Munzner}{2014}]{Munzner2014}
+Munzner, T. (2014).
+\newblock {\em Visualization Analysis \& Design}.
+\newblock K PETERS VISUALIZATION. CRC Press.
+
+\bibitem[\protect\astroncite{Otsu}{1979}]{Otsu1979}
+Otsu, N. (1979).
+\newblock A threshold selection method from gray-level histograms.
+\newblock {\em IEEE Transactions on Systems, Man, and Cybernetics},
+  9(1):62--66.
+
+\bibitem[\protect\astroncite{Pezeshk and Tutwiler}{2011}]{Pezeshk2011}
+Pezeshk, A. and Tutwiler, R.~L. (2011).
+\newblock Automatic feature extraction and text recognition from scanned
+  topographic maps.
+\newblock {\em IEEE Transactions on Geoscience and Remote Sensing},
+  49(12):5047--5063.
+
+\bibitem[\protect\astroncite{Poco and Heer}{2017}]{Poco2017}
+Poco, J. and Heer, J. (2017).
+\newblock Reverse-engineering visualizations: Recovering visual encodings from
+  chart images.
+\newblock {\em Computer Graphics Forum}, 36(3):353--363.
+
+\bibitem[\protect\astroncite{Poco et~al.}{2018}]{Poco2017a}
+Poco, J., Mayhua, A., et~al. (2018).
+\newblock Extracting and retargeting color mappings from bitmap images of
+  visualizations.
+\newblock {\em IEEE Transactions on Visualization and Computer Graphics},
+  24(1):637--646.
+
+\bibitem[\protect\astroncite{Satyanarayan et~al.}{2017}]{Satyanarayan2017}
+Satyanarayan, A., Moritz, D., et~al. (2017).
+\newblock Vega-lite: A grammar of interactive graphics.
+\newblock {\em IEEE Transactions on Visualization and Computer Graphics},
+  23(1):341--350.
+
+\bibitem[\protect\astroncite{Savva et~al.}{2011}]{Savva2011}
+Savva, M., Kong, N., et~al. (2011).
+\newblock {ReVision}: Automated classification, analysis and redesign of chart
+  images.
+\newblock In {\em Proceedings of the 24th Annual ACM Symposium on User
+  Interface Software and Technology}, pages 393--402. ACM.
+
+\bibitem[\protect\astroncite{Sharma et~al.}{2005}]{Sharma2005}
+Sharma, G., Wu, W., et~al. (2005).
+\newblock The {CIEDE2000} color-difference formula: Implementation notes,
+  supplementary test data, and mathematical observations.
+\newblock {\em Color Research \& Application}, 30(1):21--30.
+
+\bibitem[\protect\astroncite{Siegel et~al.}{2016}]{Siegel2016}
+Siegel, N., Horvitz, Z., et~al. (2016).
+\newblock {\em {FigureSeer}: Parsing Result-Figures in Research Papers}, pages
+  664--680.
+\newblock Springer International Publishing, Cham.
+
+\bibitem[\protect\astroncite{Smith}{2007}]{Smith2007}
+Smith, R. (2007).
+\newblock An overview of the {Tesseract OCR} engine.
+\newblock In {\em Ninth International Conference on Document Analysis and
+  Recognition (ICDAR 2007)}, volume~2, pages 629--633.
+
+\bibitem[\protect\astroncite{Snyder and Voxland}{1989}]{Snyder1989}
+Snyder, J.~P. and Voxland, P.~M. (1989).
+\newblock An album of map projections.
+\newblock Professional Paper 1453, U.S. Geological Survey.
+
+\bibitem[\protect\astroncite{Stokes et~al.}{1992}]{Stokes1992}
+Stokes, M., Fairchild, M.~D., et~al. (1992).
+\newblock Precision requirements for digital color reproduction.
+\newblock {\em ACM Transactions on Graphics}, 11(4):406--422.
+
+\bibitem[\protect\astroncite{Szegedy et~al.}{2015}]{googlenet2014}
+Szegedy, C., Liu, W., et~al. (2015).
+\newblock Going deeper with convolutions.
+\newblock In {\em 2015 IEEE Conference on Computer Vision and Pattern
+  Recognition (CVPR)}, pages 1--9.
+
+\bibitem[\protect\astroncite{Tajbakhsh et~al.}{2016}]{Tajbakhsh2016}
+Tajbakhsh, N., Shin, J.~Y., et~al. (2016).
+\newblock Convolutional neural networks for medical image analysis: Full
+  training or fine tuning?
+\newblock {\em IEEE Transactions on Medical Imaging}, 35(5):1299--1312.
+
+\bibitem[\protect\astroncite{Tummers}{2006}]{Tummers2006}
+Tummers, B. (2006).
+\newblock {DataThief III}.
+\newblock \url{http://datathief.org/}.
+
+\bibitem[\protect\astroncite{Turkowski}{1990}]{Turkowski1990}
+Turkowski, K. (1990).
+\newblock Filters for common resampling tasks.
+\newblock In Glassner, A.~S., editor, {\em Graphics Gems}, pages 147--165.
+  Academic Press Professional, Inc., San Diego, CA, USA.
+
+\bibitem[\protect\astroncite{Walter and Luo}{2011}]{Walter2011}
+Walter, V. and Luo, F. (2011).
+\newblock Automatic interpretation of digital maps.
+\newblock {\em ISPRS Journal of Photogrammetry and Remote Sensing},
+  66(4):519--528.
+
+\bibitem[\protect\astroncite{Walter et~al.}{2013}]{Walter2013}
+Walter, V., Luo, F., et~al. (2013).
+\newblock {\em Automatic Map Retrieval and Map Interpretation in the Internet},
+  pages 209--221.
+\newblock Springer Berlin Heidelberg, Berlin, Heidelberg.
+
+\bibitem[\protect\astroncite{Whitaker}{2016}]{Whitaker2016}
+Whitaker, J. (2016).
+\newblock {Matplotlib Basemap Toolkit}.
+\newblock \url{https://matplotlib.org/basemap/}.
+
+\bibitem[\protect\astroncite{Wu et~al.}{2005}]{Wu2005}
+Wu, K., Otoo, E., et~al. (2005).
+\newblock Optimizing connected component labeling algorithms.
+\newblock Technical Report LBNL-56864, Lawrence Berkeley National Laboratory.
+
+\end{thebibliography}

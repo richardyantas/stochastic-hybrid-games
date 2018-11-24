@@ -1,0 +1,157 @@
+\section{Automatic Recoloring}
+\label{sec:app_autoRecoloring}
+% FROM: paper recoloring
+Our application of \textit{automatic recoloring} presented in \citep{Poco2017a} was included in iGeoMap as a module: given a bitmap map visualization and a target color palette, we produce a new image with the recolored map visualization. 
+This module works for both quantized and continuous color legends and needs only the color information contained in the legend analyzer output and the color channel entry (see \autoref{fig:visenc_gen}). \autoref{fig:app:recolor} shows some examples: the first column contains original visualizations and the second one shows output images with new color encodings.
+
+\figAppRecoloring
+
+\myparagraph{Quantized color legends.}
+Given representative colors $C =\{c_1, ..., c_n\}$ in the \texttt{range} entry of the color channel (see \autoref{fig:visenc_gen}) and a target colormap $T =\{t_1, ..., t_n\}$, we create a transfer function $t_i = f_{quan}(c_i)$ that simply maps from one indexed color to another.
+%
+For each pixel $p_i$ that has a color $pc_i$ in the image, we find the nearest color $c_s\in C$ such that $dist_{color}(pc_i, c_s) < 2.5$ (here $2.5$ represents the maximum perceptibility tolerance to consider two colors as equal~\citep{Stokes1992}) and then set $p_i$ to the color $f_{quan}(c_s)$. The distance constraint helps avoid recoloring pixels that do not belong to the color legend (\eg grid lines or text).
+
+For example, the map in \autoref{fig:app:recolor}a uses a categorical color encoding and we replace it with ``Paired" colormap, as we see in \autoref{fig:app:recolor}b.
+
+
+\myparagraph{Continuous color legends.}
+For continuous legends, we begin with the extracted colors spanning the minimum and maximum points in the color gradient ($C = \{c_i\; | \; p_{min} < p_i < p_{max}\}$), and a target continuous color palette $T$ parameterized on the interval $[0,1]$.
+%
+We define a transfer function $t_i = f_{cont}(c_i)$, such that $c_i$ and $t_i$ occur at the same relative index in their respective color ramps.
+%
+For each pixel $p_i$ in the image, we search for the nearest color $c_s\in C$ such that $dist_{color}(pc_i, c_s) < 2.5$ and recolor the pixel with $f_{cont}(c_s)$.
+
+An example is shown in \autoref{fig:app:recolor}c, color gradient does not show that the legend has negative and positive values. In response, we recolor the image using a diverging colormap as shown in \autoref{fig:app:recolor}d.
+
+
+\section{Interactive Overlays}
+\label{sec:app_overlays}
+In \citep{Poco2017a}, we also present the \textit{interactive overlays} application that was inspired by the work of \citeauthor{Kong2012}~\citep{Kong2012} and applies the recommendations of \citeauthor{Cleveland1984}~\citep{Cleveland1984}. iGeoMap includes this application as a module to generate an interactive visualization from a bitmap map visualization to support data querying and highlighting.
+
+This module generates an interactive visualization that supports two-way interactions between the legend and map area. Users can brush in either area to see corresponding information highlighted in the other component.
+\autoref{fig:app:overlays} shows examples of such interactions across map visualizations that contain continuous and quantized color legends.
+
+\figAppOverlays
+
+
+\subsection*{From legend to map area}
+We provide two types of interactions: color selection and range selection. These interactions are designed to highlight data values in response to selected colors in legend, as illustrated in the third column of \autoref{fig:app:overlays}.
+
+\myparagraph{Color selection.}
+Color selection is supported for both quantized and continuous color legends.
+%
+For quantized legends, users can select a bin color in the legend. We then identify the associated representative color $c_{sel}\in C$. Next, we overlay the map area with a translucent white layer, using full transparency for pixels $p_i$ that satisfy $dist_{color}(c_{sel}, pc_i) < 2.5$~\citep{Stokes1992}.
+%
+For continuous color legends, a user can click anywhere within the color gradient to select the color $c_{sel}\in C$. Then, we similarly add a translucent overlay, but with full transparency for pixels $p_i$ that satisfy $pc_i = c_{sel}$.
+
+\autoref{fig:app:recolor}c shows the \textit{color selection}  interaction, the user clicked one color and the map area displays the pixels with the same color.
+
+
+\myparagraph{Range selection.}
+Range selection is available for continuous color legends. When a user draws a rectangle ($R$) within the color gradient, we select the set of colors $C_{sel}=\{c_i\;|\;p_i \in R\}$.
+As with color selection, we then add a translucent overlay with full transparency for pixels that satisfy $c_i=c_s,\; \forall c_s \in C_{sel}$.
+
+We have an example in \autoref{fig:app:recolor}f, where the user draws a rectangle in the legend, and the map area shows the pixels with selected colors.
+
+
+\subsection*{From map area to legend}
+For interactions within the map area, we support point selection and region selection. These interactions are depicted in the second column of \autoref{fig:app:overlays}.
+
+\myparagraph{Point selection.}
+Point selection can be performed visualizations with either quantized or continuous color legends.
+%
+When a user clicks on the map area, we select the color $c_{sel}$ from the click position, and search for the nearest color in $C$ that satisfies $dist_{color}(c_{sel}, c_i) < 2.5$~\citep{Stokes1992}. Next, we draw a circle mark at the click position and overlay the color bar with a translucent white layer, using a rectangle and full transparency for pixels that are equal to the found nearest color.
+
+\autoref{fig:app:recolor}b illustrates an example of \textit{point selection}, where user clicks a pixel in the map area, and the bin color with the same color is highlighted using a rectangle.
+
+
+\myparagraph{Region selection.}
+iGeoMap also supports region selections for continuous legends. A user can draw a rectangle ($R$) in the map area, as we see in \autoref{fig:app:recolor}e, for which we retrieve all contained colors $C_{sel}=\{c_i\;|\;p_i \in R\}$. Then, for each color in $C_{sel}$, we find the nearest color in $C$ and stores their values to compute the average. This average value is highlighted over the translucent white layer on the color bar (\autoref{fig:app:recolor}e).
+
+%The interactions described above require only color information from the legend. However, we can use the full mapping (\ie inferred data values) to enable additional features. Our tool calculates and displays descriptive statistics for the data values indicated by the selected pixels. For example, Figure~\ref{fig:app:overlays}(m) uses the data values associated with the colors in $C_{sel}$ to create a histogram for the selected region.
+
+
+\section{Automatic Caption Generation}
+\label{sec:app_captionGen}
+% FROM: paper map analysis
+Inspired by the automatic caption work of \citeauthor{Demir2008}~\citep{Demir2008} and \citeauthor{Greenbacker2011}~\citep{Greenbacker2011}; our third module generates automatic captions depending on the user's selection. The functionality of this module depends on the spatial information extracted by our method (\autoref{ch:proposal}) to enable interactions, as well as mapping information to an alternative modality (here, text captions).
+
+\figAppCaption
+
+\begin{table}[!ht]
+\centering
+\begin{tabular}{|c|c|p{4.5cm}|p{4.5cm}|}
+\hline
+\textbf{Interaction} & \textbf{Selection} & \textbf{Color to range} & \textbf{Color to value} \\
+\hline
+\multirow{1}{2cm}{Country or point selection} & None & This map shows values between \textit{<global\_min>} and \textit{<global\_max>}, with most values in the range [\textit{<mode\_min\_val>}, \textit{<mode\_max\_val>}]. & This map shows values between \textit{<global\_min>} and \textit{<global\_max>}, with an average value of \textit{<avg\_val>}. \\
+\hline
+\multirow{2}{2cm}{Country / continent selection} & Single & The values in \textit{<region\_name>} are between \textit{<min\_val>} to \textit{<max\_val>} with an average of \textit{<avg\_val>}. & The values in \textit{<region\_name>} are between \textit{<min\_val>} to \textit{<max\_val>} with an average of \textit{<avg\_val>}. \\
+\cline{2-4}
+ & Multiple & Selected regions have values between \textit{<min\_val>} to \textit{<max\_val>}.\newline \textit{<region\_name$_i$>} has an average value of \textit{<avg\_val>}. & Selected regions have values between \textit{<min\_val>} to \textit{<max\_val>}.\newline \textit{<region\_name$_i$>} has an average value of \textit{<avg\_val>}. \\
+\hline
+\multirow{2}{2cm}{Point selection} & Single & Selected coordinate\newline [\textit{<lon\_val>$^\circ$}, \textit{<lat\_val>$^\circ$}] has a value between \textit{<val$_1$>} to \textit{<val$_2$>}. & Selected coordinate\newline [\textit{<lon\_val>$^\circ$}, \textit{<lat\_val>$^\circ$}] has a value of \textit{<val>}. \\
+\cline{2-4}
+ & Multiple & Figure shows\newline \textit{<num\_points>} selected coordinates with values between \textit{<global\_min>} to \textit{<global\_max>}. & Figure shows\newline \textit{<num\_points>} selected coordinates with values between \textit{<min\_val>} to \textit{<max\_val>}. \\
+\hline
+\end{tabular}
+\caption[Text templates to generate different captions.]{Text templates to generate different captions depending on the current interaction, number of selections and color channel domain.}
+\label{tab:textTemplates}
+\end{table}
+
+We add an interaction from map area to the legend ($map \to legend$) that uses spatial information extracted by our method. This interaction is the \textit{country/continent selection} which highlights countries or continents and computes statistical information to be used on the caption. When this interaction is selected, iGeoMap adds a translucent gray layer over the map area with the countries/continents boundaries created by the d3-geo-projection library~\citep{Bostock2017} using templates from the TopoJSON Collection~\citep{Eldersveld2017}. The setting (\ie scale, translate, rotate) of this layer depends mainly on the \textit{projection} field of the visual encoding specification (see \autoref{fig:visenc_gen}). The projected country areas serve as a mark to the original input image, allowing us to examine just those pixels that lie within the mask (\ie that lie within that country's borders). Users can interactively select a country or continent ($R$) in the map area, for which we retrieve all contained colors $C_{sel}=\{c_i\ |\ pixel_i\in R\}$. For each color $c_i$, we find the nearest color in the color mapping and store its value to compute statistics data. This statistics data includes mean, mode, minimum, and maximum values of the selected regions.
+
+Captions are generated using different \textit{text templates} that depend on the number of selected regions and color channel domain, \autoref{tab:textTemplates} shows our text templates. When a user selects an image, an initial caption is generated using statistical data for the whole map and the text templates presented in the first row of \autoref{tab:textTemplates}. We have different templates for each color legend type, for instance, if the map has a continuous color legend (see \autoref{fig:app:captions}d) our templates describe the average, minimum and maximum values. In the case of a quantized color legend (see \autoref{fig:app:captions}a), our template describes the value range.
+The second column in \autoref{fig:app:captions} shows generated captions when a user selects one country or continent; this selection type uses a \textit{$<$region\_name$>$} variable that represents the country or continent name and completes the caption using its corresponding value ranges (\autoref{fig:app:captions}b) or numeric values (\autoref{fig:app:captions}e). The last column shows examples of multiple selections, where the caption initially describes general information about selected regions and adds extra information according to the appropriate text template.
+
+We also applied our caption generation to \textit{point selection} interaction (see third row in \autoref{fig:app:captions}), \ie when a user selects a point inside the map area, a caption is generated using the corresponding text template (see \autoref{tab:textTemplates}). In addition, generated captions can vary depending on the number of selected points and color legend type.
+
+
+\section{Map Reprojection}
+\label{sec:app_reprojection}
+% FROM: paper map analysis
+When we create a map visualization, we start with a set of coordinates (latitude, longitude) and corresponding values as input. This information is plotted using a projection to generate a map visualization. 
+This module performs \emph{map reprojection}: given a bitmap image of a map visualization as input, we produce a new image which uses a different projection, maintaining the original data (colors).
+%
+For instance, \autoref{fig:app:reprojection}a is a map with the Equirectangular projection, our tool automatically create a new map visualization with the Robinson projection (\autoref{fig:app:reprojection}b). The bottom row of \autoref{fig:app:reprojection} shows another example, from Robinson to Equirectangular projection.
+
+\figAppReprojection
+
+This application involves two main steps: (1) extract the coordinates and values from the input image, and (2) plot the values of the extracted coordinates in a new map that uses the target projection.
+
+\myparagraph{Extraction of coordinates and values.}
+This step uses the \texttt{projection} field from the inferred visual encoding (see \autoref{fig:visenc_gen}) and a target geo projection. 
+For each pixel $p_i$ in the map area, we infer its latitude $lat_i$ and longitude $lon_i$ using the inverse function of the geo projection (through functions of Basemap Toolkit~\citep{Whitaker2016}). 
+Then, we create a colormap $CM$ that given a pixel position $pos_i$ (the position in the vectorized version of the image), returns the pixel color $c_i$.
+In addition, we create a list with the elements $(lat_i, lon_i, pos_i)$.
+
+\myparagraph{Reprojection.}
+Once the coordinates, positions, and $CM$ have been generated, we can reproject a map visualization. In this step, we use the Basemap Toolkit~\citep{Whitaker2016} for plotting our extracted data on a new map with the target projection type. To create this new map, we use the list with $(lat_i, lon_i, pos_i)$ and the colormap $CM$ to plot the same colors as the original image. The center and parameters of map projection are specified using the field \texttt{projection} of the visual encoding, and the projection type is the only parameter we change to create the new map.
+
+
+\section{Data Extraction from Map Visualizations}
+\label{sec:app_dataExtract}
+
+Visual encoding can be used to extract data encoded on a map visualization, which can then be used to redesign the visualization itself~\citep{Savva2011}, and iGeoMap adds this application as another module.
+
+We have a domain $D=\{d_1, ..., d_n\}$ and a range $R=\{r_1, ..., r_n\}$ from the color channel entry in our visual encoding. 
+First, we create a colormap $CM=\{(c_i, d_i)\}$ mapping a color ($c_i$ is the hexadecimal color in RGB space) to a data value ($d_i$).  
+Then, for each pixel $p$ in the map area, we infer the latitude $lat$ and longitude $lon$ values using the inverse projection function. After that, we get the color $p_c$ and find the nearest color in $CM$ such that $dist_{color}(p_c, c_i) < 2.5$ (where 2.5 represents the maximum perceptibility tolerance to consider two colors as equal~\citep{Stokes1992}). If a nearest color exists, we recover its value $d_i$ as $val$. Finally, we export those values into a \ac{CSV} file, where each row contains a ($lat$, $lon$, $val$) tuple.
+
+\figAppDataExt
+
+\autoref{fig:app:dataextract}b and \autoref{fig:app:dataextract}d present the distribution of pixels for each legend value that could be used by the analyst to extract trends in data; these charts were generated using as input the \ac{CSV} file described above. Here the $x$-axis represents legend values and the $y$-axis represents the number of pixels inside the map area with these values. \autoref{fig:app:dataextract}a contains a quantized legend where each legend value is a tuple, included in the output file. For this reason, we choose to use a bar chart to plot the extracted data. \autoref{fig:app:dataextract}c has a continuous legend that represents a continuous domain, so we prefer to use a line chart to display this data.
+
+\myparagraph{Validation:}
+To evaluate our data extraction application, we use synthetics datasets.
+Given a dataset of $(lats, lons, vals)$, we generate 30 visualizations (10 for each projection). Then, we apply our data extraction pipeline to the original coordinates (\ie $lats$ and $lons$) to recover the data values ($vals'$).
+
+Now, we compare both $vals$ and $vals'$ using the F1-score as defined in~\citep{Siegel2016, Hou2013}. An extracted value is counted as \emph{true positive} if the normalized difference $(vals_i-vals_i')<\delta$, where $\delta=0.02$ (this value has been used in previous works~\citep{Siegel2016, Hou2013}). It is counted as \emph{false positive} if $val_i$ exists but $val_i'$ does not, analogously, it is counted as \emph{false negative} if $val_i$ does not exist but $val_i'$ exits. Lastly, it is counted as both \emph{false positive} and \emph{false negative} if $(vals_i-vals_i')\nless\delta$.
+Using these definitions, we compute the F1-score for each image and calculate the average. For our 30 map images, we have an F1-score of 90.22\%. 
+We noticed that most errors were because of black pixels in political boundaries. We are not able to recover the value of these pixels because the black color is not in the colormap. Another common issue happens when the colormap is not correctly defined. It causes the inferred values to be shifted by some pixels. 
+
+
+\section{Final Considerations}
+This chapter presented our web-based system named iGeoMap, we explained about its interface and functionality using information generated by our pipeline. iGeoMap has different applications as modules that users can use to interact with a map visualization image; these applications include map recoloring, automatic generation of captions, map reprojection, and data extraction to obtain the original data from the input image. The objective of these applications is to improve reading and understanding of map visualizations. 
+
+Finally, the next chapter will present the limitations, future works and conclusion of this thesis work.

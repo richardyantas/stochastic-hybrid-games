@@ -1,0 +1,53 @@
+This is BibTeX, Version 0.99d (TeX Live 2015/Debian)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: thesis-doc.aux
+A level-1 auxiliary file: abbreviations.aux
+The style file: apabrahand.bst
+Database file #1: thesis-doc.bib
+Warning--empty publisher in NIPS2012_4824
+Warning--empty note in Mayhua2018
+Warning--can't use both author and editor fields in Munzner2014
+Warning--can't use both author and editor fields in Siegel2016
+Warning--can't use both author and editor fields in Walter2013
+You've used 47 entries,
+            1963 wiz_defined-function locations,
+            813 strings with 13124 characters,
+and the built_in function-call counts, 21797 in all, are:
+= -- 2262
+> -- 826
+< -- 44
++ -- 332
+- -- 261
+* -- 1786
+:= -- 3524
+add.period$ -- 151
+call.type$ -- 47
+change.case$ -- 383
+chr.to.int$ -- 47
+cite$ -- 52
+duplicate$ -- 864
+empty$ -- 1507
+format.name$ -- 334
+if$ -- 4467
+int.to.chr$ -- 1
+int.to.str$ -- 0
+missing$ -- 43
+newline$ -- 237
+num.names$ -- 145
+pop$ -- 368
+preamble$ -- 1
+purify$ -- 386
+quote$ -- 0
+skip$ -- 766
+stack$ -- 0
+substring$ -- 1592
+swap$ -- 255
+text.length$ -- 21
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 276
+warning$ -- 5
+while$ -- 182
+width$ -- 0
+write$ -- 632
+(There were 5 warnings)
