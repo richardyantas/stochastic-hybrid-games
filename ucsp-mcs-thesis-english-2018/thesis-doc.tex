@@ -1,0 +1,320 @@
+\documentclass[a4paper,12pt,twoside,openright]{book} 
+\input{Includes.tex}
+\input{colors.tex}
+
+\addto\extrasenglish{%
+  \renewcommand{\chapterautorefname}{Chapter}%
+  \renewcommand{\sectionautorefname}{Section}%
+}
+
+\hyphenation{fi-gu-re}
+\hyphenation{le-gend}
+\hyphenation{i-ma-ges}
+\hyphenation{i-ma-ge}
+\hyphenation{va-lues}
+\hyphenation{va-lue}
+\hyphenation{bet-ween}
+\hyphenation{a-chie-ving}
+
+
+\pagenumbering{Roman} 
+
+\title{Safe and near optimal controller synthesis for \\Switched Systems}
+\author{Richard Valentín Yantas Alcantara}
+\orientador{PhD. Marco Muñiz}
+\jurado
+{
+%\\ Dr. David Menotti -- Universidade Federal do Paraná  -- Brasil
+%\\ Dr. Juan Carlos Gutierrez -- Universidad Católica San Pablo -- Perú
+%\\ Dr. Erick Gomez Nieto -- Universidade de Sao Paulo -- Brasil
+%\\ Dr. Alex Cuadros Vargas -- Universidad Católica San Pablo -- Perú
+}
+
+\dedicado{
+%Aquí deberás colocar a quien va dedicada tu tesis por ejemplo: A Dios, por todo lo que me ha dado, a todos los profesores por sus enseñanzas y algunos amigos.
+To my parents, Mario and Maria, who never stop giving of themselves in countless ways.
+To my brothers and sister, who encourage and support me.
+}
+
+\begin{document}
+\maketitle 
+
+\include{abbreviations}
+\input{acknowledgments}
+\input{abstract_en}
+\input{abstract_es} 
+
+\tableofcontents 
+\listoftables 
+\addcontentsline{toc}{chapter}{List of Tables}
+%\cleardoublepage
+\listoffigures 
+\addcontentsline{toc}{chapter}{List of Figures}
+%\listoftables 
+%\listoffigures 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%   En esta parte deberas incluir los archivos de tu tesis   %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\clearpage 
+\pagenumbering{arabic} 
+
+
+\input{figures}	% contain all images
+\input{ch_intro}
+\input{ch_relatedWorks}
+\input{ch_background}
+
+\chapter{Hybrid Solar Water heating}
+\label{ch:proposal}
+
+In this part is taken as case of study an \emph{Hybrid Solar Water Heating}, we propose three parts in the pipeline.
+
+\section{System Modelling}
+
+\subsection{System Setup}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.6]{images/SWH.png}
+  \caption{Hybrid Solar Water Heating Diagram}
+  
+  \label{fig:systemSetup}
+\end{figure}
+
+\newpage
+\subsection{State Space Representation}
+
+\begin{align*}
+  \frac{d}{dt}\statevec(t) &= A\statevec(t) + B\inputvec(t) + B_w\disturbvec(t)
+\end{align*}
+
+Switched Systems:
+
+\begin{align*}
+  \frac{d}{dt}\statevec(t) &= A(t)\statevec(t) + B(t)\inputvec(t) + B_w(t)\disturbvec(t)
+\end{align*}
+
+Where:
+\begin{itemize}
+\item $\statevec$ is the state vector
+\item $\inputvec$ is the input vector
+\item $A$ is the state matrix
+\item $B$ is the input matrix
+\end{itemize}
+
+
+\subsubsection{Differential Equations}
+
+
+  \begin{equation}
+          \frac{d}{dt}\tcont(t) = \frac{k_1\cdot\irradiance}{\mcont} - \frac{(\tcont-\tin)\cdot\flowin}{\mcont} - \frac{k_2\cdot(\tcont-\tenv)}{\mcont} + \frac{\dot\haux}{\mcont\cdot\factorheat}        
+  \end{equation}
+
+
+In this part we can find two modes of operations:
+
+\vspace{5mm}
+
+$\sigma = u_1: (V_{in} = ON)$
+
+\begin{equation}
+       \frac{d}{dt}\tcont(t) = \tcont(t)\cdot(-\frac{\flowin-k_2}{\mcont})+\frac{k_1\cdot\irradiance(t)}{\mcont} + \tin(t)\cdot\frac{\flowin}{\mcont} + \tenv(t)\cdot\frac{k_2}{\mcont} +  \frac{\dot\haux(t)}{\mcont\cdot\factorheat}  
+\end{equation}
+
+        
+%\begin{array}{rcl}
+%\end{array}
+
+\vspace{5mm}
+
+$\sigma = u_2: (V_{in} = OFF)$
+
+\begin{equation}\frac{d}{dt}\tcont(t) = \tcont(t)\cdot(-\frac{k_2}{\mcont})+\frac{k_1\cdot\irradiance(t)}{\mcont} + \tenv(t)\cdot\frac{k_2}{\mcont} +  \frac{\dot\haux(t)}{\mcont\cdot\factorheat}   
+\end{equation}
+
+\begin{equation}
+        \frac{d^2}{dt^2}\vcont(t) = \frac{\apist^2}{\mpist}\cdot(\peva(t)-\pwat(t))   
+\end{equation}
+
+In this part we can find 3 modes of operations to piston:
+
+\vspace{5mm}
+
+$\sigma = u_3:(Increment)$
+
+\begin{equation}
+        \frac{d}{dt}\vcont(t) = +\apist \cdot 5  
+\end{equation}
+
+\vspace{5mm}
+
+$\sigma = u_4:(Stable)$
+
+\begin{equation}
+        \frac{d}{dt}\vcont(t) = 0  
+\end{equation}
+
+\vspace{5mm}
+$\sigma = u_5:(Decrement)$
+
+\begin{equation}
+        \frac{d}{dt}\vcont(t) = -\apist \cdot 5  
+\end{equation}
+
+
+\vspace{5mm}
+
+$\sigma = u_6:(Res = ON)$
+
+\begin{equation}
+        Energy:
+        \frac{d}{dt}Q(t) = 10  
+\end{equation}
+
+\vspace{5mm}
+
+$\sigma = u_7:(Res = OFF)$
+
+\begin{equation}
+        Energy:
+        \frac{d}{dt}Q(t) = 0  
+\end{equation}
+
+\vspace{5mm}
+
+\subsubsection{State Variables}
+
+\begin{itemize}
+\item
+  $\tcont$ the temperature of the container in \si{\degreeCelsius}
+\item
+  $\vcont$ the volume of the container in \si{\metre^3}
+
+\end{itemize}
+
+\subsubsection{Constants}
+\begin{itemize}
+\item
+  $\factorheat$ The factor heat of the water \si{\joule\per\degreeCelsius\per\kilogram}
+\item
+  $\flowin$ the rate of input/output water mass by unit time \si{\kilogram\per\second}
+\item
+  $\mcont$ the mas of the container in \si{\kilogram}
+\item
+  $k_1$ radiation constant  \si{\kilogram}
+\item
+  $k_2$ conduction constant \si{\kilogram}
+
+\end{itemize}
+
+\subsubsection{Input Variables}
+\begin{itemize}
+\item
+  $\haux$ the auxiliary heat in \si{\joule}
+
+
+\end{itemize}
+
+\subsubsection{Disturbance Variables}
+\begin{itemize}
+\item 
+  $\tin$ the temperature of water input/output \si{\degreeCelsius}
+\item
+  $\irradiance$ the irradiance in \si{\watt\per\square\metre}
+\item
+  $\tenv$ the outside temperature in \si{\degreeCelsius}
+\end{itemize}
+
+\subsection{Matrix Representation}
+
+
+$\sigma = u_1:$
+
+\vspace{5mm}
+
+\hbox{
+$A = 
+\begin{bmatrix}
+  1 & 0 & 0\\
+  0 & 1 & 0\\
+  0 & 0 & -\frac{\flowin-k_2}{\mcont}
+\end{bmatrix},
+\statevec =
+\begin{bmatrix}
+  \tcont \\
+  \vcont\\
+  \dot\vcont
+\end{bmatrix},
+B = 
+\begin{bmatrix}
+  0 & 0 & 1\\
+  0 & 0 & 0\\
+  1 & -1 & 0\\
+\end{bmatrix},
+\inputvec =
+\begin{bmatrix}
+  \peva\\
+  \pwat\\
+  \haux\\
+\end{bmatrix},
+\disturbvec =
+\begin{bmatrix}
+  \frac{\irradiance(t)\cdot{k_1}+\tenv(t)\cdot{k_2}+\tin(t)\cdot\flowin}{\mcont}\\
+  0\\
+  0\\
+\end{bmatrix}
+$
+}
+
+\vspace{5mm}
+
+$\sigma = u_2:$ 
+
+\vspace{5mm}
+
+\hbox{
+$A = 
+\begin{bmatrix}
+  1 & 0 & 0\\
+  0 & 1 & 0\\
+  0 & 0 & -\frac{\flowin}{\mcont}
+\end{bmatrix},
+\statevec =
+\begin{bmatrix}
+  \tcont \\
+  \vcont\\
+  \dot\vcont
+\end{bmatrix},
+B = 
+\begin{bmatrix}
+  0 & 0 & 1\\
+  0 & 0 & 0\\
+  1 & -1 & 0\\
+\end{bmatrix},
+\inputvec =
+\begin{bmatrix}
+  \peva\\
+  \pwat\\
+  \haux\\
+\end{bmatrix},
+\disturbvec =
+\begin{bmatrix}
+  \frac{\irradiance(t)\cdot{k_1}+\tenv(t)\cdot{k_2}}{\mcont}\\
+  0\\
+  0\\
+\end{bmatrix}
+$
+}
+
+\input{ch_conclusions}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\bibliographystyle{apalike}
+\bibliographystyle{apabrahand}
+\bibliography{thesis-doc}
+\addcontentsline{toc}{chapter}{Bibliography}
+
+\end{document}
