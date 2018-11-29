@@ -1,0 +1,202 @@
+#LyX file created by tex2lyx 2.1
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass book
+\options openright
+\use_default_options false
+\maintain_unincluded_children false
+\language english
+\language_package none
+\inputencoding auto
+\fontencoding default
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 12
+\spacing single
+\use_hyperref false
+\papersize a4paper
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 0
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 0
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 2
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Related Works
+\end_layout
+
+\begin_layout Standard
+
+\begin_inset CommandInset label
+LatexCommand label
+name "ch:relatedWorks"
+
+\end_inset
+
+ Our work consist on optimize and guarantee safety over controllers based on switched systems.
+\end_layout
+
+\begin_layout Section
+Online and Compositional Learning of Controllers with Application to Floor Heating
+\end_layout
+
+\begin_layout Standard
+
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:mapInterpretation"
+
+\end_inset
+
+ This work has proposed one method to perform 
+\shape italic
+optimal controller synthesis for stochastic hybrid switched systems
+\shape default
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+eg
+\end_layout
+
+\end_inset
+
+ a floor heating system in a house 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+citep{larsen2016online}
+\end_layout
+
+\end_inset
+
+. Is proposed a general and scalable methodology for controller synthesis for such systems. Instead of off-line synthesis of a controller for all possible input temperatures and an arbitrary time horizon, is proposed an on-line synthesis methodology, where it periodically compute the controller only for the near future based on the current sensor readings.
+\end_layout
+
+\begin_layout Section
+An Improved Algorithm for the Control Synthesis of Nonlinear Sampled Switched Systems
+\end_layout
+
+\begin_layout Standard
+
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:chartInterpretation"
+
+\end_inset
+
+ In this paper is presented and algorithm for the control synthesis for nonlinear switched systems using and existing procedure of state-space and made available for nonlinear systems with the help of guaranteed integration, the algorithm has been improved to be able to consider longer patterns of modes with a better running approach.
+\end_layout
+
+\begin_layout Standard
+This approach permits to deal with stability, reachability, safety and forbidden region constraints. The approach was numerically validated on several examples taken from the literature.
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+citep{le2017improved}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Distributed Synthesis of State-Dependent Switching Control
+\end_layout
+
+\begin_layout Standard
+
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:intApps"
+
+\end_inset
+
+ In this part is presented a correct-by-design method of state-dependent control synthesis for linear discrete-time switching systems. Given an objective region R of the state space, the method builds a region S. 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+citep{le2016distributed}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Final Considerations
+\end_layout
+
+\begin_layout Standard
+This chapter presented some recent proposals related to our thesis work. Some research works have been focused on analyzing safety controller over switched systems. On the other hand, other works have focused on optimize controller synthesis using some techniques related to model checking.
+\end_layout
+
+\begin_layout Standard
+The next chapter will present some concepts needed to understand better our work, those concepts are related to the modelling physical system over our case of study and represent as a state space. 
+\end_layout
+
+\end_body
+\end_document
