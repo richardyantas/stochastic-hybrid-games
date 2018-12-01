@@ -14,12 +14,12 @@
 \BOOKMARK [0][-]{chapter.3}{Background}{}% 14
 \BOOKMARK [1][-]{section.3.1}{Switched Systems}{chapter.3}% 15
 \BOOKMARK [1][-]{section.3.2}{Safety and Reachability}{chapter.3}% 16
-\BOOKMARK [1][-]{section.3.3}{Controller synthesis}{chapter.3}% 17
+\BOOKMARK [1][-]{section.3.3}{Switched Controller synthesis}{chapter.3}% 17
 \BOOKMARK [0][-]{chapter.4}{Hybrid Solar Water heating}{}% 18
 \BOOKMARK [1][-]{section.4.1}{System Modelling}{chapter.4}% 19
 \BOOKMARK [2][-]{subsection.4.1.1}{System Setup}{section.4.1}% 20
-\BOOKMARK [2][-]{subsection.4.1.2}{State Space Representation}{section.4.1}% 21
-\BOOKMARK [2][-]{subsection.4.1.3}{Matrix Representation}{section.4.1}% 22
+\BOOKMARK [2][-]{subsection.4.1.2}{Differential Equations}{section.4.1}% 21
+\BOOKMARK [2][-]{subsection.4.1.3}{Experimental Results}{section.4.1}% 22
 \BOOKMARK [0][-]{chapter.5}{Discussion and Conclusions}{}% 23
 \BOOKMARK [1][-]{section.5.1}{Limitations and Future Work}{chapter.5}% 24
-\BOOKMARK [0][-]{chapter*.14}{Bibliography}{}% 25
+\BOOKMARK [0][-]{chapter*.16}{Bibliography}{}% 25

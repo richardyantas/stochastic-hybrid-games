@@ -1,6 +1,3 @@
-%\usepackage{Styfile}
-
-
 \documentclass[a4paper,12pt,twoside,openright]{book} 
 \input{Includes.tex}
 \input{colors.tex}
@@ -87,98 +84,86 @@ In this part is taken as case of study an \emph{Hybrid Solar Water Heating}, we 
 \end{figure}
 
 \newpage
-\subsection{State Space Representation}
 
-\begin{align*}
-  \frac{d}{dt}\statevec(t) &= A\statevec(t) + B\inputvec(t) + B_w\disturbvec(t)
-\end{align*}
+\subsection{Differential Equations}
 
-Switched Systems:
-
-\begin{align*}
-  \frac{d}{dt}\statevec(t) &= A(t)\statevec(t) + B(t)\inputvec(t) + B_w(t)\disturbvec(t)
-\end{align*}
-
-Where:
-\begin{itemize}
-\item $\statevec$ is the state vector
-\item $\inputvec$ is the input vector
-\item $A$ is the state matrix
-\item $B$ is the input matrix
-\end{itemize}
-
-
-\subsubsection{Differential Equations}
-
-
+General equation for temperature dynamics, we have two modes $Valve = {ON,OFF}$:
   \begin{equation}
-          \frac{d}{dt}\tcont(t) = \frac{k_1\cdot\irradiance}{\mcont} - \frac{(\tcont-\tin)\cdot\flowin}{\mcont} - \frac{k_2\cdot(\tcont-\tenv)}{\mcont} + \frac{\dot\haux}{\mcont\cdot\factorheat}        
+          \frac{d}{dt}\tcont(t) = \frac{A_c\cdot\irradiance}{\mcont\factorheat} - \frac{(\tcont-\tin)\cdot\flowin}{\mcont} - \frac{k_c\cdot A_t\cdot(\tcont-\tenv)}{\mcont\factorheat} + \frac{\dot\haux}{\mcont\cdot\factorheat}        
   \end{equation}
 
-
-In this part we can find two modes of operations:
-
-\vspace{5mm}
-
-$\sigma = u_1: (V_{in} = ON)$
+When the $O_{valve} = ON, $ then $\flowin \neq 0$, organizing (4.1) we have:
 
 \begin{equation}
-       \frac{d}{dt}\tcont(t) = \tcont(t)\cdot(-\frac{\flowin-k_2}{\mcont})+\frac{k_1\cdot\irradiance(t)}{\mcont} + \tin(t)\cdot\frac{\flowin}{\mcont} + \tenv(t)\cdot\frac{k_2}{\mcont} +  \frac{\dot\haux(t)}{\mcont\cdot\factorheat}  
+       \frac{d}{dt}\tcont(t) = \tcont(t)\cdot(-\frac{\flowin}{\mcont}-\frac{k_c\cdot A_t}{\mcont\factorheat})+\frac{A_c\cdot\irradiance(t)}{\mcont\factorheat} + \tin(t)\cdot\frac{\flowin}{\mcont} + \tenv(t)\cdot\frac{k_c\cdot A_t}{\mcont\factorheat} +  \frac{\dot\haux(t)}{\mcont\cdot\factorheat}  
 \end{equation}
 
+When the $O_{valve} = OFF, $ then $\flowin = 0$, replacing in (4.1) we have:
         
 %\begin{array}{rcl}
 %\end{array}
 
+\begin{equation}\frac{d}{dt}\tcont(t) = \tcont(t)\cdot(-\frac{k_c\cdot A_t}{\mcont})+\frac{A_c\cdot\irradiance(t)}{\mcont\factorheat} + \tenv(t)\cdot\frac{k_c\cdot A_t}{\mcont} +  \frac{\dot\haux(t)}{\mcont\cdot\factorheat}   
+\end{equation}
+
 \vspace{5mm}
 
-$\sigma = u_2: (V_{in} = OFF)$
+The volume dynamics has four modes of operations:
 
-\begin{equation}\frac{d}{dt}\tcont(t) = \tcont(t)\cdot(-\frac{k_2}{\mcont})+\frac{k_1\cdot\irradiance(t)}{\mcont} + \tenv(t)\cdot\frac{k_2}{\mcont} +  \frac{\dot\haux(t)}{\mcont\cdot\factorheat}   
-\end{equation}
+\vspace{5mm}
+
+When the $O_{volume} = 0$ :
 
 \begin{equation}
-        \frac{d^2}{dt^2}\vcont(t) = \frac{\apist^2}{\mpist}\cdot(\peva(t)-\pwat(t))   
+        \frac{d}{dt}\vcont(t) = 0
 \end{equation}
 
-In this part we can find 3 modes of operations to piston:
-
-\vspace{5mm}
-
-$\sigma = u_3:(Increment)$
+When the $O_{volume} = 1$ :
 
 \begin{equation}
-        \frac{d}{dt}\vcont(t) = +\apist \cdot 5  
+  \frac{d}{dt}\vcont(t)=\begin{cases}
+    0, & \text{if $V_{cont}=100$}.\\
+    -\apist \cdot v_{pist}, & \text{if $V_{cont}>100$}.
+  \end{cases}
 \end{equation}
 
-\vspace{5mm}
-
-$\sigma = u_4:(Stable)$
+When the $O_{volume} = 2$ :
 
 \begin{equation}
-        \frac{d}{dt}\vcont(t) = 0  
+  \frac{d}{dt}\vcont(t)=\begin{cases}
+    +\apist \cdot v_{pist}  , & \text{if $V_{cont}<200$}.\\
+    0, & \text{if $V_{cont}=200$}.\\
+    -\apist \cdot v_{pist}, & \text{if $V_{cont}>200$}.
+  \end{cases}
 \end{equation}
 
-\vspace{5mm}
-$\sigma = u_5:(Decrement)$
+When the $O_{volume} = 3$ :
+
 
 \begin{equation}
-        \frac{d}{dt}\vcont(t) = -\apist \cdot 5  
+  \frac{d}{dt}\vcont(t)=\begin{cases}
+    0, & \text{if $V_{cont}=300$}.\\
+    +\apist \cdot v_{pist}, & \text{if $V_{cont}<300$}.
+  \end{cases}
 \end{equation}
 
 
 \vspace{5mm}
 
-$\sigma = u_6:(Res = ON)$
+The heat dynamics has two modes of operations:
+
+\vspace{5mm}
+
+$(O_{heat} = ON)$
 
 \begin{equation}
         Energy:
-        \frac{d}{dt}Q(t) = 10  
+        \frac{d}{dt}Q(t) = 1000  
 \end{equation}
 
 \vspace{5mm}
 
-$\sigma = u_7:(Res = OFF)$
+$(O_{heat} = OFF)$
 
 \begin{equation}
         Energy:
@@ -200,22 +185,34 @@ $\sigma = u_7:(Res = OFF)$
 \subsubsection{Constants}
 \begin{itemize}
 \item
-  $\factorheat$ The factor heat of the water \si{\joule\per\degreeCelsius\per\kilogram}
+  $\factorheat$ The factor heat of the water in \si{\joule\per\degreeCelsius\per\kilogram}
 \item
-  $\flowin$ the rate of input/output water mass by unit time \si{\kilogram\per\second}
+  $\flowin$ the rate of input/output water in \si{\kilogram\per\second}
 \item
   $\mcont$ the mas of the container in \si{\kilogram}
 \item
-  $k_1$ radiation constant  \si{\joule\per\square\metre\degreeCelsius\per\second}
+  $A_c$ Area of colector in \si{\metre^2}
 \item
-  $k_2$ conduction constant \si{\joule\per\square\metre\degreeCelsius}
-
+  $A_t$ Area of total of surface in \si{\metre^2}
+\item
+  $k_c$ Conduction coeficient \si{\watt\per\metre\per\degreeCelsius}
+\item
+  $\haux$ the auxiliary heat in \si{\joule}
+\item
+  $A_{pist}$ Area of piston \si{\metre^2}
+\item
+  $v_{pist}$ Velocity of piston \si{\metre\per\second}
+  
 \end{itemize}
 
 \subsubsection{Input Variables}
 \begin{itemize}
 \item
-  $\haux$ the auxiliary heat in \si{\joule}
+  $O_{valve}$ mode of the valve = {ON,OFF}
+\item
+  $O_{volume}$ mode of the rate of change of the volume = {0,1,2,3}
+\item
+  $O_{heat}$ mode of the auxiliary heat = {ON,OFF}
 
 
 \end{itemize}
@@ -223,93 +220,46 @@ $\sigma = u_7:(Res = OFF)$
 \subsubsection{Disturbance Variables}
 \begin{itemize}
 \item 
-  $\tin$ the temperature of water input/output \si{\degreeCelsius}
+  $\tin$ the temperature of water input/output in \si{\degreeCelsius}
 \item
-  $\irradiance$ the irradiance in \si{\joule\per\square\metre\per\second}
+  $\irradiance$ the irradiance in \si{\watt\per\square\metre}
 \item
   $\tenv$ the outside temperature in \si{\degreeCelsius}
 \end{itemize}
 
-\subsection{Matrix Representation}
+\subsection{Experimental Results}
 
 
-$\sigma = u_1:$
+\begin{table}[ht]
+\centering
+\caption{Parameter values.}
+\begin{tabular}[t]{lcc}
+\hline
+Parameter && Values\\
+\hline
+$C_e$&&4186\si{\joule\per\degreeCelsius\per\kilogram}\\
+$\flowin$&&0.1\si{\kilogram\per\second}\\
+$\mcont$&&100\si{\kilogram}\\
+$A_c$&&1\si{\metre^2}\\
+$A_t$&&5.5557\si{\metre^2}\\
+$k_c$&&16\si{\watt\per\metre\per\degreeCelsius}\\
+$\haux$&&1000\si{\joule\per\second}\\
+$A_{pist}$&&1\si{\metre^2}\\
+$v_{pist}$&&0.1\si{\metre\per\second}\\
+\hline
+\end{tabular}
+\end{table}%
 
-\vspace{5mm}
 
-\hbox{
-$A = 
-\begin{bmatrix}
-  1 & 0 & 0\\
-  0 & 1 & 0\\
-  0 & 0 & -\frac{\flowin-k_2}{\mcont}
-\end{bmatrix},
-\statevec =
-\begin{bmatrix}
-  \tcont \\
-  \vcont\\
-  \dot\vcont
-\end{bmatrix},
-B = 
-\begin{bmatrix}
-  0 & 0 & 1\\
-  0 & 0 & 0\\
-  1 & -1 & 0\\
-\end{bmatrix},
-\inputvec =
-\begin{bmatrix}
-  \peva\\
-  \pwat\\
-  \haux\\
-\end{bmatrix},
-\disturbvec =
-\begin{bmatrix}
-  \frac{\irradiance(t)\cdot{k_1}+\tenv(t)\cdot{k_2}+\tin(t)\cdot\flowin}{\mcont}\\
-  0\\
-  0\\
-\end{bmatrix}
-$
-}
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.8]{images/result.png}
+  \caption{Hybrid Solar Water Heating response}
+  
+  \label{fig:systemSetup}
+\end{figure}
 
-\vspace{5mm}
 
-$\sigma = u_2:$ 
-
-\vspace{5mm}
-
-\hbox{
-$A = 
-\begin{bmatrix}
-  1 & 0 & 0\\
-  0 & 1 & 0\\
-  0 & 0 & -\frac{\flowin}{\mcont}
-\end{bmatrix},
-\statevec =
-\begin{bmatrix}
-  \tcont \\
-  \vcont\\
-  \dot\vcont
-\end{bmatrix},
-B = 
-\begin{bmatrix}
-  0 & 0 & 1\\
-  0 & 0 & 0\\
-  1 & -1 & 0\\
-\end{bmatrix},
-\inputvec =
-\begin{bmatrix}
-  \peva\\
-  \pwat\\
-  \haux\\
-\end{bmatrix},
-\disturbvec =
-\begin{bmatrix}
-  \frac{\irradiance(t)\cdot{k_1}+\tenv(t)\cdot{k_2}}{\mcont}\\
-  0\\
-  0\\
-\end{bmatrix}
-$
-}
 
 \input{ch_conclusions}
 
