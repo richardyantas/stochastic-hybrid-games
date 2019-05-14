@@ -1,0 +1,20 @@
+\begin{thebibliography}{}
+
+\bibitem[\protect\astroncite{Le~Co{\"e}nt et~al.}{2017}]{le2017improved}
+Le~Co{\"e}nt, A., dit Sandretto, J.~A., et~al. (2017).
+\newblock An improved algorithm for the control synthesis of nonlinear sampled
+  switched systems.
+\newblock {\em Formal Methods in System Design}, pages 1--21.
+
+\bibitem[\protect\astroncite{Le~Co{\"e}nt et~al.}{2016}]{le2016distributed}
+Le~Co{\"e}nt, A., Fribourg, L., et~al. (2016).
+\newblock Distributed synthesis of state-dependent switching control.
+\newblock In {\em International Workshop on Reachability Problems}, pages
+  119--133. Springer.
+
+\bibitem[\protect\astroncite{Liberzon}{2003}]{liberzon2003switching}
+Liberzon, D. (2003).
+\newblock {\em Switching in systems and control}.
+\newblock Springer Science \& Business Media.
+
+\end{thebibliography}

@@ -1,9 +1,3 @@
 \select@language {english}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Switched System Schematic\relax }}{5}{figure.caption.11}
-\contentsline {figure}{\numberline {3.2}{\ignorespaces Trajectory of a hybrid system. The switching signal ${\sigma (t)}$ takes on integer values that change at discrete-time instances.\citep {liberzon2003switching}\relax }}{6}{figure.caption.12}
-\addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Hybrid Solar Water Heating Diagram\relax }}{9}{figure.caption.13}
-\addvspace {10\p@ }

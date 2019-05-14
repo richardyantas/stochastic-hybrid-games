@@ -1,6 +1,15 @@
-\documentclass[a4paper,12pt,twoside,openright]{book} 
-\input{Includes.tex}
-\input{colors.tex}
+%\documentclass[a4paper,12pt,twoside,openright]{book} 
+\documentclass[a4paper,12pt]{book}
+
+\usepackage{src/fancyhdr}
+\usepackage{src/geometry}
+\usepackage{src/graphicx}
+\usepackage{src/hlundef}
+\usepackage{src/tesis}
+\usepackage{src/macro}
+
+\input{src/Includes.tex} % ? the path content/src doesn't work! ?
+\input{src/colors.tex}
 
 \addto\extrasenglish{%
   \renewcommand{\chapterautorefname}{Chapter}%
@@ -16,10 +25,9 @@
 \hyphenation{bet-ween}
 \hyphenation{a-chie-ving}
 
-
 \pagenumbering{Roman} 
 
-\title{Safe and near optimal controller synthesis for \\Switched Systems}
+\title{Safe ad near optimal controller synthesis for \\Switched Systems}
 \author{Richard Valentín Yantas Alcantara}
 \orientador{PhD. Marco Muñiz}
 \jurado
@@ -32,242 +40,34 @@
 
 \dedicado{
 %Aquí deberás colocar a quien va dedicada tu tesis por ejemplo: A Dios, por todo lo que me ha dado, a todos los profesores por sus enseñanzas y algunos amigos.
-To my parents, Mario and Maria, who never stop giving of themselves in countless ways.
+To my parents, Mario and Maria, who never stop giving of themselves
+ in countless ways.
 To my brothers and sister, who encourage and support me.
 }
 
 \begin{document}
-\maketitle 
+    \maketitle 
+    \input{content/preview/abbreviations}
+    \input{content/preview/acknowledgments}
+    \input{content/preview/abstract_en}
+    \input{content/preview/abstract_es}
+    \tableofcontents 
+    \listoftables 
+    \addcontentsline{toc}{chapter}{List of Tables}
+    %\cleardoublepage
+    \listoffigures 
+    \addcontentsline{toc}{chapter}{List of Figures}
+    \clearpage 
+    \pagenumbering{arabic} 
+    \input{content/preview/figures}	% contain all images
 
-\include{abbreviations}
-\input{acknowledgments}
-\input{abstract_en}
-\input{abstract_es} 
+    \input{content/ch01/ch01.tex}
+    \input{content/ch02/ch02.tex}
 
-\tableofcontents 
-\listoftables 
-\addcontentsline{toc}{chapter}{List of Tables}
-%\cleardoublepage
-\listoffigures 
-\addcontentsline{toc}{chapter}{List of Figures}
-%\listoftables 
-%\listoffigures 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%   En esta parte deberas incluir los archivos de tu tesis   %%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\clearpage 
-\pagenumbering{arabic} 
+    \newpage
 
 
-\input{figures}	% contain all images
-\input{ch_intro}
-\input{ch_relatedWorks}
-\input{ch_background}
-
-\chapter{Hybrid Solar Water heating}
-\label{ch:proposal}
-
-In this part is taken as case of study an \emph{Hybrid Solar Water Heating}, we propose three parts in the pipeline.
-
-\section{System Modelling}
-
-\subsection{System Setup}
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[scale=0.6]{images/SWH.png}
-  \caption{Hybrid Solar Water Heating Diagram}
-  
-  \label{fig:systemSetup}
-\end{figure}
-
-\newpage
-
-\subsection{Differential Equations}
-
-General equation for temperature dynamics, we have two modes $Valve = {ON,OFF}$:
-  \begin{equation}
-          \frac{d}{dt}\tcont(t) = \frac{A_c\cdot\irradiance}{\mcont\factorheat} - \frac{(\tcont-\tin)\cdot\flowin}{\mcont} - \frac{k_c\cdot A_t\cdot(\tcont-\tenv)}{\mcont\factorheat} + \frac{\dot\haux}{\mcont\cdot\factorheat}        
-  \end{equation}
-
-When the $O_{valve} = ON, $ then $\flowin \neq 0$, organizing (4.1) we have:
-
-\begin{equation}
-       \frac{d}{dt}\tcont(t) = \tcont(t)\cdot(-\frac{\flowin}{\mcont}-\frac{k_c\cdot A_t}{\mcont\factorheat})+\frac{A_c\cdot\irradiance(t)}{\mcont\factorheat} + \tin(t)\cdot\frac{\flowin}{\mcont} + \tenv(t)\cdot\frac{k_c\cdot A_t}{\mcont\factorheat} +  \frac{\dot\haux(t)}{\mcont\cdot\factorheat}  
-\end{equation}
-
-When the $O_{valve} = OFF, $ then $\flowin = 0$, replacing in (4.1) we have:
-        
-%\begin{array}{rcl}
-%\end{array}
-
-\begin{equation}\frac{d}{dt}\tcont(t) = \tcont(t)\cdot(-\frac{k_c\cdot A_t}{\mcont})+\frac{A_c\cdot\irradiance(t)}{\mcont\factorheat} + \tenv(t)\cdot\frac{k_c\cdot A_t}{\mcont} +  \frac{\dot\haux(t)}{\mcont\cdot\factorheat}   
-\end{equation}
-
-\vspace{5mm}
-
-The volume dynamics has four modes of operations:
-
-\vspace{5mm}
-
-When the $O_{volume} = 0$ :
-
-\begin{equation}
-        \frac{d}{dt}\vcont(t) = 0
-\end{equation}
-
-When the $O_{volume} = 1$ :
-
-\begin{equation}
-  \frac{d}{dt}\vcont(t)=\begin{cases}
-    0, & \text{if $V_{cont}=100$}.\\
-    -\apist \cdot v_{pist}, & \text{if $V_{cont}>100$}.
-  \end{cases}
-\end{equation}
-
-When the $O_{volume} = 2$ :
-
-\begin{equation}
-  \frac{d}{dt}\vcont(t)=\begin{cases}
-    +\apist \cdot v_{pist}  , & \text{if $V_{cont}<200$}.\\
-    0, & \text{if $V_{cont}=200$}.\\
-    -\apist \cdot v_{pist}, & \text{if $V_{cont}>200$}.
-  \end{cases}
-\end{equation}
-
-When the $O_{volume} = 3$ :
-
-
-\begin{equation}
-  \frac{d}{dt}\vcont(t)=\begin{cases}
-    0, & \text{if $V_{cont}=300$}.\\
-    +\apist \cdot v_{pist}, & \text{if $V_{cont}<300$}.
-  \end{cases}
-\end{equation}
-
-
-\vspace{5mm}
-
-The heat dynamics has two modes of operations:
-
-\vspace{5mm}
-
-$(O_{heat} = ON)$
-
-\begin{equation}
-        Energy:
-        \frac{d}{dt}Q(t) = 1000  
-\end{equation}
-
-\vspace{5mm}
-
-$(O_{heat} = OFF)$
-
-\begin{equation}
-        Energy:
-        \frac{d}{dt}Q(t) = 0  
-\end{equation}
-
-\vspace{5mm}
-
-\subsubsection{State Variables}
-
-\begin{itemize}
-\item
-  $\tcont$ the temperature of the container in \si{\degreeCelsius}
-\item
-  $\vcont$ the volume of the container in \si{\metre^3}
-
-\end{itemize}
-
-\subsubsection{Constants}
-\begin{itemize}
-\item
-  $\factorheat$ The factor heat of the water in \si{\joule\per\degreeCelsius\per\kilogram}
-\item
-  $\flowin$ the rate of input/output water in \si{\kilogram\per\second}
-\item
-  $\mcont$ the mas of the container in \si{\kilogram}
-\item
-  $A_c$ Area of colector in \si{\metre^2}
-\item
-  $A_t$ Area of total of surface in \si{\metre^2}
-\item
-  $k_c$ Conduction coeficient \si{\watt\per\metre\per\degreeCelsius}
-\item
-  $\haux$ the auxiliary heat in \si{\joule}
-\item
-  $A_{pist}$ Area of piston \si{\metre^2}
-\item
-  $v_{pist}$ Velocity of piston \si{\metre\per\second}
-  
-\end{itemize}
-
-\subsubsection{Input Variables}
-\begin{itemize}
-\item
-  $O_{valve}$ mode of the valve = {ON,OFF}
-\item
-  $O_{volume}$ mode of the rate of change of the volume = {0,1,2,3}
-\item
-  $O_{heat}$ mode of the auxiliary heat = {ON,OFF}
-
-
-\end{itemize}
-
-\subsubsection{Disturbance Variables}
-\begin{itemize}
-\item 
-  $\tin$ the temperature of water input/output in \si{\degreeCelsius}
-\item
-  $\irradiance$ the irradiance in \si{\watt\per\square\metre}
-\item
-  $\tenv$ the outside temperature in \si{\degreeCelsius}
-\end{itemize}
-
-\subsection{Experimental Results}
-
-
-\begin{table}[ht]
-\centering
-\caption{Parameter values.}
-\begin{tabular}[t]{lcc}
-\hline
-Parameter && Values\\
-\hline
-$C_e$&&4186\si{\joule\per\degreeCelsius\per\kilogram}\\
-$\flowin$&&0.1\si{\kilogram\per\second}\\
-$\mcont$&&100\si{\kilogram}\\
-$A_c$&&1\si{\metre^2}\\
-$A_t$&&5.5557\si{\metre^2}\\
-$k_c$&&16\si{\watt\per\metre\per\degreeCelsius}\\
-$\haux$&&1000\si{\joule\per\second}\\
-$A_{pist}$&&1\si{\metre^2}\\
-$v_{pist}$&&0.1\si{\metre\per\second}\\
-\hline
-\end{tabular}
-\end{table}%
-
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[scale=0.8]{images/result.png}
-  \caption{Hybrid Solar Water Heating response}
-  
-  \label{fig:systemSetup}
-\end{figure}
-
-
-
-\input{ch_conclusions}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%\bibliographystyle{apalike}
-\bibliographystyle{apabrahand}
-\bibliography{thesis-doc}
-\addcontentsline{toc}{chapter}{Bibliography}
-
-\end{document}
+    \bibliographystyle{src/apabrahand}
+    \bibliography{thesis-doc}
+    \end{document}
+    \addcontentsline{toc}{chapter}{Bibliography}

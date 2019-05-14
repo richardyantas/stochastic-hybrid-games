@@ -1,0 +1,171 @@
+
+\chapter{Hybrid Solar Water heating}
+\label{ch:proposal}
+
+In this part, we choose as a case of study an \emph{Hybrid Solar Water
+Heating}, because this system link up important condition to implement the
+methodology described in this work. Firstly we have agents, who interact with 
+the system, adding uncontrollables modes of operations also some controllable
+variables in the system that allow to model as stochastic hybrid game.
+
+The first part is about mathematical modelling using heat transfer
+ theory and fluids dynamics to get temperature dinamics and then 
+ to define the parameters that determine the system with some
+ assumptions to facilate the analysis.
+
+\section{System Setup}
+
+\input{diag1.tex}
+
+\subsection{General Equation}
+
+\begin{equation}
+  \frac{d}{dt}\tcont = \frac{A_c\cdot\irradiance}{\mcont\factorheat}
+  - \frac{(\tcont-\tin)\cdot\flowin}{\mcont} - 
+  \frac{k_c\cdot A_t\cdot(\tcont-\tenv)}{\mcont\factorheat} 
+  + \frac{\haux}{\mcont\cdot\factorheat}        
+\end{equation}
+
+\subsection{State Variables}
+
+\begin{itemize}
+\item
+  $\tcont$ the temperature of the container in \si{\degreeCelsius}
+\item
+  $\vcont$ the volume of the container in \si{\metre^3}
+
+\end{itemize}
+
+\subsection{Constants}
+\begin{itemize}
+\item 
+  $\factorheat$ The factor heat of the water in \si{\joule\per\degreeCelsius\per\kilogram}
+\item
+  $\flowin$ Mass flow rate input/output  \si{\kilogram\per\second}
+\item
+  $\mcont$ the mass of the container in \si{\kilogram}
+\item
+  $A_c$ Area of colector in \si{\metre^2}
+\item
+  $A_t$ Area of total of surface in \si{\metre^2}
+\item
+  $k_c$ Conduction coeficient \si{\watt\per\metre\per\degreeCelsius}
+\item
+  $\haux$ Auxiliary heat power in \si{\watt}
+
+\end{itemize}
+
+\subsection{Input Variables}
+\begin{itemize}
+\item
+  Valve for output water state = $\left\lbrace on,off \right\rbrace $
+\item
+  Volume states = $\left\lbrace1,2,3\right\rbrace $
+\item
+  Auxiliary heat state = $\left\lbrace on,off \right\rbrace $
+
+
+\end{itemize}
+
+\subsection{Disturbance Variables}
+\begin{itemize}
+\item 
+  $\tin$ the temperature of water input/output in \si{\degreeCelsius}
+\item
+  $\irradiance$ the irradiance in \si{\watt\per\square\metre}
+\item
+  $\tenv$ the outside temperature in \si{\degreeCelsius}
+\end{itemize}
+
+\begin{table}[ht]
+\centering
+\caption{Parameter values.}
+\begin{tabular}[t]{lcc}
+\hline
+Parameter && Values\\
+\hline
+$C_e$&&4186\si{\joule\per\degreeCelsius\per\kilogram}\\
+$\flowin$&&0.1\si{\kilogram\per\second}\\
+$\mcont$&&100\si{\kilogram}\\
+$A_c$&&1\si{\metre^2}\\
+$A_t$&&5.5557\si{\metre^2}\\
+$k_c$&&16\si{\watt\per\metre\per\degreeCelsius}\\
+$\haux$&&1000\si{\joule\per\second}\\
+%$A_{pist}$&&1\si{\metre^2}\\
+%$v_{pist}$&&0.1\si{\metre\per\second}\\
+\hline
+\end{tabular}
+\label{table} 
+\end{table}%
+
+%\begin{figure}[h]
+%  \centering
+  %\includegraphics[scale=0.6]{images/SWH.png}
+%  \caption{Hybrid Solar Water Heating Diagram}  
+%  \label{fig:systemSetup}
+%\end{figure}
+
+\newpage
+
+\section{Hybrid solar water heating as a Sthocastic Hybrid Game}
+The hybrid solar water heating scenario with 12 modes of operations is
+defined  like this: $\mathcal{G}_{n,m} = (\mathcal{C,U,X,F},\delta)$, 
+where the controller $\mathcal{C}$ has a finite set of controllable modes,
+given by resistance state ${r \in \mathbb{B}}$ and piston position $p \in 
+\left\lbrace1,2,3\right\rbrace $. The environment $\mathcal{U}$ has a finite  
+set of uncontrollable modes $v \in \mathbb{B} $, that means the valve state 
+for opening/closing water aperture. We assume that $\mathcal{U}$ given
+ $\delta$ can switch among modes with equal probability at every period. 
+ The state variables in $\mathcal{X}$ are given by $\left\lbrace
+ T,E,V \right\rbrace $, container temperature, energy used and container volumen
+ respectively.
+
+Given the container temparature and volume, a controllable modes $r \in \mathbb{B}$
+and $p \in \left\lbrace1,2,3\right\rbrace $ and uncontrollable mode
+$v \in \mathbb{B} $ and a time delay $\tau$.
+
+%\begin{equation}
+%  \frac{d}{dt}\tcont(t) = \constone(\tenv-\tcont)+\consttwo\tirrad+
+%  \constthree\taux+\constfour(\tcont-\tin)
+%\end{equation}
+
+\begin{equation}
+  \frac{d}{dt}\tcont = \constone(\tenv-\tcont)+\consttwo\irradiance+\constthree+\constfour(\tcont-\tin)
+  \label{temperature-equation}
+\end{equation}
+
+\begin{equation}
+  \frac{d}{dt}\vcont = -sign(\vcont-C^p_5); \quad 100 \leq \vcont \leq 300
+  \label{volume-equation}
+\end{equation}
+
+\begin{equation} 
+  \frac{d}{dt}E_{used} = \haux;
+  \label{Energy-equation}
+\end{equation}
+
+The equation \ref{temperature-equation} has some constants $\left\lbrace 
+\constone, \consttwo, \constthree, \constfour \right\rbrace $ this
+ parameters are computed with the parameteres defines in table \ref{table} for specific Hybrid Solar Water Heating
+  are equal to $\left\lbrace \frac{2.44e^{-5}}{p}, \frac{4.77e^{-6}}{p}
+  , \frac{0.0024r}{p}, \frac{0.01v}{ p}  \right\rbrace$ respectively 
+  and The equation \ref{volume-equation} has as a constant 
+  $ C^p_5 = 100p $.
+
+
+\section{Safe Controller for Hybrid solar water heating}
+
+  The safety in switched systems is a mechanism to limit some values on 
+  state space in order to get a right behavior. For this reason a methodology
+  is proposed by \cite{}
+
+
+  %\subsection{Experimental Results}
+
+%\begin{figure}[h]
+%  \centering
+  %\includegraphics[scale=0.8]{images/result.png}
+%  \caption{Hybrid Solar Water Heatin response}
+  
+  %\label{fig:systemSetup}
+%\end{figure}

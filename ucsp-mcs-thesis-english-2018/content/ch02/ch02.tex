@@ -1,0 +1,51 @@
+
+\chapter{Related Works}
+%\label{ch:relatedWorks}
+Our work consist on optimize and guarantee safety over controllers
+based on switched systems.
+
+\section{Online and Compositional Learning of Controllers with Application to Floor Heating}
+%\label{sec:mapInterpretation}
+This work has proposed one method to perform 
+\textit{optimal controller synthesis for stochastic hybrid switched systems} e.g. a 
+floor heating system in a house \cite{larsen2016online}. Is proposed a general
+ and scalable methodology for controller synthesis for such systems. Instead of
+  off-line synthesis of a controller for all possible input temperatures and an
+   arbitrary time horizon, is proposed an on-line synthesis methodology, where 
+   it periodically compute the controller only for the near future based on the
+    current sensor readings.
+
+\section{An Improved Algorithm for the Control Synthesis
+of Nonlinear Sampled Switched Systems}
+%\label{sec:chartInterpretation}
+In this paper is presented and algorithm for the control synthesis for
+ nonlinear switched systems using and existing procedure of state-space 
+ and made available for nonlinear systems with the help of guaranteed 
+ integration, the algorithm has been improved to be able to consider longer 
+ patterns of modes with a better running approach. 
+
+This approach permits to deal with stability, reachability, 
+safety and forbidden region constraints. The approach was numerically validated
+ on several examples taken from the literature.\cite{le2017improved}
+
+
+\section{Distributed Synthesis of State-Dependent
+Switching Control}
+%\label{sec:intApps}
+In this part is presented a correct-by-design method of state-dependent control
+ synthesis for linear discrete-time switching systems. Given an objective region 
+ R of the state space, the method builds a region S. \cite{le2016distributed}
+
+\section{Final Considerations}
+This chapter presented some recent proposals related to our thesis work. Some research works have been focused on analyzing safety controller over switched systems. On the other hand, other works have focused on optimize controller synthesis using some techniques related to model checking. 
+
+The next chapter will present some concepts needed to understand better our work, those concepts are related to the modelling physical system over our case of study and represent as a state space.
+
+%\bibliography{ch02}{}
+%\bibliographystyle{apabrahand}
+%\bibliography{../../thesis-doc}
+%\addcontentsline{toc}{chapter}{Related Works}
+%\addcontentsline{toc}{chapter}{Bibliography}
+
+%\end{document}
+
