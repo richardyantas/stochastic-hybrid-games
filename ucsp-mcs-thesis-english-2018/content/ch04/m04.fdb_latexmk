@@ -1,12 +1,5 @@
 # Fdb version 3
-["bibtex m04"] 1555189729 "m04.aux" "m04.bbl" "m04" 1555189729
-  "../../thesis-doc.bib" 1546886146 41905 10a028a852ed48c392a8cd09f825ac19 ""
-  "../src/apabrahand.bst" 0 -1 0 ""
-  "m04.aux" 1555189728 2601 130ef6d1c7f1bc87e80bd7b0e79367e0 ""
-  "m04.bcf" 0 -1 0 ""
-  (generated)
-  "m04.bbl"
-["pdflatex"] 1555189727 "/home/richard/Documents/ucsp-mcs-thesis-english-2018/content/ch04/m04.tex" "/home/richard/Documents/ucsp-mcs-thesis-english-2018/content/ch04/m04.pdf" "m04" 1555189727
+["pdflatex"] 1557848066 "/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/content/ch04/m04.tex" "/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/content/ch04/m04.pdf" "m04" 1557848068
   "../../src/Includes.tex" 1547764393 2198 99410611c928a1b1daee7b6d245b36cd ""
   "../../src/colors.tex" 1547764562 437 c7530eb35129507547dceed5ce086847 ""
   "../../src/fancyhdr.sty" 1547649637 13803 e14463d0cdb00c0211de1dc543ff6b0b ""
@@ -16,8 +9,8 @@
   "../../src/macro.sty" 1548175005 1322 dcf88ba67354a4213b7bd7c1988e25dd ""
   "../../src/tesis.sty" 1547770804 7920 67521c05ffb9ddbcd1f4945b14b900f8 ""
   "/etc/texmf/web2c/texmf.cnf" 1547601005 1101 af7716885e081ab43982cab7b4672c1a ""
-  "/home/richard/Documents/ucsp-mcs-thesis-english-2018/content/ch04/m04.aux" 1555189727 8 a94a2480d3289e625eea47cd1b285758 ""
-  "/home/richard/Documents/ucsp-mcs-thesis-english-2018/content/ch04/m04.tex" 1555171841 456 cd97111767b89d270b8bc4c7dd577710 ""
+  "/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/content/ch04/m04.aux" 1557848068 2574 fe28530d6c39f25c7908249fcb19b043 ""
+  "/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/content/ch04/m04.tex" 1557848064 457 4c4efb417fc7bd44b5dff1fbbdad959a ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1272929888 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/symbol/psyr.tfm" 1136768653 1408 5937f58aa508ea2cea4901c07d10f5fe ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1136768653 1528 f853c4d1b4e0550255e02831fdc8496f ""
@@ -309,15 +302,15 @@
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1547601027 1863403 f3ff9a4253bcb5fb9a9baaf0c572cb01 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1547601063 3855354 da7015c76e7655b6ae08ff5e98593d52 ""
   "5.png" 1548173658 108732 52ec239addb1524ec809263fcd47eaea ""
-  "ch04.tex" 1555189718 5432 0bf4826e786c7ce1f84710ff35f5acde ""
+  "ch04.tex" 1557847196 5432 0bf4826e786c7ce1f84710ff35f5acde ""
   "diag1.tex" 1548175437 3202 fdf0a8758db6eea2262466561d14114a ""
-  "m04.aux" 0 -1 0 ""
-  "m04.bbl" 0 -1 0 "bibtex m04"
-  "m04.tex" 1555171841 456 cd97111767b89d270b8bc4c7dd577710 ""
+  "m04.aux" 1557848068 2574 fe28530d6c39f25c7908249fcb19b043 ""
+  "m04.out" 1557848068 652 a2ecaae2aec737f7943f0d0a4af6d6e1 ""
+  "m04.tex" 1557848064 457 4c4efb417fc7bd44b5dff1fbbdad959a ""
   (generated)
-  "/home/richard/Documents/ucsp-mcs-thesis-english-2018/content/ch04/m04.log"
-  "m04.log"
-  "m04.out"
-  "/home/richard/Documents/ucsp-mcs-thesis-english-2018/content/ch04/m04.pdf"
   "m04.pdf"
   "m04.aux"
+  "m04.out"
+  "/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/content/ch04/m04.pdf"
+  "m04.log"
+  "/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/content/ch04/m04.log"
