@@ -1,4 +1,3 @@
-
 \chapter{Hybrid Solar Water heating}
 \label{ch:proposal}
 
@@ -16,7 +15,6 @@ The first part is about mathematical modelling using heat transfer
 \section{System Setup}
 
 \input{diag1.tex}
-
 \subsection{General Equation}
 
 \begin{equation}
@@ -135,7 +133,7 @@ $v \in \mathbb{B} $ and a time delay $\tau$.
 \end{equation}
 
 \begin{equation}
-  \frac{d}{dt}\vcont = -sign(\vcont-C^p_5); \quad 100 \leq \vcont \leq 300
+  \frac{d}{dt}\vcont = sgn(100p - \vcont); \quad
   \label{volume-equation}
 \end{equation}
 

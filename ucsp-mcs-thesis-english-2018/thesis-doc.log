@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2018.11.26)  17 JAN 2019 19:30
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2019.1.15)  16 MAY 2019 08:14
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**"/home/richard/Documents/Control Design Thesis/ucsp-solar/ucsp-mcs-thesis-english-2018/thesis-doc.tex"
-(/home/richard/Documents/Control Design Thesis/ucsp-solar/ucsp-mcs-thesis-english-2018/thesis-doc.tex
+**/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/thesis-doc.tex
+(/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/thesis-doc.tex
 LaTeX2e <2016/02/01>
 Babel <3.9q> and hyphenation patterns for 81 language(s) loaded.
 (/usr/share/texlive/texmf-dist/tex/latex/base/book.cls
@@ -24,9 +24,9 @@ File: bk12.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
 \abovecaptionskip=\skip41
 \belowcaptionskip=\skip42
 \bibindent=\dimen102
-) (./src/fancyhdr.sty
+) (/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/src/fancyhdr.sty
 \headwidth=\dimen103
-) (./src/geometry.sty
+) (/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/src/geometry.sty
 
 LaTeX Warning: You have requested package `src/geometry',
                but the package provides `geometry'.
@@ -44,7 +44,7 @@ Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
 \Gm@odd@mp=\dimen106
 \Gm@even@mp=\dimen107
 \Gm@dimlist=\toks15
-) (./src/graphicx.sty
+) (/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/src/graphicx.sty
 
 LaTeX Warning: You have requested package `src/graphicx',
                but the package provides `graphicx'.
@@ -69,7 +69,7 @@ Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
 ))
 \Gin@req@height=\dimen108
 \Gin@req@width=\dimen109
-) (./src/hlundef.sty
+) (/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/src/hlundef.sty
 
 LaTeX Warning: You have requested package `src/hlundef',
                but the package provides `hlundef'.
@@ -81,7 +81,7 @@ Package: color 2016/01/03 v1.1b Standard LaTeX Color (DPC)
 File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
 )
 Package color Info: Driver file: pdftex.def on input line 143.
-)) (./src/tesis.sty) (./src/macro.sty) (./src/Includes.tex (/usr/share/texlive/texmf-dist/tex/generic/babel/babel.sty
+)) (/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/src/tesis.sty) (/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/src/macro.sty) (/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/src/Includes.tex (/usr/share/texlive/texmf-dist/tex/generic/babel/babel.sty
 Package: babel 2016/02/24 3.9q The Babel package
  (/usr/share/texlive/texmf-dist/tex/generic/babel-english/english.ldf
 Language: english 2012/08/20 v3.3p English support from the babel system
@@ -1335,7 +1335,7 @@ File: upzd.fd 2001/06/04 font definitions for U/pzd.
 LaTeX Font Info:    Try loading font information for U+psy on input line 64.
  (/usr/share/texlive/texmf-dist/tex/latex/psnfss/upsy.fd
 File: upsy.fd 2001/06/04 font definitions for U/psy.
-))) (./src/colors.tex) (./thesis-doc.aux)
+))) (/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/src/colors.tex) (/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/thesis-doc.aux)
 \openout1 = `thesis-doc.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 48.
@@ -1532,7 +1532,6 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 48.
 LaTeX Info: Redefining \pageref on input line 48.
 LaTeX Info: Redefining \nameref on input line 48.
- (./thesis-doc.out) (./thesis-doc.out)
 \@outlinefile=\write6
 \openout6 = `thesis-doc.out'.
 
@@ -1550,14 +1549,14 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 48.
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 \c__siunitx_mathtt_int=\count297
- <ucsp.png, id=83, 669.50125pt x 280.04625pt>
+ <ucsp.png, id=31, 669.50125pt x 280.04625pt>
 File: ucsp.png Graphic file (type png)
  <use ucsp.png>
 Package pdftex.def Info: ucsp.png used on input line 50.
 (pdftex.def)             Requested size: 167.3749pt x 70.01138pt.
  [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./ucsp.png>]
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} </home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/ucsp.png>]
 Overfull \vbox (2.49998pt too high) has occurred while \output is active []
 
  [2
@@ -1567,12 +1566,12 @@ Underfull \hbox (badness 1852) in paragraph at lines 50--50
 []|\T1/aer/m/it/12 To my par-ents, Mario and Maria,
  []
 
-(./content/preview/abbreviations.tex [3]
+(/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/content/preview/abbreviations.tex [3]
 Overfull \vbox (2.49998pt too high) has occurred while \output is active []
 
  [4
 
-]) (./content/preview/acknowledgments.tex [5]
+]) (/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/content/preview/acknowledgments.tex [5]
 Overfull \vbox (2.49998pt too high) has occurred while \output is active []
 
  [6
@@ -1587,13 +1586,13 @@ Overfull \hbox (18.0514pt too wide) in paragraph at lines 7--8
 \T1/aer/m/n/12 CIENCIACTIVA), which through the Man-age-ment Agree-ment 234-2015-FONDECYT
  []
 
-[7]) (./content/preview/abstract_en.tex
+[7]) (/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/content/preview/abstract_en.tex
 Overfull \vbox (2.49998pt too high) has occurred while \output is active []
 
  [8
 
 
-] [9]) (./content/preview/abstract_es.tex
+] [9]) (/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/content/preview/abstract_es.tex
 Overfull \vbox (2.49998pt too high) has occurred while \output is active []
 
  [10
@@ -1605,7 +1604,7 @@ Overfull \vbox (2.49998pt too high) has occurred while \output is active []
  [12
 
 
-] (./thesis-doc.toc)
+]
 \tf@toc=\write7
 \openout7 = `thesis-doc.toc'.
 
@@ -1614,7 +1613,7 @@ Overfull \vbox (2.49998pt too high) has occurred while \output is active []
 
  [14
 
-] (./thesis-doc.lot)
+]
 \tf@lot=\write8
 \openout8 = `thesis-doc.lot'.
 
@@ -1623,12 +1622,21 @@ Overfull \vbox (2.49998pt too high) has occurred while \output is active []
 
  [16
 
-] (./thesis-doc.lof)
+]
 \tf@lof=\write9
 \openout9 = `thesis-doc.lof'.
 
- [17] (./content/preview/figures.tex) (./content/ch01/ch01.tex
+ [17] (/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/content/preview/figures.tex) (/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/content/ch01/ch01.tex
 Chapter 1.
+thesis-doc.tex:13:Warning: Cita no definida
+
+Package natbib Warning: Citation `liberzon2003switching' on page 1 undefined on input line 13.
+
+
+Overfull \hbox (43.52843pt too wide) in paragraph at lines 8--15
+\T1/aer/m/n/12 whose va-lues are in a fi-nite set $\OML/cmm/m/it/12 U$\T1/aer/m/n/12 (See  \T1/aer/bx/n/12 ?[]\T1/aer/m/n/12 ).
+ []
+
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
@@ -1637,12 +1645,12 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
 ]
 LaTeX Font Info:    Try loading font information for OMS+aer on input line 31.
- (/usr/share/texmf/tex/latex/R/tex/latex/omsaer.fd
+ (/usr/share/texlive/texmf-dist/tex/latex/ae/omsaer.fd
 File: omsaer.fd 1999/12/27
 )
 LaTeX Font Info:    Font shape `OMS/aer/m/n' in size <12> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 31.
-) (./content/ch02/ch02.tex
+) (/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/content/ch02/ch02.tex
 Overfull \vbox (2.49998pt too high) has occurred while \output is active []
 
  [2]
@@ -1655,38 +1663,138 @@ Overfull \vbox (2.49998pt too high) has occurred while \output is active []
 
 ]
 Chapter 2.
-[5]
+thesis-doc.tex:11:Warning: Cita no definida
+
+Package natbib Warning: Citation `larsen2016online' on page 5 undefined on input line 11.
+
+
+Overfull \hbox (212.79266pt too wide) in paragraph at lines 9--17
+\T1/aer/m/it/12 stochas-tic hy-brid switched sys-tems \T1/aer/m/n/12 e.g. a floor heat-ing sys-tem in a house \T1/aer/bx/n/12 ?[]\T1/aer/m/n/12 .
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [5]
+thesis-doc.tex:29:Warning: Cita no definida
+
+Package natbib Warning: Citation `le2017improved' on page 6 undefined on input line 29.
+
+
 Overfull \hbox (41.85648pt too wide) in paragraph at lines 33--33
 []\T1/aer/bx/n/17.28 Distributed Syn-the-sis of State-Dependent Switch-
  []
 
-)
-Overfull \vbox (2.49998pt too high) has occurred while \output is active []
+thesis-doc.tex:37:Warning: Cita no definida
 
- [6] (./thesis-doc.bbl) [7
+Package natbib Warning: Citation `le2016distributed' on page 6 undefined on input line 37.
+
+
+Overfull \hbox (57.32982pt too wide) in paragraph at lines 35--38
+\T1/aer/m/n/12 state space, the method builds a re-gion S. \T1/aer/bx/n/12 ?[] 
+ []
+
+) (/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/content/ch03/ch03.tex
+Overfull \vbox (15.11194pt too high) has occurred while \output is active []
+
+ [6]
+Chapter 3.
+thesis-doc.tex:13:Warning: Cita no definida
+
+Package natbib Warning: Citation `le2017improved' on page 7 undefined on input line 13.
+
+
+Overfull \hbox (76.10211pt too wide) in paragraph at lines 8--14
+\T1/aer/m/n/12 plest model of a hy-brid sys-tems is given by: (\T1/aer/bx/n/12 ?[]\T1/aer/m/n/12 ) 
+ []
+
+
+/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/content/ch03/ch03.tex:18: thesis-doc.tex:18: LaTeX Error: File `../../images/ss' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.18 ...ics[width=\textwidth*4/5]{../../images/ss}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+[7
 
 ]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 72.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 72.
- (./thesis-doc.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 72.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 72.
-Package rerunfilecheck Info: File `thesis-doc.out' has not changed.
-(rerunfilecheck)             Checksum: 616F2EC1AA3A272A7E882E95EA87D915;929.
- ) 
+
+/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/content/ch03/ch03.tex:38: thesis-doc.tex:38: LaTeX Error: File `../../images/swiched' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.38 ...idth=\textwidth*4/5]{../../images/swiched}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+thesis-doc.tex:41:Warning: Cita no definida
+
+Package natbib Warning: Citation `liberzon2003switching' on page 8 undefined on input line 41.
+
+thesis-doc.tex:41:Warning: Cita no definida
+
+Package natbib Warning: Citation `liberzon2003switching' on page 8 undefined on input line 41.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 41--41
+[]\T1/aer/m/n/12 Figure 3.2: |Tra-jec-tory of a hy-brid sys-tem. The switch-ing sig-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 41--41
+\T1/aer/m/n/12 nal $[]$ takes on in-te-ger va-lues that change at discrete-time
+ []
+
+thesis-doc.tex:54:Warning: Cita no definida
+
+Package natbib Warning: Citation `le2016distributed' on page 8 undefined on input line 54.
+
+
+Overfull \vbox (2.49998pt too high) has occurred while \output is active []
+
+ [8]) (/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/content/ch04/ch04.tex
+Overfull \vbox (2.49998pt too high) has occurred while \output is active []
+
+ [9]
+Overfull \vbox (2.49998pt too high) has occurred while \output is active []
+
+ [10
+
+]
+Chapter 4.
+
+! LaTeX Error: File `diag1.tex' not found.
+
+Type X to quit or <RETURN> to proceed,
+or enter new name. (Default extension: tex)
+
+Enter file name: 
+/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/content/ch04/ch04.tex:17: Emergency stop.
+<read *> 
+         
+l.17 \input{diag1.tex}
+                      ^^M
+*** (cannot \read from terminal in nonstop modes)
+
+ 
 Here is how much of TeX's memory you used:
- 42500 strings out of 493029
- 975039 string characters out of 6136233
- 1136530 words of memory out of 5000000
- 45196 multiletter control sequences out of 15000+600000
+ 42496 strings out of 493029
+ 977460 string characters out of 6136234
+ 1137836 words of memory out of 5000000
+ 45175 multiletter control sequences out of 15000+600000
  32906 words of font info for 77 fonts, out of 8000000 for 9000
  1149 hyphenation exceptions out of 8191
- 57i,11n,84p,10515b,816s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on thesis-doc.pdf (24 pages, 178153 bytes).
-PDF statistics:
- 262 PDF objects out of 1000 (max. 8388607)
- 210 compressed objects within 3 object streams
- 51 named destinations out of 1000 (max. 500000)
- 218 words of extra memory for PDF output out of 10000 (max. 10000000)
-
+ 57i,11n,84p,10491b,877s stack positions out of 5000i,500n,10000p,200000b,80000s
+/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/content/ch04/ch04.tex:17:  ==> Fatal error occurred, no output PDF file produced!
