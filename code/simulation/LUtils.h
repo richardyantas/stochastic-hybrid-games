@@ -78,41 +78,63 @@ namespace LUtils
         W[0] = Interval(40, 100);
         W[1] = Interval( 0, 300);
 
-        Interval Ti(0, 40); // It include valve mode = OFF and ON
-        Interval Te(20, 30);
-        Interval I(20, 30);
+        Interval Ti(20, 40); // It include valve mode = OFF and ON
+        Interval Te(25, 45);
+        Interval I(5, 3000);
 
-        Interval one(1,1.01);
+        Interval one(0.1,0.11);
 
-        double period = 40; // not works with 100
+        double period = 50; // not works with 100
 
         IntervalVector x0(2);        
         x0[0] = Interval(23.0, 23.2);
         x0[1] = Interval(130.0, 130.2);
 
         
-        Function m = Function(x, Return( ( -3.0526755852842805e-05*(x[0]-Te) - 0.0002*(x[0]-Ti) + 4.777830864787386e-06*I + 0.004777830864787387 ),
-                                        one ) );
-    
-        //Function m(x, Return( -x[1], x[0]));
-        ivp_ode mode = ivp_ode( m, 0.0, x0); // Is necessary to use simulation before
+        Function m1 = Function(x, Return( ( 0.000030526755852842805*(x[0]-Te) + 0.000004777830864787386*I + 0.004777830864787387 ),one ) );
+        Function m2 = Function(x, Return( ( 0.000030526755852842805*(x[0]-Te) + 0.000004777830864787386*I  ),one ) );
+        Function m3 = Function(x, Return( ( 0.000030526755852842805*(x[0]-Te) + 0.000004777830864787386*I  ),one ) );
 
+        Function m4 = Function(x, Return( ( 0.000030526755852842805*(x[0]-Te) + 0.000004777830864787386*I  ),one ) );
+        Function m5 = Function(x, Return( ( 0.000030526755852842805*(x[0]-Te) + 0.000004777830864787386*I  ),one ) );
+        Function m6 = Function(x, Return( ( 0.000030526755852842805*(x[0]-Te) + 0.000004777830864787386*I  ),one ) );
+
+
+        
+                   
+        //Function m(x, Return( -x[1], x[0]));
+        ivp_ode mode = ivp_ode( m1, 0.0, x0); // Is necessary to use simulation before
         simulation simu = simulation(&mode, period, HEUN, 1e-5);
-        í0u9-fde3cv  0000ñ
         plotBox(x0,"black");
         simu.run_simulation();
-
         for(int i=1;i<period;i++)
         {
             cout << simu.get_tight(i) << endl;
             plotBox( simu.get_tight(i), "-r");                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
         } 
-
         plotBox( simu.get_tight(period), "purple");
+
+
+        //Affine2Vector ddd = *(simu.list_solution_j.back().box_jnh_aff) ;        
+        x0 = simu.get_tight(period);
+        //return y0.itv();
+
+        ivp_ode mode2 = ivp_ode( m2, 0.0, x0); // Is necessary to use simulation before
+        simulation simu2 = simulation(&mode2, period, HEUN, 1e-5);
+        plotBox(x0,"black");
+       
+        simu2.run_simulation();
+
+        for(int i=1;i<period;i++)
+        {
+            cout << simu2.get_tight(i) << endl;
+            plotBox( simu2.get_tight(i), "-r");                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+        } 
+        plotBox( simu2.get_tight(period), "purple");
 
         
         plt::xlim( 0.0, 100.0);
-        plt::ylim( 100.0, 250.0);
+        plt::ylim( 120.0, 150.0);
         //plt::legend();  
         plt::xlabel("T");
         plt::ylabel("V");

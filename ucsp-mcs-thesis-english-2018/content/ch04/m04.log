@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2019.1.15)  16 MAY 2019 09:18
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2019.1.15)  16 MAY 2019 10:40
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1564,12 +1564,12 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-LaTeX Font Info:    Try loading font information for OMS+aer on input line 62.
+LaTeX Font Info:    Try loading font information for OMS+aer on input line 59.
  (/usr/share/texlive/texmf-dist/tex/latex/ae/omsaer.fd
 File: omsaer.fd 1999/12/27
 )
 LaTeX Font Info:    Font shape `OMS/aer/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 62.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 59.
 
 Overfull \vbox (2.49998pt too high) has occurred while \output is active []
 
@@ -1580,27 +1580,30 @@ Overfull \vbox (2.49998pt too high) has occurred while \output is active []
 Overfull \vbox (2.49998pt too high) has occurred while \output is active []
 
  [4]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 200.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 200.
+Overfull \vbox (2.49998pt too high) has occurred while \output is active []
+
+ [5]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 197.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 197.
  (/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/content/ch04/m04.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 200.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 200.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 197.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 197.
 Package rerunfilecheck Info: File `m04.out' has not changed.
 (rerunfilecheck)             Checksum: 0A8B31B557033EAA1763203940BDCDF4;560.
  ) 
 Here is how much of TeX's memory you used:
- 42425 strings out of 493029
- 976669 string characters out of 6136234
+ 42426 strings out of 493029
+ 976675 string characters out of 6136234
  1140291 words of memory out of 5000000
  45192 multiletter control sequences out of 15000+600000
  34038 words of font info for 79 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  57i,19n,84p,10458b,991s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on /home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/content/ch04/m04.pdf (4 pages, 201088 bytes).
+Output written on /home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/content/ch04/m04.pdf (5 pages, 201600 bytes).
 PDF statistics:
- 140 PDF objects out of 1000 (max. 8388607)
- 105 compressed objects within 2 object streams
- 22 named destinations out of 1000 (max. 500000)
+ 144 PDF objects out of 1000 (max. 8388607)
+ 108 compressed objects within 2 object streams
+ 23 named destinations out of 1000 (max. 500000)
  178 words of extra memory for PDF output out of 10000 (max. 10000000)
 

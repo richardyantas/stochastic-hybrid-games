@@ -17,11 +17,8 @@ int main()
 }
 */
 
-
-
 #include "LCommon.h"
 #include "LConfig.h"
-
 
 int main()
 {

@@ -36,7 +36,6 @@
     \factorheat\mcont\frac{d}{dt}\tcont =  Q_{input,1} + Q_{input,2} - Q_{loss,1} -  Q_{loss,2}
     \end{equation}
 
-
     \begin{equation}
         Q_{input,1} =   A_c\cdot\irradiance
     \end{equation}
@@ -52,8 +51,6 @@
     \begin{equation}
         Q_{loss,2} =  k_c A_t (\tcont-\tenv)
     \end{equation}
-
-    
 
     \subsection{State Variables}
 
@@ -160,7 +157,7 @@
 
     
     \begin{equation}
-    \frac{d}{dt}\tcont =   \frac{1}{p}  \constone(\tenv-\tcont)+ \frac{1}{p} \consttwo\irradiance+  \frac{r}{p} \constthree +  \frac{v}{p} \constfour(\tin-\tcont)
+    \frac{d}{dt}\tcont =   \frac{1}{V(t)}  \constone(\tenv-\tcont)+ \frac{1}{V(t)} \consttwo\irradiance+  \frac{r}{V(t)} \constthree +  \frac{v}{V()} \constfour(\tin-\tcont)
     \label{temperature-equation}
     \end{equation}
 

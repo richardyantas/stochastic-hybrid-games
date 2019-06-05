@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1557991118 "/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/content/ch04/m04.tex" "/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/content/ch04/m04.pdf" "m04" 1557991119
+["pdflatex"] 1557996028 "/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/content/ch04/m04.tex" "/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/content/ch04/m04.pdf" "m04" 1557996030
   "../../src/Includes.tex" 1547764393 2198 99410611c928a1b1daee7b6d245b36cd ""
   "../../src/colors.tex" 1547764562 437 c7530eb35129507547dceed5ce086847 ""
   "../../src/fancyhdr.sty" 1547649637 13803 e14463d0cdb00c0211de1dc543ff6b0b ""
@@ -9,8 +9,8 @@
   "../../src/macro.sty" 1557988140 1298 d630ae6a051ee545631cedd9e4fa8dd3 ""
   "../../src/tesis.sty" 1547770804 7920 67521c05ffb9ddbcd1f4945b14b900f8 ""
   "/etc/texmf/web2c/texmf.cnf" 1547601005 1101 af7716885e081ab43982cab7b4672c1a ""
-  "/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/content/ch04/m04.aux" 1557991119 2439 56147149947f2df0d4935fa45030c7ad ""
-  "/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/content/ch04/m04.tex" 1557991117 6256 739a4405092ec9015d4dad52a07be15e ""
+  "/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/content/ch04/m04.aux" 1557996029 2439 56147149947f2df0d4935fa45030c7ad ""
+  "/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/content/ch04/m04.tex" 1557996028 6260 a50f7b4b10487c4ea8ee7d346323142e ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1272929888 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/symbol/psyr.tfm" 1136768653 1408 5937f58aa508ea2cea4901c07d10f5fe ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1136768653 1528 f853c4d1b4e0550255e02831fdc8496f ""
@@ -300,13 +300,13 @@
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1547601063 3855354 da7015c76e7655b6ae08ff5e98593d52 ""
   "5.png" 1548173658 108732 52ec239addb1524ec809263fcd47eaea ""
   "diag1.tex" 1548175437 3202 fdf0a8758db6eea2262466561d14114a ""
-  "m04.aux" 1557991119 2439 56147149947f2df0d4935fa45030c7ad ""
-  "m04.out" 1557991119 560 0a8b31b557033eaa1763203940bdcdf4 ""
-  "m04.tex" 1557991117 6256 739a4405092ec9015d4dad52a07be15e ""
+  "m04.aux" 1557996029 2439 56147149947f2df0d4935fa45030c7ad ""
+  "m04.out" 1557996029 560 0a8b31b557033eaa1763203940bdcdf4 ""
+  "m04.tex" 1557996028 6260 a50f7b4b10487c4ea8ee7d346323142e ""
   (generated)
-  "m04.aux"
-  "m04.log"
-  "/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/content/ch04/m04.pdf"
   "m04.out"
   "m04.pdf"
+  "m04.aux"
   "/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/content/ch04/m04.log"
+  "/home/richard/Documents/ucsp-solar/ucsp-mcs-thesis-english-2018/content/ch04/m04.pdf"
+  "m04.log"

@@ -1,0 +1,8 @@
+Solution at t=50.000000 : 
+([23.2067, 24.1535] ; [135, 135.7])
+Diameter : (0.946882 ; 0.7)
+Rejected picard :0
+Accepted picard :56
+Step min :0.5
+Step max :0.9
+Truncature error max :2.1609e-12
