@@ -57,9 +57,11 @@ email address}
 \maketitle
 
 \begin{abstract}
-This document is a model and instructions for \LaTeX.
-This and the IEEEtran.cls file define the components of your paper [title, text, heads, etc.]. *CRITICAL: Do Not Use Symbols, Special Characters, Footnotes, 
-or Math in Paper Title or Abstract.
+    Hybrid systems are commonly used in engineering 
+applications(eg. logic-dynamic controllers, internet congestion even physical 
+systems with impact,etc). Hybrid systems have been used to model several
+cyber-physical systems.In This work, we propose a methodolody which
+provide safety and optimal behaviours to hybrid systems.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -67,10 +69,72 @@ component, formatting, style, styling, insert
 \end{IEEEkeywords}
 
 \section{Introduction}
-This document is a model and instructions for \LaTeX.
-Please observe the conference page limits. 
+Hybrid systems are widely used in engineering applications and its 
+importance has grown up considerably these last years, because of their 
+ease of implementation for controlling cyber-physical systems.
+A switched systems is a set of dynamical systems, each with its own 
+dynamical behaviour controlled by a parameter mode $u$ whose values 
+are in a finite set $U$(See ~\cite{liberzon2003switching}). However, due to the composition of many switched systems together, the global switched systems has a number of modes and dynamics which increases exponentially. 
+Switched systems have numerous applications in control of mechanical systems, the automotive industry, and many other fields. 
 
-\section{Ease of Use}
+
+\section{Safety Hybrid Systems}
+
+
+In this part is presented a method based on correction by design of
+ discrete linear switched system in the time. the method consist of 
+ given a objective region \emph{R} of state space, the method built 
+ a set \emph{S} and a control that guide any element from  \emph{S} 
+ a \emph{R}. This method works in an iterative way to back to reach 
+ the region \emph{R}. The method  can also be used for synthesize 
+ a stability control that is keep inside of R, whole states start in
+  \emph{R}.
+
+
+ \textbf{Problem 1} \emph{((R,S) - Stability Problem)}. Given a 
+ switched system as shown in figure before, a set of recurrence 
+ ${\mathbb{R}^n}$ and a safe set \emph{S}
+ 
+ ${\subset \mathbb{R}^n}$,find a control rule 
+ ${\sigma : \mathbb{R}^+ \rightarrow U}$ such that, for any
+  initial condition ${x_0  \in  R_1}$ and any perturbation 
+  ${\varpi :\mathbb{R}^+\rightarrow U}$  the
+   following holds:
+ 
+ \begin{itemize}
+    \item \emph{ Recurrence in \emph{R}:there are a monotonically 
+    strictly increasing sequence of (positive) integers
+    ${k_t, t \in \mathbb{N}}$ such that for all ${ t \in \mathbb{R}^n,
+    \phi(k_l\tau;t_0,x^0,\sigma,w) \in \mathbb{R} }$.}
+
+    \item \emph{ Stability in \emph{S}: for all ${ t \in \mathbb{R}^n,
+    \phi(t;t_0,x^0,\sigma,w) \in S}$ .}
+\end{itemize}
+
+
+ 
+\textbf{Problem 2} \emph{((${R_1,R_2,S}$) - Reachability proglem).
+Given a switched system of the form shown above, two sets  
+${ R_1 \subset \mathbb{R}^n}$  and ${ R_2 \subset \mathbb{R}^n}$ 
+and a safety set  ${S \subset  \mathbb{R}^n}$, find a control rule 
+${\sigma}$ :
+${\mathbb{R}^+\rightarrow U}$ such that, for any initial condition 
+${x_0  \in  R_1}$ and any perturbation  ${\varpi : \mathbb{R}^+  
+\rightarrow U}$, the following holds:}
+
+\begin{itemize}
+  \item  \emph{Reachability from ${R_1}$ to ${R_2}$: there exists 
+  an integer ${k \in \mathbb{N} }$ such that we have ${ \phi( k_l\tau
+  ;t_0,x^0,\sigma,w) \in R_2 }$.}
+  
+  \item \emph{ Stability in S: for all ${ t \in \mathbb{R}^+, 
+  \phi(t;t_0,x^0,\sigma,w) \in S}$ .}
+\end{itemize}
+
+
+
+
+
 
 \subsection{Maintaining the Integrity of the Specifications}
 
@@ -82,11 +146,29 @@ and others are deliberate, using specifications that anticipate your paper
 as one part of the entire proceedings, and not as an independent document. 
 Please do not revise any of the current designations.
 
-\section{Prepare Your Paper Before Styling}
+\section{Stochastic Hybrid Game}
 Before you begin to format your paper, first write and save the content as a 
 separate text file. Complete all content and organizational editing before 
 formatting. Please note sections \ref{AA}--\ref{SCM} below for more information on 
 proofreading, spelling and grammar.
+
+
+
+\textbf{Problem 3}\emph{(Control Synthesis Problem)}. Let us 
+consider a sampled switched system. Given three sets R,S and B, 
+with ${R \cup B \in S}$  and ${R \cap B = \varnothing }$ find a 
+rule ${\sigma(.)}$ such that, for any ${x(0) \in R }$. 
+
+\begin{itemize}
+    \item \emph{ ${\tau}$-stability: ${x(t)}$ return in R 
+    infinitely often, at some multiples of sampling time ${\tau}$}.
+    \item \emph{ safety: ${x(t)}$ always stays in ${S/B}$.}
+\end{itemize}
+
+
+
+
+
 
 Keep your text and graphic files separate until after the text has been 
 formatted and styled. Do not number text heads---{\LaTeX} will do that 
