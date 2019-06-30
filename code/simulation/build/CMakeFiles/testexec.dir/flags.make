@@ -6,5 +6,5 @@ CXX_FLAGS =   -std=gnu++11
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/include/ibex -I/usr/include/python2.7 
+CXX_INCLUDES = -I/usr/include/python2.7 
 

@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/richard/Documents/ucsp-solar/code/Simulation/LCommon.h
+/home/richard/Documents/ucsp-solar/code/simulation/LCommon.h
 ibex/ibex.h
 -
 vector
@@ -20,15 +20,15 @@ sstream
 cmath
 -
 LSwitchedSystem.h
-/home/richard/Documents/ucsp-solar/code/Simulation/LSwitchedSystem.h
+/home/richard/Documents/ucsp-solar/code/simulation/LSwitchedSystem.h
 LUtils.h
-/home/richard/Documents/ucsp-solar/code/Simulation/LUtils.h
+/home/richard/Documents/ucsp-solar/code/simulation/LUtils.h
 LMatplotlibcpp.h
-/home/richard/Documents/ucsp-solar/code/Simulation/LMatplotlibcpp.h
+/home/richard/Documents/ucsp-solar/code/simulation/LMatplotlibcpp.h
 
-/home/richard/Documents/ucsp-solar/code/Simulation/LConfig.h
+/home/richard/Documents/ucsp-solar/code/simulation/LConfig.h
 
-/home/richard/Documents/ucsp-solar/code/Simulation/LMatplotlibcpp.h
+/home/richard/Documents/ucsp-solar/code/simulation/LMatplotlibcpp.h
 vector
 -
 map
@@ -52,13 +52,13 @@ Python.h
 numpy/arrayobject.h
 -
 
-/home/richard/Documents/ucsp-solar/code/Simulation/LSwitchedSystem.h
+/home/richard/Documents/ucsp-solar/code/simulation/LSwitchedSystem.h
 iostream
 -
 ibex/ibex.h
 -
 
-/home/richard/Documents/ucsp-solar/code/Simulation/LUtils.h
+/home/richard/Documents/ucsp-solar/code/simulation/LUtils.h
 queue
 -
 ibex/ibex.h
@@ -70,19 +70,19 @@ cmath
 cstring
 -
 LSwitchedSystem.h
-/home/richard/Documents/ucsp-solar/code/Simulation/LSwitchedSystem.h
+/home/richard/Documents/ucsp-solar/code/simulation/LSwitchedSystem.h
 LMatplotlibcpp.h
-/home/richard/Documents/ucsp-solar/code/Simulation/LMatplotlibcpp.h
+/home/richard/Documents/ucsp-solar/code/simulation/LMatplotlibcpp.h
 
-/home/richard/Documents/ucsp-solar/code/Simulation/test.cpp
+/home/richard/Documents/ucsp-solar/code/simulation/test.cpp
 LCommon.h
-/home/richard/Documents/ucsp-solar/code/Simulation/LCommon.h
+/home/richard/Documents/ucsp-solar/code/simulation/LCommon.h
 LConfig.h
-/home/richard/Documents/ucsp-solar/code/Simulation/LConfig.h
+/home/richard/Documents/ucsp-solar/code/simulation/LConfig.h
 LCommon.h
-/home/richard/Documents/ucsp-solar/code/Simulation/LCommon.h
+/home/richard/Documents/ucsp-solar/code/simulation/LCommon.h
 LConfig.h
-/home/richard/Documents/ucsp-solar/code/Simulation/LConfig.h
+/home/richard/Documents/ucsp-solar/code/simulation/LConfig.h
 
 /usr/include/python2.7/Python.h
 patchlevel.h

@@ -22,7 +22,7 @@ endif()
 
 
 
-include_directories(/include/ibex/)
+#include_directories(/include/ibex/)
 set(HEADERS LUtils.h LSwitchedSystem.h)
 set(SOURCES test.cpp)
 add_executable(testexec ${HEADERS} ${SOURCES})
