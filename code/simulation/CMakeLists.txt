@@ -10,7 +10,7 @@ project(test)
 # g++  -I/usr/local/include/ibex  -o main main.cpp -libex -lprim
 
 
-find_package(PythonLibs 2.7)
+#find_package(PythonLibs REQUIRED)
 # target_include_directories(test PRIVATE ${PYTHON_INCLUDE_DIRS})
 
 
@@ -22,7 +22,11 @@ endif()
 
 
 
-#include_directories(/include/ibex/)
+
+#include_directories(/include/ibex)
+
+#include_directories(/usr/local/dynibex-2.01/include/ibex)
+
 set(HEADERS LUtils.h LSwitchedSystem.h)
 set(SOURCES test.cpp)
 add_executable(testexec ${HEADERS} ${SOURCES})
