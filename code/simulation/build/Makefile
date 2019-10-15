@@ -111,17 +111,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named testexec
+# Target rules for targets named run
 
 # Build rule for target.
-testexec: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 testexec
-.PHONY : testexec
+run: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 run
+.PHONY : run
 
 # fast build rule for target.
-testexec/fast:
-	$(MAKE) -f CMakeFiles/testexec.dir/build.make CMakeFiles/testexec.dir/build
-.PHONY : testexec/fast
+run/fast:
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/build
+.PHONY : run/fast
 
 test.o: test.cpp.o
 
@@ -129,7 +129,7 @@ test.o: test.cpp.o
 
 # target to build an object file
 test.cpp.o:
-	$(MAKE) -f CMakeFiles/testexec.dir/build.make CMakeFiles/testexec.dir/test.cpp.o
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/test.cpp.o
 .PHONY : test.cpp.o
 
 test.i: test.cpp.i
@@ -138,7 +138,7 @@ test.i: test.cpp.i
 
 # target to preprocess a source file
 test.cpp.i:
-	$(MAKE) -f CMakeFiles/testexec.dir/build.make CMakeFiles/testexec.dir/test.cpp.i
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/test.cpp.i
 .PHONY : test.cpp.i
 
 test.s: test.cpp.s
@@ -147,7 +147,7 @@ test.s: test.cpp.s
 
 # target to generate assembly for a file
 test.cpp.s:
-	$(MAKE) -f CMakeFiles/testexec.dir/build.make CMakeFiles/testexec.dir/test.cpp.s
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/test.cpp.s
 .PHONY : test.cpp.s
 
 # Help Target
@@ -157,7 +157,7 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
-	@echo "... testexec"
+	@echo "... run"
 	@echo "... edit_cache"
 	@echo "... test.o"
 	@echo "... test.i"

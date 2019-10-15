@@ -12,20 +12,20 @@ def solve(x,y,T,num,A,d,va,re,vo,Mc,Ce,A_t,A_c,dm,dq,Kc,vp,Tin,Ie,Te,Tinamp,Team
 	#Te  = Teamp*gauss(86400/2,86400/8,T,num)
 
 	for i in range(0,num-1):
-		if abs(y[i,0]-100*vo.g[i,0]) <= 0:
+		if abs(y[i,0]-300*vo.g[i,0]) <= 0:
 			y[i+1,0] = y[i,0]  
 		else:
-			y[i+1,0] = y[i,0] - vp*T*sign( y[i,0]-100*vo.g[i,0] )            
+			y[i+1,0] = y[i,0] - vp*T*sign( y[i,0]-300*vo.g[i,0] )            
 
 		Mc = y[i,0]
 		A[i,0]  =  ( va.g[i,0]*(-dm/Mc) - Kc*A_t/(Mc*Ce) )
 		d[i,0]  =  A_c*Ie[i,0]/(Mc*Ce) + va.g[i,0]*Tin[i,0]*dm/Mc + Kc*A_t*Te[i,0]/(Mc*Ce)
 		x[i+1,0]=  x[i,0]/(1-A[i,0]*T) + re.g[i,0]*dq/(Mc*Ce)*T/(1-A[i,0]*T) + d[i,0]*T/(1-A[i,0]*T)
 
-		if x[i,0] < 60:
+		if x[i,0] < 20:
 			re.g[i+1,0] = 1
 			an = i
-		if x[i,0] >= 60:
+		if x[i,0] >= 20:
 			if i - an <= 300:
 				re.g[i+1,0] = 1
 			else:
@@ -51,31 +51,46 @@ def gauss(mean, sig, T, num):
 		g[i,0] = 5*(1/(2.5066*sig))*exp(-pow((T*i-mean),2)/(2*pow(sig,2)))
 	return g
 
+
+
 class resistance:
-	def __init__(self,num):
+	def __init__(self,num,T):
 		self.g = np.zeros((num,1))
+		self.T = T
 	def setOneValues(self,a,b):
-		for i in range(a,b):
+		l = int(a/self.T)
+		u = int(b/self.T)
+		for i in range(l,u):
 			self.g[i,0] = 1
 
 
 class valve:
-	def __init__(self,num):
+	def __init__(self,num,T):
 		self.g = np.zeros((num,1))
+		self.T = T
 	def setOneValues(self,a,b):
-		for i in range(a,b):
+		l = int(a/self.T)
+		u = int(b/self.T)		
+		for i in range(l,u):
 			self.g[i,0] = 1
 
 
 class piston:
-	def __init__(self,num):
+	def __init__(self,num,T):
 		self.g = np.ones((num,1))
+		self.T = T
 	def setTwoValues(self,a,b):
-		for i in range(a,b):
+		l = int(a/self.T)
+		u = int(b/self.T)		
+		for i in range(l,u):
 			self.g[i,0] = 2
 	def setThreeValues(self,a,b):
-		for i in range(a,b):
+		l = int(a/self.T)
+		u = int(b/self.T)		
+		for i in range(l,u):
 			self.g[i,0] = 3
+
+
 
 def plotWidget(t,x,y,T,num,A,d,va,re,vo,Mc,Ce,A_t,A_c,dm,dq,Kc,vp,Tin,Ie,Te,Tinamp,Teamp,Ieamp):
 

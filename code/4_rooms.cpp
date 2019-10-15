@@ -1,4 +1,4 @@
-#include "ibex.h"
+#include <ibex.h>
 
 #include <vector>
 #include <queue>
@@ -17,7 +17,7 @@
 using namespace ibex;
 
 // Data type for sampled switched systems
-typedef struct  {
+typedef struct {
   double period;
   std::vector<Function*> dynamics;
   int nb_dynamics;

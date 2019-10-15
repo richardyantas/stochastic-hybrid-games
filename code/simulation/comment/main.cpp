@@ -1,9 +1,42 @@
+// g++ -frounding-math -ffloat-store -I/usr/local/include -I/usr/local/include/ibex  -O3 -DNDEBUG -Wno-deprecated -frounding-math  -o main main.cpp -L/usr/local/lib -libex -lprim -lClp -lCoinUtils
 
-#include "LCommon.h"
-#include "LConfig.h"
+// g++ -frounding-math -ffloat-store -I/usr/local/include/ibex  -o main main.cpp -libex -lprim -lClp -lCoinUtils
+
+// g++  -I/usr/local/include/ibex  -o main main.cpp -libex -lprim
+
+#include <ibex.h>
+#include <vector>
+#include <queue>
+#include <iostream>
+#include <sstream>
+#include <cmath>
+
+#include "Processing.h"
+#include "LUtils.h"
+#include "LMatplotlibcpp.h"
+
+using namespace ibex;
+using namespace LSwitchedSystem;
+
+// Matplotlib
+// sudo apt-get install python-matplotlib python-numpy python2.7-dev
+
+
+#define FIND_PATTERN 1 // Then comment again
+
+#define DECOMPOSE 0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+// Macro variables to set the values of the maximal length of a
+// pattern (NB_K) and the maximal number of splittings of the
+// state-space (NB_D)
+#define NB_K 3
+#define NB_D 20
 
 int main()
 {
+
+	cout << "sdsd" << endl
+
 	const int n = 4;
 	Variable y(n);
 

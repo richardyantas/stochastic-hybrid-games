@@ -4,15 +4,16 @@
 cmake_minimum_required(VERSION 3.5)
 set(CMAKE_CXX_STANDARD 11)
 #set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-project(test)
+project(thesis)
 
 #-I/usr/local/include/ibex
 # g++  -I/usr/local/include/ibex  -o main main.cpp -libex -lprim
 
+set(PYTHON_LIBRARIES "\\usr\\lib\\python2.7")
+set(PYTHON_INCLUDE_DIRS "\\usr\\include\\python2.7")
 
-#find_package(PythonLibs REQUIRED)
-# target_include_directories(test PRIVATE ${PYTHON_INCLUDE_DIRS})
-
+find_package(PythonLibs 2.7 REQUIRED)
+#target_include_directories(test PRIVATE ${PYTHON_INCLUDE_DIRS})
 
 if(UNIX)
     message("This is a ${CMAKE_SYSTEM_NAME} system")
@@ -20,15 +21,12 @@ elseif(WIN32)
     message("This is a Windows Systems")
 endif()
 
-
-
-
-#include_directories(/include/ibex)
-
+include_directories(/usr/local/include/ibex)
 #include_directories(/usr/local/dynibex-2.01/include/ibex)
 
-set(HEADERS LUtils.h LSwitchedSystem.h)
+set(HEADERS GraphicsUtils.h Processing.h ProcessingUtils.h Matplotlibcpp.h )
 set(SOURCES test.cpp)
-add_executable(testexec ${HEADERS} ${SOURCES})
-target_include_directories(testexec PRIVATE ${PYTHON_INCLUDE_DIRS})
-target_link_libraries(testexec ibex prim ${PYTHON_LIBRARIES})
+add_executable(run ${HEADERS} ${SOURCES})
+
+target_include_directories(run PRIVATE ${PYTHON_INCLUDE_DIRS})
+target_link_libraries(run ibex prim ${PYTHON_LIBRARIES})
