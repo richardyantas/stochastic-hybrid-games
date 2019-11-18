@@ -1,3 +1,0 @@
-/home/richard/Documents/ucsp-solar/code/simulation/build/CMakeFiles/rebuild_cache.dir
-/home/richard/Documents/ucsp-solar/code/simulation/build/CMakeFiles/run.dir
-/home/richard/Documents/ucsp-solar/code/simulation/build/CMakeFiles/edit_cache.dir
