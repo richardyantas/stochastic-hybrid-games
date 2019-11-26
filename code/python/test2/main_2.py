@@ -8,6 +8,15 @@ from fractions import Fraction
 #x1 = cwater*density/1000
 #print ( "x1 = %d",x1) #  4165.0672
 
+
+def sgn(a):
+    if(a>0):
+        return 1
+    if(a<0 or a==0):
+        return -1
+    
+
+
 class state:
     def __init__(self, time, volume, temperature, energyComsuption ):
         self.t = time
@@ -15,27 +24,37 @@ class state:
         self.T = temperature
         self.E = energyComsuption
 
-
 class action:
     def __init__(self, piston=0, resistor=0, valve=0):
-        self.p = piston   #{-1,0,1}
-        self.r = resistor #{0,1}
-        self.v = valve    #{0,1}
+
+        # There are 2 cases 
+        # 1.- {-1,0,1}  means {D,S,I}
+        # 2.- {-1,0,1}  means {Lower Position,K,Upper Position} If it exist.
+
+        #self.pv  = pistonv   #{-1,0,1}
+        self.p   = piston
+        self.r   = resistor #{0,1}
+        self.v   = valve    #{0,1}
+
 
 class automaton:
     
     def __init__(self, data):
-        self.H = data['H']  
+
+        self.H   = data['H']  
         self.tau = data['tau'] # Passing to seconds
         self.num = self.H / self.tau + 1
-        self.si = data['stateInit']
-        self.ai = action()
+        
+        self.v   = data['valve']
 
-        self.states = []
+        self.si  = data['stateInit']
+        self.ai  = action()
+
+        self.states  = []
         self.actions = []
         self.actions.append(self.ai)
+        
         self.states.append(self.si)
-
 
         self.d = data['D']        
         self.target = data['Target']
@@ -44,40 +63,77 @@ class automaton:
 # 0.193
 
     def post(self,s,a,i):
-        V = s.V + self.tau*(self.rate_volume_change*a.p)
-        
-        if a.p != -1:
-            T = s.T + (1/(4165.0672*V))*self.tau*( -12*0.001*(s.T-self.d['Te'][i]) -
-                                   a.v*4.186*0.093*(s.T-self.d['Ti'][i]) -
-                                   a.p*4.186*0.093*(s.T-self.d['Ti'][i]) +
-                                   0.001*3.5*self.d['I'][i]+a.r*2                                    
-                                   )
-        else:
-            T = s.T + (1/(4165.0672*V))*self.tau*( -12*0.001*(s.T-self.d['Te'][i]) -
-                                   a.v*4.186*0.093*(s.T-self.d['Ti'][i]) +
-                                   0.001*3.5*self.d['I'][i]+a.r*2                                    
-                                   )
+
+        if a.p == -1:
+            is_expand = 0     # Drain
+        if a.p == 0:    
+            is_expand = 0     # Keep
+        if a.p == 1:
+            is_expand = 1     # Merge
+
+
         E = s.E + self.tau*a.r*2
+        
+        #V = s.V + self.tau*(self.rate_volume_change*a.p)
+
+        #V = s.V + self.tau*( -sgn(V+100*a.p) )
+        
+        V = s.V + self.tau*( -sgn(s.V-100*(a.p+2)) )  # The constraint is added on controller section
+
+        # PID V = 0, VD = 0
+
+
+        T = s.T + (1/(4165.0672*V))*self.tau*( -12*0.001*(s.T-self.d['Te'][i]) -
+                    
+                    a.v*4.186*0.093*(s.T-self.d['Ti'][i]) -
+                    
+                    is_expand*4.186*0.093*(s.T-self.d['Ti'][i]) +
+                    
+                    0.001*3.5*self.d['I'][i]+a.r*2                                    
+                                   )
+
         return state(s.t+tau,V,T,E)
 
-    def controller(self,s):
-        a = action()
-        if s.T < self.target['Td']:
-            a.r = 1
-            if s.V <= 0.1:
-                a.p = 0
-            else:
-                a.p = -1
-        if s.T > self.target['Td']:
-            a.r = 0
-            if s.V >= 0.3:
-                a.p = 0
-            else:
-                a.p = 1
 
-        a.v = 0
-        
-        return a
+
+    def controller(self,s):
+
+        if s.T < self.target['Td']:
+            r = 1
+            if s.V <= 0.1:
+                p = 0
+            else:
+                p = -1
+        if s.T > self.target['Td']:
+            r = 0
+            if s.V >= 0.3:
+                p = 0
+            else:
+                p = 1
+
+        v = 0
+        return action(p,r,v)
+
+
+    def controller2(self,s):
+
+        if s.T < self.target['Td']:
+            r = 1
+            if s.V <= 0.1:
+                p = 0
+            else:
+                p = -1
+        if s.T > self.target['Td']:
+            r = 0
+            if s.V >= 0.3:
+                p = 0
+            else:
+                p = 1
+
+        v = 0
+
+
+        return action(p,r,v)
 
     def simulation(self):
         s = self.si        
@@ -86,13 +142,19 @@ class automaton:
             if i%3 == 0:
                 a = self.controller(s)
 
-            r = float(Fraction(i*self.tau,3600))
-            if (8 < r and r < 8.5) or (19 < r and r < 19.5):
-                a.v = 1
-            else:
-                a.v = 0 
+            # added  (I think it required to add self.) 
+            a.v = v[i]
+
+            #r = float(Fraction(i*self.tau,3600))
+            #if (8 < r and r < 8.5) or (19 < r and r < 19.5):
+            #    a.v = 1
+            #else:
+            #    a.v = 0 
 
             #if a.p != -1:
+
+            
+
             s = self.post(s,a,i)
 
             self.actions.append(a)  # Plot actions
@@ -144,14 +206,14 @@ class automaton:
     Tree Strategy
 
     1. Data collected interpolate from 100 to 1000 points which a tau beetwen points to 1minute
-        1.1 we have 10 points with tau = 15min if we changue tau to 1 min then we have 100*15
+        1.1 we have 10 points with tau = 15min if we changue tau tovalve 1 min then we have 100*15
         1.2 
     2. 
 '''
 
             
 dataRead = pd.read_csv("../SolarEnergy/Solargis_min15_Almeria_Spain.csv")
-
+valveRead= pd.read_csv("valve.csv")  # t1,t2,dur
 
 tau_ = 15*60           # Real time of the data 
 Horizont = 2*24*60*60      # Real time Interval from  [0-Horizont]
@@ -159,20 +221,36 @@ num_ = Horizont/tau_    # Num of intervals         [0 - num*tau]  , but there ar
 t_  = np.linspace(0,Horizont,num_+1)
 T_e = dataRead['Temperature'].values.tolist()[0:num_+1]
 I_  = dataRead['GTI'].values.tolist()[0:num_+1]
-
+v_  = valveRead['Flow'].values.tolist()[0:num_+1] 
+#v   =  
 
 print(len(t_))
 print(len(I_))
+print(len(v_))
 
+print(v_ )
 
 tau = 60
 num = Horizont/tau
 t   = np.linspace(0,Horizont,num+1)
 Te  = np.interp(t,t_,T_e)
 I   = np.interp(t,t_,I_)
+v   = np.interp(t,t_ ,v_)
 Ti  = np.ones(num+1)*15
 
-print(len(I))
+# va   = np.zeros(num+1)
+
+'''
+def set(t1,t2,f): # Hours
+    a = t1*3600/tau
+    b = t2*3600/tau
+    for i in range(0,num):
+        if( a < i and i < b ):
+            va[i] = f
+'''
+
+
+
 print(len(Ti))
 
 
@@ -185,7 +263,8 @@ data = {
                 'Ti'  : Ti,
                 'I'   : I,
             },
-            
+    
+    'valve': v,
     'Target': {
                 'Td' : 40,   # 21 temperatura de comfort humano
                 'Vd' : 100,
@@ -207,32 +286,43 @@ A.simulation()
 print( len(t) , len(data['D']['I']) , len(A.getT()) )
 
 
-plt.figure( figsize=(11, 9))
+#plt.figure( figsize=(11, 9))
+
+fig, ax1 = plt.subplots()
+color = 'tab:red'
+ax1.set_xlabel('time(s)')
+ax1.set_ylabel('Enviornment Temperature', color = color)
+ax1.plot(t,data['D']['Te'], color=color)
+ax1.tick_params(axis='y', labelcolor = color)
+plt.grid(True)
+ax2 = ax1.twinx()
+color = 'tab:blue'
+ax2.set_ylabel('Irradiance', color=color)
+ax2.plot(t,data['D']['I'],color = color)
+ax2.tick_params(axis='y',labelcolor=color)
+
+
+#plt.plot(t, data['D']['Te'],label='Te')
+#plt.ylabel('Te(Celsius)')
+#plt.xlabel('time(hrs)')
+#plt.legend()
+
+
+
+
+plt.figure( figsize=(11, 11))
 
 grid = plt.GridSpec(4, 4, wspace=0.8, hspace=0.7)
 
-plt.subplot(grid[0, 0])
-plt.plot(t, data['D']['I'],label='I')
-plt.ylabel('Irradiance(Kw/m2)')
-plt.xlabel('time(hrs)')
-plt.legend()
-plt.grid(True)
 
-plt.subplot( grid[0, 1:])
-plt.plot(t, data['D']['Te'],label='Te')
-plt.ylabel('Te(Celsius)')
-plt.xlabel('time(hrs)')
-plt.legend()
-plt.grid(True)
-
-plt.subplot( grid[1,:2] )
+plt.subplot( grid[0,:2] )
 plt.plot(t, A.getT() ,label='T')
 plt.ylabel('T(Celsius)')
 plt.xlabel('time(hrs)')
 plt.legend()
 plt.grid(True)
 
-plt.subplot( grid[2,:2] )
+plt.subplot( grid[1,:2] )
 plt.plot(t,A.getV(),label='T')
 plt.ylabel('V(L)')
 plt.xlabel('time(hrs)')
@@ -246,7 +336,7 @@ plt.xlabel('T(Celsius)')
 plt.legend()
 plt.grid(True)
 
-plt.subplot( grid[3,:2] )
+plt.subplot( grid[2,:2] )
 plt.plot(t,A.getE(),'r')
 plt.ylabel('E(kJ)')
 plt.xlabel('time(Hrs)')
@@ -256,7 +346,7 @@ plt.grid(True)
 
 # but have shapes (2881,) and (576,)
 
-plt.subplot( grid[3,2:4] )
+plt.subplot( grid[3,:2] )
 plt.plot(t,A.getr(),'r')
 plt.plot(t,A.getv(),'g')
 plt.plot(t,A.getp(),'b')

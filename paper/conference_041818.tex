@@ -16,40 +16,21 @@
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
 
-\title{Safe and Near Optimal controller synthesis for Hybrid System\\
-{\footnotesize \textsuperscript{*}Note: Sub-titles are not captured in Xplore and
-should not be used}
+\title{Safe and Near Optimal Controller Synthesis for Stochastic Hybrid Systems\\
+{\footnotesize \textsuperscript{*}N....}
 \thanks{Identify applicable funding agency here. If none, delete this.}
 }
 
-\author{\IEEEauthorblockN{1\textsuperscript{st} Richard V. Yantas Alcantara}
-\IEEEauthorblockA{\textit{Dept. Computer Science } \\
-\textit{Catholic University San Sablo}\\
-Arequipa, Peru \\
-richardyantas5@gmail.com}
-\and
-\IEEEauthorblockN{2\textsuperscript{nd} Marco Muniz}
-\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
-\textit{name of organization (of Aff.)}\\
-City, Country \\
-email address}
-\and
-\IEEEauthorblockN{3\textsuperscript{rd} Given Name Surname}
-\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
-\textit{name of organization (of Aff.)}\\
-City, Country \\
-email address}
-}
 
 \maketitle
 
 \begin{abstract}
-    Hybrid systems are commonly used in engineering 
-applications. Hybrid systems have been used to model several
-cyber-physical systems. In spite of having many attemptings in order
-to optimize hybrid systems from the continuos side, we propose a method which
-provide safety and optimal behaviours from the continus and discrete behaviour
-in hybrid systems. As a result 
+    Stochastic hybrid systems allow to model the interaction between continuos dynamics,
+discrete dynamics and probabilistic uncertainty. Because of their versatility,
+stochastic hybrid systems have emerged as a powerful framework for capturing 
+the intricacies of complex systems. Motivated by this, considerable research effort 
+has been devoted to the development of modeling analysis and control 
+methods for stochastic hybrid systems. 
 % Goals, results.
 
 \end{abstract}
@@ -64,13 +45,15 @@ importance has grown up considerably these last years, because of their
 ease of implementation for controlling cyber-physical systems.
 A switched systems is a set of dynamical systems, each with its own 
 dynamical behaviour controlled by a parameter mode $u$ whose values 
-are in a finite set. However, due to the composition of many switched systems together, the global switched systems has a number of modes and dynamics which increases exponentially. 
-Switched systems have numerous applications in control of mechanical systems, the automotive industry, and many other fields. 
+are in a finite set. However, due to the composition of many switched 
+systems together, the global switched systems has a number of modes 
+and dynamics which increases exponentially. Switched systems have 
+numerous applications in control of mechanical systems, the automotive
+ industry, and many other fields. 
 \cite{larsen2016online}.
 
-\section{Safety Hybrid Systems}
 
-
+\section{Hybrid Systems}
 In this part is presented a method based on correction by design of
  discrete linear switched system in the time. the method consist of 
  given a objective region \emph{R} of state space, the method built 
@@ -80,6 +63,10 @@ In this part is presented a method based on correction by design of
  a stability control that is keep inside of R, whole states start in
   \emph{R}.
 
+\subsection{Sthocastic Hybrid Systems Modeling}
+
+
+\subsection{Sthocastic Hybrid Systems Safety Definitions}
 
   \textbf{Problem 1}\emph{(Control Synthesis Problem)}. Let us 
 consider a sampled Hybrid System. Given three sets R,S and B, 
@@ -96,10 +83,8 @@ rule ${\sigma(.)}$ such that, for any ${x(0) \in R }$.
 
 
  \textbf{Problem 2} \emph{((R,S) - Stability Problem)}. Given a 
- switched system as shown in figure before, a set of recurrence 
- ${\mathbb{R}^n}$ and a safe set \emph{S}
- 
- ${\subset \mathbb{R}^n}$,find a control rule 
+ switched system, a set of recurrence 
+ ${\mathbb{R}^n}$ and a safe set \emph{S} ${\subset \mathbb{R}^n}$,find a control rule 
  ${\sigma : \mathbb{R}^+ \rightarrow U}$ such that, for any
   initial condition ${x_0  \in  R_1}$ and any perturbation 
   ${\varpi :\mathbb{R}^+\rightarrow U}$  the
@@ -136,70 +121,64 @@ ${x_0  \in  R_1}$ and any perturbation  ${\varpi : \mathbb{R}^+
 \end{itemize}
 
 
-
-\subsection{Maintaining the Integrity of the Specifications}
-
-The IEEEtran class file is used to format your paper and style the text. All margins, 
-column widths, line spaces, and text fonts are prescribed; please do not 
-alter them. You may note peculiarities. For example, the head margin
-measures proportionately more than is customary. This measurement 
-and others are deliberate, using specifications that anticipate your paper 
-as one part of the entire proceedings, and not as an independent document. 
-Please do not revise any of the current designations.
-
 \section{Case Study: Solar Water Heating}
 
 
-\subsection{SWH as Sthocastic Hybrid Game}
+\subsection{Solar Water Heating as Sthocastic Hybrid Game}
+
 The hybrid solar water heating scenario with 12 modes of operations is
 defined  like this: $\mathcal{G}_{n,m} = (\mathcal{C,U,X,F},\delta)$, 
 where the controller $\mathcal{C}$ has a finite set of controllable modes,
-given by resistance state ${r \in \mathbb{B}}$ and piston position $p \in 
-\left\lbrace1,2,3\right\rbrace $. The environment $\mathcal{U}$ has a finite  
-set of uncontrollable modes $v \in \mathbb{B} $, that means the valve state 
-for opening/closing water aperture. We assume that $\mathcal{U}$ given
-$\delta$ can switch among modes with equal probability at every period. 
-The state variables in $\mathcal{X}$ are given by $\left\lbrace
-T,E,V \right\rbrace $, container temperature, energy used and container volumen
-respectively.
-
-Given the container temparature and volume, a controllable modes $\textbf{r}  \in \mathbb{B}$
-and $\textbf{p} \in \left\lbrace1,2,3\right\rbrace $ and uncontrollable mode
-$\textbf{v}  \in \mathbb{B} $ and a time delay $\tau$.
+given by resistance state ${r \in \mathbb{B} = \left\lbrace 0,1 \right\rbrace }$ 
+and piston movement $p \in \left\lbrace-1,0,1\right\rbrace $. 
+The environment $\mathcal{U}$ has a finite set of uncontrollable modes
+ $v \in \mathbb{B} $, that means the valve state for opening/closing
+water aperture. We assume that $\mathcal{U}$ given $\delta$ can switch
+among modes with equal probability at every period $\tau$. The state variables
+in $\mathcal{X}_{(t)}$ are given by $\left\lbrace \tcont,\vcont,\energy \right\rbrace $, 
+tank temperature, tank volumen and energy consumption respectively. Also 
+Disturbance effect is considered in the dynamical system such as environment
+temperature, water input temperature and irradiance as a uncontrollable 
+continuos environment variables.
 
 
 \begin{align}
-    \frac{d}{dt}\tcont &=   \frac{1}{\vcont}  \constone(\tenv-\tcont)+ \frac{1}{\vcont} \consttwo\irradiance+ \notag\\  
-    &\qquad + \frac{ \textbf{r} }{\vcont} \constthree \auxheat +  \frac{ \textbf{v} }{\vcont} \constfour(\tin-\tcont)        
+    \frac{d}{dt}\tcont &=   -\frac{1}{\vcont}  \constone(\tcont-\tenv) - 
+    \frac{ \textbf{v} }{\vcont}\consttwo (\tcont-\tin) + \notag\\ &\qquad +
+    \textbf{r} \frac{ \constthree \auxheat  }{\vcont}  + 
+    \frac{ \constfour \irradiance}{\vcont} 
 \label{temperature-equation}
 \end{align}
 
 \begin{equation}
-\frac{d}{dt}\vcont = k .sgn(100 \textbf{p}  - \vcont); \quad
+    \frac{d}{dt}\vcont = -k \textbf{p}; \quad
+% \frac{d}{dt}\vcont = k .sgn(100 \textbf{p}  - \vcont); \quad
 \label{volume-equation}
 \end{equation}
 
 \begin{equation} 
-\frac{d}{dt}E_{used} =  \textbf{r}  \constthree \auxheat ;
+\frac{d}{dt}\energy =  \textbf{r}  \auxheat ;
 \label{Energy-equation}
 \end{equation}
 
 In equation \ref{temperature-equation}. the paremeters,  $\left\lbrace 
 \constone, \consttwo, \constthree, \constfour \right\rbrace $ 
-remains constant on time. In equation \ref{volume-equation}, 
-\emph{sgn} is defined as the sign function and \emph{k} is the piston velocity.
+remains constant in time. In equation \ref{volume-equation}, 
+\emph{k} is the piston velocity.
 
 
+\subsection{Solar Water Heating simulation}\label{AA}
 
 
+....
 
-\subsection{Safety Solar Water Heating}\label{AA}
+
 
 As mention before, safety behaviour consist in guaranty behaviour
 inside of the box as limits of state variables, as a consequence
 we define a pattern as a sequence of operations modes.
 
-\subsection{Units}
+\subsection{Strategy Controller Synthesis}
 \begin{itemize}
 \item Use either SI (MKS) or CGS as primary units. (SI units are encouraged.) English units may be used as secondary units (in parentheses). An exception would be the use of English units as identifiers in trade, such as ``3.5-inch disk drive''.
 \item Avoid combining SI and CGS units, such as current in amperes and magnetic field in oersteds. This often leads to confusion because equations do not balance dimensionally. If you must use mixed units, clearly state the units for each quantity that you use in an equation.
