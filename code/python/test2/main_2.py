@@ -74,11 +74,16 @@ class automaton:
 
         E = s.E + self.tau*a.r*2
         
-        #V = s.V + self.tau*(self.rate_volume_change*a.p)
+        V = s.V + self.tau*(self.rate_volume_change*a.p)
 
-        #V = s.V + self.tau*( -sgn(V+100*a.p) )
+        #V = s.V + self.tau*( -sgn(s.V-100*(a.p+2)) )
+
+        #V = s.V + self.tau*(s.V-100)/1000
+
+        #V = s.V + self.tau*( s.V - 0.1 )*self.rate_volume_change
         
-        V = s.V + self.tau*( -sgn(s.V-100*(a.p+2)) )  # The constraint is added on controller section
+        
+        #V = s.V + self.tau*( -sgn(s.V-100*(a.p+2)) )  # The constraint is added on controller section
 
         # PID V = 0, VD = 0
 
@@ -114,23 +119,6 @@ class automaton:
         v = 0
         return action(p,r,v)
 
-
-    def controller2(self,s):
-
-        if s.T < self.target['Td']:
-            r = 1
-            if s.V <= 0.1:
-                p = 0
-            else:
-                p = -1
-        if s.T > self.target['Td']:
-            r = 0
-            if s.V >= 0.3:
-                p = 0
-            else:
-                p = 1
-
-        v = 0
 
 
         return action(p,r,v)
@@ -288,6 +276,8 @@ print( len(t) , len(data['D']['I']) , len(A.getT()) )
 
 #plt.figure( figsize=(11, 9))
 
+'''
+
 fig, ax1 = plt.subplots()
 color = 'tab:red'
 ax1.set_xlabel('time(s)')
@@ -300,6 +290,9 @@ color = 'tab:blue'
 ax2.set_ylabel('Irradiance', color=color)
 ax2.plot(t,data['D']['I'],color = color)
 ax2.tick_params(axis='y',labelcolor=color)
+
+'''
+
 
 
 #plt.plot(t, data['D']['Te'],label='Te')
