@@ -8,4 +8,11 @@ Kim~G Larsen, Marius Miku{\v{c}}ionis, Marco Muniz, Ji{\v{r}}{\'\i} Srba, and
 \newblock In {\em International Conference on Tools and Algorithms for the
   Construction and Analysis of Systems}, pages 244--259. Springer, 2016.
 
+\bibitem{le2017improved}
+Adrien Le~Co{\"e}nt, Julien~Alexandre dit Sandretto, Alexandre Chapoutot, and
+  Laurent Fribourg.
+\newblock An improved algorithm for the control synthesis of nonlinear sampled
+  switched systems.
+\newblock {\em Formal Methods in System Design}, pages 1--21, 2017.
+
 \end{thebibliography}
