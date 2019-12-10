@@ -15,8 +15,11 @@ using namespace ibex;
 
 int main()
 {
-	SolarWaterHeating();
-	plt::xlim(0, 10*10);
+	//SolarWaterHeating();
+	
+	findPatternsForSolarWaterHeating();
+
+	//plt::xlim(0, 10*10);
 	return 0;
 }
 

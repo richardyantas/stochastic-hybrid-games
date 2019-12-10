@@ -71,23 +71,22 @@ class automaton:
         if a.p == 1:
             is_expand = 1     # Merge
 
-
         E = s.E + self.tau*a.r*2
-        
-        V = s.V + self.tau*(self.rate_volume_change*a.p)
-
-        #V = s.V + self.tau*( -sgn(s.V-100*(a.p+2)) )
-
-        #V = s.V + self.tau*(s.V-100)/1000
-
-        #V = s.V + self.tau*( s.V - 0.1 )*self.rate_volume_change
-        
-        
-        #V = s.V + self.tau*( -sgn(s.V-100*(a.p+2)) )  # The constraint is added on controller section
-
-        # PID V = 0, VD = 0
+        #V = s.V + self.tau*(self.rate_volume_change*a.p)
+        V = s.V + self.tau*0.001*( 0.1*(a.p+2) -s.V )
 
 
+
+        T = s.T + (1/V)*self.tau*( -2.8811059759131854e-06*(s.T-self.d['Te'][i]) -
+                    
+                    a.v*9.34673995175876e-05*(s.T-self.d['Ti'][i]) -
+                    
+                    is_expand*9.34673995175876e-05*(s.T-self.d['Ti'][i]) +
+                    
+                    8.403225763080125e-07*self.d['I'][i]+a.r*0.00048018432931886426                                    
+                                   )
+
+        '''
         T = s.T + (1/(4165.0672*V))*self.tau*( -12*0.001*(s.T-self.d['Te'][i]) -
                     
                     a.v*4.186*0.093*(s.T-self.d['Ti'][i]) -
@@ -96,6 +95,10 @@ class automaton:
                     
                     0.001*3.5*self.d['I'][i]+a.r*2                                    
                                    )
+        '''
+        
+
+
 
         return state(s.t+tau,V,T,E)
 
@@ -120,13 +123,11 @@ class automaton:
         return action(p,r,v)
 
 
-
-        return action(p,r,v)
-
     def simulation(self):
         s = self.si        
         for i in range(0,self.num-1):
             a = action()
+            
             if i%3 == 0:
                 a = self.controller(s)
 
@@ -210,13 +211,11 @@ t_  = np.linspace(0,Horizont,num_+1)
 T_e = dataRead['Temperature'].values.tolist()[0:num_+1]
 I_  = dataRead['GTI'].values.tolist()[0:num_+1]
 v_  = valveRead['Flow'].values.tolist()[0:num_+1] 
-#v   =  
 
 print(len(t_))
 print(len(I_))
 print(len(v_))
 
-print(v_ )
 
 tau = 60
 num = Horizont/tau
@@ -225,18 +224,6 @@ Te  = np.interp(t,t_,T_e)
 I   = np.interp(t,t_,I_)
 v   = np.interp(t,t_ ,v_)
 Ti  = np.ones(num+1)*15
-
-# va   = np.zeros(num+1)
-
-'''
-def set(t1,t2,f): # Hours
-    a = t1*3600/tau
-    b = t2*3600/tau
-    for i in range(0,num):
-        if( a < i and i < b ):
-            va[i] = f
-'''
-
 
 
 print(len(Ti))
@@ -276,7 +263,7 @@ print( len(t) , len(data['D']['I']) , len(A.getT()) )
 
 #plt.figure( figsize=(11, 9))
 
-'''
+
 
 fig, ax1 = plt.subplots()
 color = 'tab:red'
@@ -291,7 +278,6 @@ ax2.set_ylabel('Irradiance', color=color)
 ax2.plot(t,data['D']['I'],color = color)
 ax2.tick_params(axis='y',labelcolor=color)
 
-'''
 
 
 
@@ -299,8 +285,6 @@ ax2.tick_params(axis='y',labelcolor=color)
 #plt.ylabel('Te(Celsius)')
 #plt.xlabel('time(hrs)')
 #plt.legend()
-
-
 
 
 plt.figure( figsize=(11, 11))

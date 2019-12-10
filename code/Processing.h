@@ -21,6 +21,34 @@
 using namespace ibex;
 using namespace GraphicsUtils;
 
+void tube2( IntervalVector initialState ,Variable State, vector<Function *> mathModes, double period, double rate)
+{
+
+    for(int k=0;k<mathModes.size();k++)
+    {
+        ivp_ode  mode = ivp_ode(*(mathModes[k]), 0.0, initialState);
+        simulation run = simulation(&mode, period, HEUN, 1e-5);
+
+        run.run_simulation();
+        plotBox(initialState, "black");
+        for(int i=1;i<period;i+=rate)
+        {
+            cout << run.get_tight(i) << endl;
+            plotBox( run.get_tight(i), "-r");                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+        }
+
+        initialState = run.get_tight(period); 
+    }
+
+    plt::xlim( 0.0, 100.0);
+    plt::ylim( 120.0, 200.0);  
+    plt::xlabel("Temp");
+    plt::ylabel("Vol");
+    plt::grid(true);
+    plt::show();
+}
+
+
 
 void tube( IntervalVector initialState ,Variable State, vector<Function> mathModes, double period, double rate)
 {
@@ -60,28 +88,54 @@ void SolarWaterHeating()
     W[1] = Interval(0,300);
 
     Interval Ti(20, 40); // It include valve mode = OFF and ON
-    Interval Te(25, 45);
-    Interval I(5, 3000);
+    Interval Te(5, 25);
+    Interval I(0, 800);
 
-    Interval zero(0.1,0.0);
-    Interval one(1.0,1.1);
-    Interval none(-1.1,-1.0);
-
-    double period = 20; // not works with 100
+    double period = 15*60; // not works with 100
 
     IntervalVector x0(2);        
     x0[0] = Interval(23.0, 23.2);
     x0[1] = Interval(130.0, 130.2);   // Initial Volumen
 
-    Function m1 = Function(x, Return( 0.000030526755852842805*(x[0]-Te) + 
-    0.000004777830864787386*I + 0.004777830864787387 , one  ) );
+    //Function m1 = Function(x, Return( 0.000030526755852842805*(x[0]-Te) + 
+    //0.000004777830864787386*I + 0.004777830864787387 , one  ) );
+    // Only is considered dx/dt = a*x + ...  (a, .. )
 
-    Function m2 = Function(x, Return( one , none ) );
+    //0*9.34673995175876e-05*(x[0]-Ti)/x[1]
+
+    Function m01 = Function(x, Return( -2.8811059759131854e-06*(x[0]-Te)/x[1] + 
+    8.403225763080125e-07*I/x[1] + 
+    0.00048018432931886426/x[1], 0.001*(0.1-x[1]) ) );
+
+    Function m02 = Function(x, Return( -2.8811059759131854e-06*(x[0]-Te)/x[1] + 
+     8.403225763080125e-07*I/x[1] + 
+    0.00048018432931886426/x[1], 0.001*(0.2-x[1]) ) );
+
+    Function m03 = Function(x, Return( -2.8811059759131854e-06*(x[0]-Te)/x[1] + 
+    8.403225763080125e-07*I/x[1] + 
+    0.00048018432931886426/x[1], 0.001*(0.3-x[1]) ) );
+
+    Function m04 = Function(x, Return( -2.8811059759131854e-06*(x[0]-Te)/x[1] + 
+    8.403225763080125e-07*I/x[1], 
+    0.001*(0.1-x[1]) ) );
+
+    Function m05 = Function(x, Return( -2.8811059759131854e-06*(x[0]-Te)/x[1] + 
+    8.403225763080125e-07*I/x[1], 
+    0.001*(0.2-x[1]) ) );
+
+    Function m06 = Function(x, Return( -2.8811059759131854e-06*(x[0]-Te)/x[1] + 
+    8.403225763080125e-07*I/x[1], 
+    0.001*(0.3-x[1]) ) );
 
 
     vector<Function> mathmodes;
-    mathmodes.push_back(m1);
-    mathmodes.push_back(m2);
+
+    mathmodes.push_back(m01);
+	mathmodes.push_back(m02);
+    mathmodes.push_back(m03);
+    mathmodes.push_back(m04);
+    mathmodes.push_back(m05);
+    mathmodes.push_back(m06);
     
     tube(x0,x,mathmodes,period,5);            
 }
@@ -90,13 +144,70 @@ void SolarWaterHeating()
 void findPatternsForSolarWaterHeating()
 {
     
+
+    Variable x(2);
+
+    Interval Ti(20, 40); // It include valve mode = OFF and ON
+    Interval Te(25, 45);
+    Interval I(5, 3000);
+
+    IntervalVector x0(2);        
+    x0[0] = Interval(23.0, 23.2);
+    x0[1] = Interval(0.1, 0.12);   // Initial Volumen
+
+    /*
+        T = s.T + (1/(4165.0672*V))*self.tau*( -12*0.001*(s.T-self.d['Te'][i]) -
+                    a.v*4.186*0.093*(s.T-self.d['Ti'][i]) -
+                    is_expand*4.186*0.093*(s.T-self.d['Ti'][i]) +
+                    0.001*3.5*self.d['I'][i]+a.r*2    
+    */
+    // 12*0.001/4165.0672  -> Te
+    // 8.403225763080125e-07 -> I
+    //  -> Ti
+
+    Function m01 = Function(x, Return( -2.8811059759131854e-06*(x[0]-Te)/x[1] + 
+    8.403225763080125e-07*I/x[1] + 
+    0.00048018432931886426/x[1], 0.001*(0.1-x[1]) ) );
+
+    Function m02 = Function(x, Return( -2.8811059759131854e-06*(x[0]-Te)/x[1] + 
+     8.403225763080125e-07*I/x[1] + 
+    0.00048018432931886426/x[1], 0.001*(0.2-x[1]) ) );
+
+    Function m03 = Function(x, Return( -2.8811059759131854e-06*(x[0]-Te)/x[1] + 
+    8.403225763080125e-07*I/x[1] + 
+    0.00048018432931886426/x[1], 0.001*(0.3-x[1]) ) );
+
+    Function m04 = Function(x, Return( -2.8811059759131854e-06*(x[0]-Te)/x[1] + 
+    8.403225763080125e-07*I/x[1], 
+    0.001*(0.1-x[1]) ) );
+
+    Function m05 = Function(x, Return( -2.8811059759131854e-06*(x[0]-Te)/x[1] + 
+    8.403225763080125e-07*I/x[1], 
+    0.001*(0.2-x[1]) ) );
+
+    Function m06 = Function(x, Return( -2.8811059759131854e-06*(x[0]-Te)/x[1] + 
+    8.403225763080125e-07*I/x[1], 
+    0.001*(0.3-x[1]) ) );
+
+
+
+
 	sampledSwitchedSystem sys;
 
-	sys.period = 25;
-	//sys.dynamics.push_back(&m01);
-	//sys.dynamics.push_back(&m02);
+	sys.period = 60*15;
+	
+    sys.dynamics.push_back(&m01);
+	sys.dynamics.push_back(&m02);
+    sys.dynamics.push_back(&m03);
+    sys.dynamics.push_back(&m04);
+    sys.dynamics.push_back(&m05);
+    sys.dynamics.push_back(&m06);
 
-    sys.nb_dynamics = 12;
+    sys.nb_dynamics = 6;
+
+    
+    //tube2(x0,x,sys.dynamics,sys.period,5);  
+    //plt::xlim(0, 10*10);
 
 
     IntervalVector R(3); // Objectif

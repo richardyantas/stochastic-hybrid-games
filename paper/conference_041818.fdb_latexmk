@@ -1,16 +1,16 @@
 # Fdb version 3
-["bibtex conference_041818"] 1575141492 "conference_041818.aux" "conference_041818.bbl" "conference_041818" 1575141492
+["bibtex conference_041818"] 1575141492 "conference_041818.aux" "conference_041818.bbl" "conference_041818" 1575749996
   "/usr/share/texlive/texmf-dist/bibtex/bst/base/plain.bst" 1480098433 20613 bd3fbfa9f64872b81ac57a0dd2ed855f ""
-  "conference_041818.aux" 1575141492 2742 61544e69c8b8b0e3322eadb704dfef32 ""
+  "conference_041818.aux" 1575749996 2742 61544e69c8b8b0e3322eadb704dfef32 ""
   "conference_041818.bcf" 0 -1 0 ""
   "mybib.bib" 1561308304 1285 ffbe5cdfc6ee5c8745acdcf4601f71df ""
   (generated)
-  "conference_041818.blg"
   "conference_041818.bbl"
-["pdflatex"] 1575141492 "/home/richard/Documents/ucsp-solar/paper/conference_041818.tex" "/home/richard/Documents/ucsp-solar/paper/conference_041818.pdf" "conference_041818" 1575141492
+  "conference_041818.blg"
+["pdflatex"] 1575749996 "/home/richard/Documents/ucsp-solar/paper/conference_041818.tex" "/home/richard/Documents/ucsp-solar/paper/conference_041818.pdf" "conference_041818" 1575749996
   "/etc/texmf/web2c/texmf.cnf" 1567881411 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/richard/Documents/ucsp-solar/paper/conference_041818.aux" 1575141492 2742 61544e69c8b8b0e3322eadb704dfef32 ""
-  "/home/richard/Documents/ucsp-solar/paper/conference_041818.tex" 1575141491 11378 1d24d7cdede9169d7247f61cc4c5f22f ""
+  "/home/richard/Documents/ucsp-solar/paper/conference_041818.aux" 1575749996 2742 61544e69c8b8b0e3322eadb704dfef32 ""
+  "/home/richard/Documents/ucsp-solar/paper/conference_041818.tex" 1575749995 11395 7a4a242f7b7d2bce882df8dba8fef741 ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc" 1480098666 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1511824771 3332 103109f5612ad95229751940c61aada0 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/times/ptmb7t.tfm" 1480098689 2172 fd0c924230362ff848a33632ed45dc23 ""
@@ -107,13 +107,13 @@
   "5.png" 1574805690 17061 a86ba8946d208d1b3faa38a841d542f4 ""
   "7.png" 1574888741 42128 267bc92cace9bc283229a242b7e991f9 ""
   "IEEEtran.cls" 1515740926 281957 5b2e4fa15b0f7eabb840ebf67df4c0f7 ""
-  "conference_041818.aux" 1575141492 2742 61544e69c8b8b0e3322eadb704dfef32 ""
+  "conference_041818.aux" 1575749996 2742 61544e69c8b8b0e3322eadb704dfef32 ""
   "conference_041818.bbl" 1575141492 716 5b5e87a6d91a670124d099bd7166e4f5 "bibtex conference_041818"
-  "conference_041818.tex" 1575141491 11378 1d24d7cdede9169d7247f61cc4c5f22f ""
+  "conference_041818.tex" 1575749995 11395 7a4a242f7b7d2bce882df8dba8fef741 ""
   "macro.sty" 1574192704 1389 0798a7df4a75973fb746129b49c36bef ""
   (generated)
-  "/home/richard/Documents/ucsp-solar/paper/conference_041818.pdf"
-  "/home/richard/Documents/ucsp-solar/paper/conference_041818.log"
   "conference_041818.log"
+  "/home/richard/Documents/ucsp-solar/paper/conference_041818.log"
   "conference_041818.aux"
+  "/home/richard/Documents/ucsp-solar/paper/conference_041818.pdf"
   "conference_041818.pdf"
