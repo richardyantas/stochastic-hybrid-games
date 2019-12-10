@@ -1,4 +1,4 @@
-#include <ibex.h>
+#include <ibex/ibex.h>
 
 #include <vector>
 #include <queue>
@@ -11,8 +11,8 @@
 // Macro variables to set the values of the maximal length of a
 // pattern (NB_K) and the maximal number of splittings of the
 // state-space (NB_D)
-#define NB_K 1  // 3
-#define NB_D 10 // 20
+#define NB_K 3  // 3
+#define NB_D 20 // 20
 
 using namespace ibex;
 
@@ -97,23 +97,26 @@ bool findPattern (const sampledSwitchedSystem& sys, const IntervalVector W,
 	std::cerr << "\tINIT = " << W << std::endl;
 	for (unsigned int i = 1; i <= k; i++) 
 	{
-	std::vector<int> pattern(i, 0);
-	do {
-		std::vector<int>::const_iterator it = pattern.begin();
-		std::cerr << "\tPATTERN = (";
-		for (; it != pattern.end(); it++) {
-			std::cerr << *it << " " ;
-		}
-		std::cerr << ")" << std::endl;
-		IntervalVector res = post(sys, W, pattern);
-		std::cerr << "Post(" << W << ") = " << res << " AND R = " << R << std::endl;
-		if (res.is_subset(R) && constraint(sys,W,B,S,pattern))
-		{
-			std::cerr << "\tPATTERN FOUND !!!" << std::endl;
-			res_pattern = pattern;
-			return true;
-		}
-	} while (nextPattern(pattern));
+		std::vector<int> pattern(i, 0);
+		do {
+			std::vector<int>::const_iterator it = pattern.begin();
+			std::cerr << "\tPATTERN = (";
+			for (; it != pattern.end(); it++) {
+				std::cerr << *it << " " ;
+			}
+			std::cerr << ")" << std::endl;
+			IntervalVector res = post(sys, W, pattern);
+			std::cerr << "Post(" << W << ") = " << res << " AND R = " << R << std::endl;
+			
+			if (res.is_subset(R) && constraint(sys,W,B,S,pattern))
+			{
+				std::cerr << "\tPATTERN FOUND !!!" << std::endl;
+				res_pattern = pattern;
+				return true;
+			}
+		} while (nextPattern(pattern));
+
+		
 	}
 	return false;
 }
@@ -217,11 +220,12 @@ bool decompose (const sampledSwitchedSystem& sys, const IntervalVector W,
 	q.push (W);
 
 	unsigned int nbStep = d;
-
+	
 	while (!q.empty() && nbStep > 0) {
 		IntervalVector current = q.front ();
 		q.pop();
 		bool flag = findPattern (sys, current, R, B, S, k, res_pattern);
+		
 		if (flag) {
 			// Validated result, we keep it in the vector of results
 			result.push_back (std::pair< IntervalVector, std::vector<int> > (current, res_pattern));
@@ -236,8 +240,9 @@ bool decompose (const sampledSwitchedSystem& sys, const IntervalVector W,
 			nbStep--;
 				//}
 		}
+		
 	}
-
+	
 	if (nbStep <= 0)
 	{
 		return false;
@@ -250,15 +255,15 @@ bool decompose (const sampledSwitchedSystem& sys, const IntervalVector W,
 
 int main(){
 
-
-	Variable x(2);
+	const int n = 2;
+	Variable x(n);
     //IntervalVector W(2);
     //W[0] = Interval(40,100);
     //W[1] = Interval(0,300);
 
     //Interval Ti(20, 40); // It include valve mode = OFF and ON
-    Interval Te(0, 30);
-    Interval I(0, 850);
+    Interval Te(0.0, 40.0);
+    Interval I (0.0, 900.0);
 
     //double period = 15*60; // not works with 100
 
@@ -266,51 +271,29 @@ int main(){
     x0[0] = Interval(23.0, 23.2);
     x0[1] = Interval(0.1, 0.13);   // Initial Volumen
 
-	Function m1 = Function(x, Return( -2.8811059759131854e-06*(x[0]-Te)/x[1] + 
-	8.403225763080125e-07*I/x[1] + 
-	0.00048018432931886426/x[1], 0.001*(0.1-x[1]) ) );
+	Function m1 = Function(x, Return( -2.8811059759131854e-06*(x[0]-Te)/x[1] + 8.403225763080125e-07*I/x[1] + 0.00048018432931886426/x[1], 0.001*(0.1-x[1]) ) );
+	Function m2 = Function(x, Return( -2.8811059759131854e-06*(x[0]-Te)/x[1] + 8.403225763080125e-07*I/x[1] + 0.00048018432931886426/x[1], 0.001*(0.2-x[1]) ) );
+	Function m3 = Function(x, Return( -2.8811059759131854e-06*(x[0]-Te)/x[1] + 8.403225763080125e-07*I/x[1] + 0.00048018432931886426/x[1], 0.001*(0.3-x[1]) ) );
+	Function m4 = Function(x, Return( -2.8811059759131854e-06*(x[0]-Te)/x[1] + 8.403225763080125e-07*I/x[1], 0.001*(0.1-x[1]) ) );
+	Function m5 = Function(x, Return( -2.8811059759131854e-06*(x[0]-Te)/x[1] + 8.403225763080125e-07*I/x[1], 0.001*(0.2-x[1]) ) );
+	Function m6 = Function(x, Return( -2.8811059759131854e-06*(x[0]-Te)/x[1] + 8.403225763080125e-07*I/x[1], 0.001*(0.3-x[1]) ) );
 
-/*
-	Function m2 = Function(x, Return( -2.8811059759131854e-06*(x[0]-Te)/x[1] + 
-		8.403225763080125e-07*I/x[1] + 
-	0.00048018432931886426/x[1], 0.001*(0.2-x[1]) ) );
-
-	Function m3 = Function(x, Return( -2.8811059759131854e-06*(x[0]-Te)/x[1] + 
-	8.403225763080125e-07*I/x[1] + 
-	0.00048018432931886426/x[1], 0.001*(0.3-x[1]) ) );
-
-	Function m4 = Function(x, Return( -2.8811059759131854e-06*(x[0]-Te)/x[1] + 
-	8.403225763080125e-07*I/x[1], 
-	0.001*(0.1-x[1]) ) );
-
-	Function m5 = Function(x, Return( -2.8811059759131854e-06*(x[0]-Te)/x[1] + 
-	8.403225763080125e-07*I/x[1], 
-	0.001*(0.2-x[1]) ) );
-
-	Function m6 = Function(x, Return( -2.8811059759131854e-06*(x[0]-Te)/x[1] + 
-	8.403225763080125e-07*I/x[1], 
-	0.001*(0.3-x[1]) ) );
-*/
 
 	sampledSwitchedSystem sys;
 
-	sys.period = 15*60; 
+	sys.period = 15*60; // Defined: 5 minutes 
 	sys.dynamics.push_back(&m1);
-
-	/*
-
 	sys.dynamics.push_back(&m2);
 	sys.dynamics.push_back(&m3);
 	sys.dynamics.push_back(&m4);
 	sys.dynamics.push_back(&m5);
 	sys.dynamics.push_back(&m6);
-	
-	*/
 
-	sys.nb_dynamics = 1;
+
+	sys.nb_dynamics = 6;
 
 	IntervalVector R(2);           // Objectif
-	R[0] = Interval(20,40); // (20,22)
+	R[0] = Interval(40,80); // (20,22)
 	R[1] = Interval(0.1,0.3); // (20,22) 
 	//R[2] = Interval(20,22);
 	//R[3] = Interval(20,22);
@@ -338,33 +321,37 @@ int main(){
 	#ifdef DECOMPOSE
 
 	IntervalVector W(2);              // ensemble de depart
-	W[0]= Interval(25,30);  // (20,22)
+	W[0]= Interval(40,80);  // (20,22)
 	W[1]= Interval(0.1,0.3);  // (20,22)
 	//W[2]= Interval(20,22);
 	//W[3]= Interval(20,22);
 
 	IntervalVector B(2);               // zone interdite
-	B[0] = Interval(10,20); //0.0,1.0
-	B[1] = Interval(0.0,0.1); // 0.0,1.0
+	B[0] = Interval(0.0,1.0); //0.0,1.0
+	B[1] = Interval(0.0,0.01); // 0.0,1.0
 	//B[2] = Interval(0.0,1.0);
 	//B[3] = Interval(0.0,1.0);
 
 	IntervalVector S(2);
-	S[0] = Interval(0,80);
-	S[1] = Interval(0.1,0.3);
+	S[0] = Interval(0,100);
+	S[1] = Interval(0.0,0.3);
 	//S[2] = Interval(19,23);
 	//S[3] = Interval(19,23);
 
-
+	
 
 	std::list<IntervalVector> list_W;
 	list_W.push_back(W);
+
+
+	//IntervalVector current_W = list_W.front();
+	cout << "current_W.diam().max(): "<< list_W.front().diam().max() << endl;
 
 	//file for solutions
 	std::ofstream file("./result_solar_water_heating.txt", std::ios::out | std::ios::trunc);
 
 	while(!list_W.empty())
-	{
+	{	
 	IntervalVector current_W = list_W.front();
 	list_W.pop_front();
 
@@ -378,19 +365,25 @@ int main(){
 		continue;
 	}
 
-
+	
+	
 	std::cout << "taille list_W : " << list_W.size() << std::endl;
 
 	std::vector< std::pair<IntervalVector, std::vector<int> > > result;
 	unsigned int k = NB_K;
 	unsigned int d = NB_D;
 
+
 	bool flag = decompose(sys, current_W, R, B, S, k, d, result);
+	
 
 	if (result.empty())
 	{
+		
 		std::cerr << "No solution with k = " << k << " and d = " << d << std::endl;
 		file << current_W << " : no sol" << std::endl;
+
+		
 	}
 	else 
 	{
@@ -416,6 +409,8 @@ int main(){
 		file << "]; \n endif" << std::endl;
 		}
 	}
+	
+
 	}
 	file.close();
 
