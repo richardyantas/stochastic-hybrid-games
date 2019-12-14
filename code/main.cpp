@@ -33,13 +33,19 @@ typedef struct {
 // Post operator
 IntervalVector post(const sampledSwitchedSystem& sys, const IntervalVector W,
 		const std::vector<int> pattern) {
-
+	
+	
 	Affine2Vector y0 = Affine2Vector(W);
 
 	std::vector<int>::const_iterator it = pattern.begin();
+
+	
 	for (; it != pattern.end(); it++)
-	{
+	{	
+		cout << "." << endl;
+		cout << *(sys.dynamics[*it]) << endl; 
 		ivp_ode mode = ivp_ode(*(sys.dynamics[*it]), 0.0, y0);
+		
 		simulation simu = simulation(&mode, sys.period, HEUN, 1e-5);
 		simu.run_simulation();
 		y0=*(simu.list_solution_j.back().box_jnh_aff);
@@ -50,10 +56,11 @@ IntervalVector post(const sampledSwitchedSystem& sys, const IntervalVector W,
 // A process to compute the successor of binary word of a given length 
 bool nextPattern(std::vector<int>& pattern)
 {
+	
 	for (int i = pattern.size() - 1; i >= 0; i-- )
 	{
 		pattern[i] += 1 ;
-		if ( pattern[i] > 15 )
+		if ( pattern[i] > 5 )  // 1 1 1 1 = 15  ! important
 		{
 			pattern[i] = 0 ;
 			continue ;
@@ -66,8 +73,10 @@ bool nextPattern(std::vector<int>& pattern)
 // Unfolding verifies constraint crossing
 bool constraint(const sampledSwitchedSystem& sys, const IntervalVector W, const IntervalVector B,
 	const IntervalVector S, const std::vector<int> pattern) {
-
+	cout << ".*********************************" << endl;
 	Affine2Vector y1 = Affine2Vector(W);
+
+	
 
 	std::vector<int>::const_iterator it = pattern.begin();
 	for (; it != pattern.end(); it++) {
@@ -105,9 +114,13 @@ bool findPattern (const sampledSwitchedSystem& sys, const IntervalVector W,
 				std::cerr << *it << " " ;
 			}
 			std::cerr << ")" << std::endl;
-			IntervalVector res = post(sys, W, pattern);
-			std::cerr << "Post(" << W << ") = " << res << " AND R = " << R << std::endl;
+
 			
+			IntervalVector res = post(sys, W, pattern);
+			std::cerr << "Post(" << W << ") = " << res << " AND R = " << R << std::endl;			
+			//cout << "pattern size: " << pattern.size() << endl;
+			
+
 			if (res.is_subset(R) && constraint(sys,W,B,S,pattern))
 			{
 				std::cerr << "\tPATTERN FOUND !!!" << std::endl;
@@ -126,84 +139,86 @@ bool findPattern (const sampledSwitchedSystem& sys, const IntervalVector W,
 bool findPattern2 (const sampledSwitchedSystem& sys, const IntervalVector W,
 		const IntervalVector R, const IntervalVector B,
 		const IntervalVector S, unsigned int k,
-		std::vector<int>&  res_pattern) {
-
-node node_init;
-node_init.Yinit = new IntervalVector(W);
-node_init.Ycurrent = new Affine2Vector(W,true);
-node_init.pattern = std::vector<int>();
-
-std::list<node> list_node;
-std::list <std::pair <IntervalVector,std::vector<int> > > list_sol;
-
-list_node.push_back(node_init);
-
-int nb_pattern = sys.nb_dynamics;
-
-while(!list_node.empty())
-{   
-//std::cout << "size of list : " << list_node.size() << std::endl; 
-node node_current = list_node.front();
-list_node.pop_front();
-
-for (int i=0; i < nb_pattern; i++)
-{  
-	if (node_current.pattern.empty())
-std::cout << "current pattern : " << i << std::endl;
-	else
-std::cout << "current pattern : " << node_current.pattern << " + " << i << std::endl;
-	
-	ivp_ode mode = ivp_ode(*(sys.dynamics[i]), 0.0, *node_current.Ycurrent);
-	simulation simu = simulation(&mode, sys.period, HEUN, 1e-5);
-	simu.run_simulation();
-		
-	bool fin_R = simu.finished_in(R);
-	bool stay_S = simu.stayed_in(S);
-	bool cross_B = simu.has_crossed(B);
-	bool out_S = simu.go_out(S);
-	bool fin_B = simu.finished_in(B);
-	
-	if (fin_R && stay_S && !cross_B)
-	{
-std::cout << "sol found !" << std::endl;
-node_current.pattern.push_back(i);
-
-res_pattern = node_current.pattern;
-
-return true;
-	}
-	else 
-	{
-if (out_S || fin_B) //not only the last may be in obstacles...
+		std::vector<int>&  res_pattern)
 {
-	std::cout << "Wrong direction !" << std::endl;
-	//nop
-}
-else 
-{
-	if (stay_S && !cross_B)
-	{
-	if (node_current.pattern.size()+1 < k)
-	{
-		std::cout << "Increment of pattern !" << std::endl;	      
 
-		node new_node;
-		new_node.Yinit = new IntervalVector(*node_current.Yinit);
-		new_node.Ycurrent = new Affine2Vector(simu.get_last());
-		
-		std::vector<int> new_pattern (node_current.pattern);
-		new_pattern.push_back(i);
-		new_node.pattern = new_pattern;
-		list_node.push_back(new_node);	      
+	node node_init;
+	node_init.Yinit = new IntervalVector(W);
+	node_init.Ycurrent = new Affine2Vector(W,true);
+	node_init.pattern = std::vector<int>();
+
+	std::list<node> list_node;
+	std::list <std::pair <IntervalVector,std::vector<int> > > list_sol;
+
+	list_node.push_back(node_init);
+
+	int nb_pattern = sys.nb_dynamics;
+
+	while(!list_node.empty())
+	{   
+		//std::cout << "size of list : " << list_node.size() << std::endl; 
+		node node_current = list_node.front();
+		list_node.pop_front();
+
+		for (int i=0; i < nb_pattern; i++)
+		{  
+			if (node_current.pattern.empty())
+				std::cout << "current pattern : " << i << std::endl;
+			else
+				std::cout << "current pattern : " << node_current.pattern << " + " << i << std::endl;
+			
+			ivp_ode mode = ivp_ode(*(sys.dynamics[i]), 0.0, *node_current.Ycurrent);
+			simulation simu = simulation(&mode, sys.period, HEUN, 1e-5);
+			simu.run_simulation();
+				
+			bool fin_R = simu.finished_in(R);
+			bool stay_S = simu.stayed_in(S);
+			bool cross_B = simu.has_crossed(B);
+			bool out_S = simu.go_out(S);
+			bool fin_B = simu.finished_in(B);
+			
+			if (fin_R && stay_S && !cross_B)
+			{
+				std::cout << "sol found !" << std::endl;
+				node_current.pattern.push_back(i);
+				cout << "." << endl;
+				res_pattern = node_current.pattern;
+
+				return true;
+			}
+			else 
+			{
+				if (out_S || fin_B) //not only the last may be in obstacles...
+				{
+					std::cout << "Wrong direction !" << std::endl;
+					//nop
+				}
+				else 
+				{
+					if (stay_S && !cross_B)
+					{
+						if (node_current.pattern.size()+1 < k)
+						{
+							std::cout << "Increment of pattern !" << std::endl;	      
+
+							node new_node;
+							new_node.Yinit = new IntervalVector(*node_current.Yinit);
+							new_node.Ycurrent = new Affine2Vector(simu.get_last());
+							
+							std::vector<int> new_pattern (node_current.pattern);
+							new_pattern.push_back(i);
+							new_node.pattern = new_pattern;
+							list_node.push_back(new_node);	      
+
+						}
+					}
+				}
+			}
+		}
 
 	}
-	}
-}
-	}
-}
 
-}
-return false;
+	return false;
 }
 
 
@@ -240,9 +255,12 @@ bool decompose (const sampledSwitchedSystem& sys, const IntervalVector W,
 			nbStep--;
 				//}
 		}
+		cout << "*******************" << endl;
 		
 	}
 	
+	cout << "after while of bisection" << endl;
+
 	if (nbStep <= 0)
 	{
 		return false;
@@ -253,7 +271,80 @@ bool decompose (const sampledSwitchedSystem& sys, const IntervalVector W,
 	}
 }
 
+
+
+void foo()
+{
+	const int n = 2;
+	Variable x(n);
+    //IntervalVector W(2);
+    //W[0] = Interval(40,100);
+    //W[1] = Interval(0,300);
+
+    //Interval Ti(20, 40); // It include valve mode = OFF and ON
+    Interval Te(0.0, 40.0);
+    Interval I (0.0, 900.0);
+
+    //double period = 15*60; // not works with 100
+
+    //IntervalVector x0(2);        
+    //x0[0] = Interval(23.0, 23.2);
+    //x0[1] = Interval(1.0, 1.13);   // Initial Volumen
+
+	Function m1 = Function(x, Return( -2.8811059759131854e-06*(x[0]-Te)/x[1] + 8.403225763080125e-07*I/x[1] + 0.00048018432931886426/x[1], 0.001*(0.3-x[1]) ) );
+
+	sampledSwitchedSystem sys;
+
+	sys.period = 15*60; // Defined: 5 minutes 
+	sys.dynamics.push_back(&m1);
+	//sys.dynamics.push_back(&m7);
+
+	sys.nb_dynamics = 1;
+
+	IntervalVector R(2);           // Objectif
+	R[0] = Interval(40,80); // (20,22)
+	R[1] = Interval(0.1,0.3); // (20,22) 
+	//R[2] = Interval(20,22);
+	//R[3] = Interval(20,22);
+
+	IntervalVector W(2);              // ensemble de depart
+	W[0]= Interval(50,60);  // (20,22)
+	W[1]= Interval(0.2,0.25);  // (20,22)
+
+	Affine2Vector y0 = Affine2Vector(W);
+
+	//std::vector<int>::const_iterator it = pattern.begin();
+
+	
+	//for (; it != pattern.end(); it++)
+	//{	
+//		cout << "." << endl;
+//		cout << *(sys.dynamics[*it]) << endl; 
+//		ivp_ode mode = ivp_ode(*(sys.dynamics[*it]), 0.0, y0);
+//		
+//		simulation simu = simulation(&mode, sys.period, HEUN, 1e-5);
+//		simu.run_simulation();
+//		y0=*(simu.list_solution_j.back().box_jnh_aff);
+	//}
+	//return y0.itv();
+	//vector<int> pattern(1,0);
+	//std::vector<int>::const_iterator it = pattern.begin();
+	ivp_ode mode = ivp_ode(*(sys.dynamics[0]), 0.0, y0);
+	simulation simu = simulation(&mode, sys.period, HEUN, 1e-5);
+	simu.run_simulation();
+
+	//cout << W << endl;
+	//cout << y0.itv() << endl;
+	cout << W << "=" <<  y0.itv() << endl; 
+}
+
+
+
 int main(){
+
+	//foo();
+
+
 
 	const int n = 2;
 	Variable x(n);
@@ -269,7 +360,7 @@ int main(){
 
     IntervalVector x0(2);        
     x0[0] = Interval(23.0, 23.2);
-    x0[1] = Interval(0.1, 0.13);   // Initial Volumen
+    x0[1] = Interval(1.0, 1.13);   // Initial Volumen
 
 	Function m1 = Function(x, Return( -2.8811059759131854e-06*(x[0]-Te)/x[1] + 8.403225763080125e-07*I/x[1] + 0.00048018432931886426/x[1], 0.001*(0.1-x[1]) ) );
 	Function m2 = Function(x, Return( -2.8811059759131854e-06*(x[0]-Te)/x[1] + 8.403225763080125e-07*I/x[1] + 0.00048018432931886426/x[1], 0.001*(0.2-x[1]) ) );
@@ -277,7 +368,7 @@ int main(){
 	Function m4 = Function(x, Return( -2.8811059759131854e-06*(x[0]-Te)/x[1] + 8.403225763080125e-07*I/x[1], 0.001*(0.1-x[1]) ) );
 	Function m5 = Function(x, Return( -2.8811059759131854e-06*(x[0]-Te)/x[1] + 8.403225763080125e-07*I/x[1], 0.001*(0.2-x[1]) ) );
 	Function m6 = Function(x, Return( -2.8811059759131854e-06*(x[0]-Te)/x[1] + 8.403225763080125e-07*I/x[1], 0.001*(0.3-x[1]) ) );
-
+	//Function m7 = Function(x, Return( -2.8811059759131854e-06*(x[0]-Te)/x[1] + 8.403225763080125e-07*I/x[1], 0.001*(0.3-x[1]) ) );
 
 	sampledSwitchedSystem sys;
 
@@ -288,6 +379,7 @@ int main(){
 	sys.dynamics.push_back(&m4);
 	sys.dynamics.push_back(&m5);
 	sys.dynamics.push_back(&m6);
+	//sys.dynamics.push_back(&m7);
 
 
 	sys.nb_dynamics = 6;
@@ -321,20 +413,20 @@ int main(){
 	#ifdef DECOMPOSE
 
 	IntervalVector W(2);              // ensemble de depart
-	W[0]= Interval(40,80);  // (20,22)
-	W[1]= Interval(0.1,0.3);  // (20,22)
+	W[0]= Interval(50,60);  // (20,22)
+	W[1]= Interval(0.2,0.25);  // (20,22)
 	//W[2]= Interval(20,22);
 	//W[3]= Interval(20,22);
 
 	IntervalVector B(2);               // zone interdite
-	B[0] = Interval(0.0,1.0); //0.0,1.0
-	B[1] = Interval(0.0,0.01); // 0.0,1.0
+	B[0] = Interval(0.0,10.0); //0.0,1.0
+	B[1] = Interval(0.0,0.1); // 0.0,1.0
 	//B[2] = Interval(0.0,1.0);
 	//B[3] = Interval(0.0,1.0);
 
 	IntervalVector S(2);
 	S[0] = Interval(0,100);
-	S[1] = Interval(0.0,0.3);
+	S[1] = Interval(0.0,0.4);
 	//S[2] = Interval(19,23);
 	//S[3] = Interval(19,23);
 
@@ -416,5 +508,7 @@ int main(){
 
 	#endif
 	return 0;
+
+	
 
 }
