@@ -25,8 +25,8 @@ include_directories(/usr/local/include/ibex)
 #include_directories(/usr/local/dynibex-2.01/include/ibex)
 
 set(HEADERS GraphicsUtils.h Matplotlibcpp.h )
-set(SOURCES main.cpp)
-add_executable(main ${HEADERS} ${SOURCES})
+set(SOURCES test.cpp)
+add_executable(out ${HEADERS} ${SOURCES})
 
-target_include_directories(main PRIVATE ${PYTHON_INCLUDE_DIRS})
-target_link_libraries(main ibex prim ${PYTHON_LIBRARIES})
+target_include_directories(out PRIVATE ${PYTHON_INCLUDE_DIRS})
+target_link_libraries(out ibex prim ${PYTHON_LIBRARIES})

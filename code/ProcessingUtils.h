@@ -38,6 +38,8 @@ IntervalVector post(const sampledSwitchedSystem& sys, const IntervalVector W, co
         simu.run_simulation();
         y0=*(simu.list_solution_j.back().box_jnh_aff);
     }
+    //cout << "  " << endl;
+    //cout << "cale " <<  y0 << endl;
     return y0.itv();
 }
 
@@ -47,7 +49,7 @@ bool nextPattern(std::vector<int>& pattern)
     for (int i=pattern.size()-1; i>=0; i--)
     {
         pattern[i] += 1;
-        if ( pattern[i] > 15 )
+        if ( pattern[i] > 0 )  // The size of m01,m02 .. 
         {
             pattern[i] = 0;
             continue;
@@ -95,7 +97,9 @@ bool findPattern (const sampledSwitchedSystem& sys, const IntervalVector W,const
             }
             std::cerr << ")" << std::endl;
             IntervalVector res = post(sys, W, pattern);
+            cout << res << endl;
             std::cerr << "Post(" << W << ") = " << res << " AND R = " << R << std::endl;
+            cout << "kha" << endl;
             if (res.is_subset(R) && constraint(sys,W,B,S,pattern)){
                 std::cerr << "\tPATTERN FOUND !!!" << std::endl;
                 res_pattern = pattern;
