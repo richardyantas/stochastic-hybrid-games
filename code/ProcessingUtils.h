@@ -27,6 +27,30 @@ class node
 };
 
 
+
+IntervalVector postSolar(const sampledSwitchedSystem& sys, const IntervalVector W, const std::vector<int> pattern)
+{
+    Affine2Vector y0 = Affine2Vector(W);
+    std::vector<int>::const_iterator it = pattern.begin();
+    for (; it != pattern.end(); it++)
+    {
+
+        //T = T + dt*T/V;
+        //V = V + dt*Interval(1.0,1.0);
+
+        // ivp_ode mode = ivp_ode(*(sys.dynamics[*it]), 0.0, y0);
+        // simulation simu = simulation(&mode, sys.period, HEUN, 1e-5);
+        // simu.run_simulation();
+        // y0=*(simu.list_solution_j.back().box_jnh_aff);
+    }
+    //cout << "  " << endl;
+    //cout << "cale " <<  y0 << endl;
+    return y0.itv();
+}
+
+
+
+
 IntervalVector post(const sampledSwitchedSystem& sys, const IntervalVector W, const std::vector<int> pattern)
 {
     Affine2Vector y0 = Affine2Vector(W);

@@ -79,20 +79,151 @@ void tube( IntervalVector initialState ,Variable State, vector<Function> mathMod
 
 
 
+void solver()
+{
+    //IntervalVector x(2);
+    Interval T(1.0,50.0);
+    Interval V(1.0,10.1);
+    Interval Te(0.0, 30.0);
+    Interval I (1.0, 900.0);
+
+    double n = 100000;
+    double dt = 1/n;
+
+    for(int i=1; i<=n; i++)
+    {
+        //T = T - 2.8811059759131854e-06*(T-Te)/V + 8.403225763080125e-07*I;
+        T = T + dt*T/V;
+        V = V + dt*Interval(1.0,1.0);
+        cout << "Time = " << dt*i << " T:" << T << " :V" << V << endl;
+        //V = V + 0.001*( Interval(0.2,0.25) - V);
+        
+    }
+
+    
+    cout << "POST = ( " << T << ", " << V << ")" << endl;  
+}
+
+
+void test()
+{
+
+    double period = 1;//114, 115
+    Variable x(2);
+    IntervalVector W(2);
+    W[0]= Interval(1.0,50.0);
+    W[1]= Interval(1.0,10.1);  // (20,22)
+    //Function m6 = Function(x, Return( Interval(100.0,100.1) -  x[0] , Interval(1.0,1.1) ) );
+    Function m6 = Function(x, Return( x[0]/x[1] , Interval(1.0,1.0) ) );
+    Affine2Vector y0 = Affine2Vector(W);
+
+    //cout << "W:" << W << endl;
+    plotBox(W, "black");
+
+    ivp_ode  mode = ivp_ode(m6, 0.0, y0); // cambios de y0 a W 
+    simulation run = simulation(&mode, period, HEUN, 1e-5);
+    run.run_simulation();
+    y0=*(run.list_solution_j.back().box_jnh_aff);
+
+    
+    
+    for(int i=1;i<period;i+=1)// 5 -> 1
+    {
+        //cout << run.get_tight(i) << endl;
+        plotBox( run.get_tight(i), "-r");                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+    }
+    
+
+    cout << "***************************************** "<< endl;
+    cout << "POST = " <<  y0.itv() << endl;
+    plotBox(y0.itv(), "-r");
+
+    plt::xlim( 0.0, 2000.0);
+    plt::ylim( 0.0, 200.0);  
+    plt::xlabel("Temp");
+    plt::ylabel("Vol");
+    plt::grid(true);
+    plt::show();
+}
+
+
+
+
+void testModel()
+{
+    IntervalVector W(2);              // ensemble de depart
+	//W[0]= Interval(50,55);  // (20,22)
+	W[0]= Interval(20.0,50.1);
+    W[1]= Interval(0.101,0.102);  // (20,22)
+
+    const int n = 2;
+	Variable x(n);
+    Interval Te(0.0, 30.0);
+    Interval I (1.0, 900.0);
+
+    double period = 10; // CAMBIOS,  not works with 100
+    //T = T - 2.8811059759131854e-06*(x[0]-Te)/x[1] + 8.403225763080125e-07*I/x[1], 0.001*(0.2-x[1])
+
+    Function m6 = Function(x, Return( -2.8811059759131854e-06*(x[0]-Te)/x[1] + 
+    8.403225763080125e-07*I ,0.001*( Interval(0.2,0.25) - x[1]) ) ); // 0.2 -> interval(0.2,0.25)
+    // We found the problem x[0] - Te  -> x[0]
+
+    Affine2Vector y0 = Affine2Vector(W);
+
+    cout << "W:" << W << endl;
+    plotBox(W, "black");
+
+    ivp_ode  mode = ivp_ode(m6, 0.0, y0); // cambios de y0 a W
+    simulation run = simulation(&mode, period, HEUN, 1e-6);
+    run.run_simulation();
+    y0=*(run.list_solution_j.back().box_jnh_aff);
+    
+    for(int i=1;i<period;i+=1)// 5 -> 1
+    {
+        //cout << run.get_tight(i) << endl;
+
+        //cout << "EXP  = " << (run.get_tight(i)[0] - Te) << "--" << run.get_tight(i)[1] << endl;
+        //cout << -2.8811059759131854e-06*(run.get_tight(i)[0] - Te)/run.get_tight(i)[1] << endl;
+        //cout << 8.403225763080125e-07*I/run.get_tight(i)[1] << endl;
+        //cout <<  -2.8811059759131854e-06*(run.get_tight(i)[0] - Te)/run.get_tight(i)[1] + 8.403225763080125e-07*I/run.get_tight(i)[1] << endl;
+        //cout << 0.001*( Interval(0.2,0.25) - run.get_tight(i)[1]) << endl;
+        plotBox( run.get_tight(i), "-r");                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+    }
+    
+
+    cout << "POST = " <<  y0.itv() << endl;
+    plotBox(y0.itv(), "-r");
+
+
+    //cout << "EXPERIMENT = " << Interval(-50,-50.1)/Interval(5,5.1) << endl; // EMPTY
+    //cout << "EXPERIMENT = " << Interval(-50,50.1)/Interval(-5,5.1) << endl;  // ENTIRE
+    //cout << "EXPERIMENT = " << Interval(-50,50.1)-Interval(-5,5.1) << endl;  // ENTIRE
+
+    plt::xlim( 0.0, 40.0);
+    plt::ylim( 0.0, 3.0);  
+    plt::xlabel("Temp");
+    plt::ylabel("Vol");
+    plt::grid(true);
+    plt::show();
+
+}
+
+
+
 void SolarWaterHeating()
 {
 
     IntervalVector W(2);              // ensemble de depart
 	//W[0]= Interval(50,55);  // (20,22)
-	W[0]= Interval(23.0,27.7629);
-    W[1]= Interval(1.0,1.53);  // (20,22)
+	W[0]= Interval(23.0,23.7);
+    W[1]= Interval(0.11,0.12);  // (20,22)
 
     const int n = 2;
 	Variable x(n);
     Interval Te(0.0, 40.0);
     Interval I (0.0, 900.0);
 
-    double period = 15*60; // CAMBIOS,  not works with 100
+    double period = 4*15*60; // CAMBIOS,  not works with 100
 
     //IntervalVector x0(2);        
     //x0[0] = Interval(23.0, 23.2);
@@ -103,8 +234,36 @@ void SolarWaterHeating()
 	Function m3 = Function(x, Return( -2.8811059759131854e-06*(x[0]-Te)/x[1] + 8.403225763080125e-07*I/x[1] + 0.00048018432931886426/x[1], 0.001*(0.3-x[1]) ) );
 	Function m4 = Function(x, Return( -2.8811059759131854e-06*(x[0]-Te)/x[1] + 8.403225763080125e-07*I/x[1], 0.001*(0.1-x[1]) ) );
 	Function m5 = Function(x, Return( -2.8811059759131854e-06*(x[0]-Te)/x[1] + 8.403225763080125e-07*I/x[1], 0.001*(0.2-x[1]) ) );
-	Function m6 = Function(x, Return( -2.8811059759131854e-06*(x[0]-Te)/x[1] + 8.403225763080125e-07*I/x[1], 0.001*(0.3-x[1]) ) );
+	
     
+    
+    //Function m6 = Function(x, Return( -2.8811059759131854e-06*(x[0]-Te)/x[1].mid() + 
+    //8.403225763080125e-07*I/ (x[1].mid()), 0.001*(0.2-x[1]) ) );
+    
+    //Function m6 = Function(x, Return( -0.0000028811059759131854*(x[0]-Te)/x[1] + 
+    //0.0000008403225763080125*I/x[1], 0.001*(0.1-x[1]) ) );
+    
+    //Function m6 = Function(x, Return( -1*(x[0]-Interval(30.0,31.0))/x[1] + 
+    //Interval(0.0,7.0)/x[1], (1-x[1]) ) );
+
+
+    Interval out1;
+    Interval out2;
+
+    div2(-(Interval(2,2.1)-Interval(1,1.1)), Interval(5,5.2) ,out1,out2 );
+    //div2(Interval(-2,-2.1), Interval(5,5.2) ,out1,out2 );
+
+    cout << "intervals result: " << out1 << "-" << out2 << endl;
+
+
+
+    Interval r = -(Interval(2,2.1)-Interval(1,1.1)) / Interval(5,5.2);
+
+    cout << "r: " << r << endl;
+
+    Function m6 = Function(x, Return( (x[0]+Interval(1,1.1))/x[1] , Interval(1,1.1) ) );
+
+
     vector<Function> mathModes;
 
     //mathModes.push_back(m1);
@@ -124,7 +283,7 @@ void SolarWaterHeating()
 
     //IntervalVector initialState = x0;
 
-    plotBox(W, "black");
+    //plotBox(W, "black");
 
     for(int k=0;k<mathModes.size();k++)
     {
@@ -144,10 +303,10 @@ void SolarWaterHeating()
 
     cout << "POST = " <<  y0.itv() << endl;
 
-    plotBox(y0.itv(), "-r");
+    //plotBox(y0.itv(), "-r");
 
-    plt::xlim( -10.0, 100.0);
-    plt::ylim( -5.0, 5.0);  
+    plt::xlim( 0.0, 100.0);
+    plt::ylim( 0.0, 1.0);  
     plt::xlabel("Temp");
     plt::ylabel("Vol");
     plt::grid(true);
@@ -293,6 +452,7 @@ void findPatternsForSolarWaterHeating()
 				file << "]; \n endif" << std::endl;
 			}
 		}
+
 	}
 	file.close();
 

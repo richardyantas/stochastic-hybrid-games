@@ -15,8 +15,24 @@ using namespace ibex;
 
 int main()
 {
-	SolarWaterHeating();
+	//SolarWaterHeating();
 	
+	IntervalVector t_(3,Interval(0,1));
+	IntervalVector x(3);
+
+	x[0] = Interval(0,1);
+	x[1] = Interval(2,3);
+	x[2] = Interval(4,5);
+
+	cout << x << endl;
+
+	// IntervalVector r; // Error
+
+
+
+	//solver();
+	//test();
+	testModel();
 	//findPatternsForSolarWaterHeating();
 
 	//plt::xlim(0, 10*10);

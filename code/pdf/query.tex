@@ -1,0 +1,44 @@
+
+\documentclass[12pt]{article}
+\usepackage{lingmacros}
+\usepackage{tree-dvips}
+\begin{document}
+
+\section*{DynIbex Library}
+
+Don't forget to include examples of topicalization.
+They look like this:
+
+
+\subsection{Equations:}
+
+
+\begin{equation}
+    \frac{dx_{1}}{dt} = \frac{x_{1}}{x_{0}},   x_{1}(0) = [1.0,50.0]
+\end{equation}
+
+
+\begin{equation}
+    \frac{dx_{0}}{dt} = 1, x_{0}(0) = [1.0,10.1]
+\end{equation}
+
+For a T(period) = 10, we got: 
+
+\subsubsection{Simulation with DynIbex}
+
+step = 1e-5:
+
+
+$x_{1}(t=10)$ = [ENTIRE] , 
+$x_{0}(t=10)$ = [ENTIRE] 
+
+\subsubsection{Simulation with Euler Method} 
+
+step = 1e-5s:
+
+
+$x_{1}(t=10)$ = [1.09901, 100] , 
+$x_{0}(t=10)$ = [2, 11.1] 
+
+
+\end{document}
