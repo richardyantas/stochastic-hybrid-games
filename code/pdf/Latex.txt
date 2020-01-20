@@ -1,0 +1,11 @@
+latex
+
+\begin{equation}
+    \begin{aligned}
+    r_{n} = \{ 0,1 \}, v_{n} = \{0,1\} \\
+    p_{n} = \{ 1,2,3\}\\
+    (p_{n-1} = \text{-} 1 \rightarrow p_{n} = 0 ) \rightarrow e_{n} = 1\\
+    (p_{n-1} =  0 \rightarrow p_{n} = 1 ) \rightarrow e_{n} = 1\\
+    otherwise, e_{n} = 0\\
+    \end{aligned}
+\end{equation}

@@ -2,15 +2,64 @@
 \documentclass[12pt]{article}
 \usepackage{lingmacros}
 \usepackage{tree-dvips}
+\usepackage{mathtools}
+
+
 \begin{document}
+
+
+\newcommand{\tcont}{\ensuremath{T(t)}}
+\newcommand{\vcont}{\ensuremath{V(t)}}
+\newcommand{\tenv}{\ensuremath{T_{env}(t)}}
+\newcommand{\tin}{\ensuremath{T_{in}(t)}}
+\newcommand{\haux}{\ensuremath{P_{aux}}}
+\newcommand{\irradiance}{\ensuremath{I_{e}}}
+
+\newcommand{\energycon}{\ensuremath{E_{c}}}
+
 
 \section*{DynIbex Library}
 
-Don't forget to include examples of topicalization.
 They look like this:
 
 
-\subsection{Equations:}
+
+
+\subsection{Main Equation:}
+
+The sthocastic hybrid model for the solar water heating has 3 discrete variables 
+such as, $\boldsymbol{r_{n}} \in \{ 0,1 \}$, $\boldsymbol{v_{n}} \in \{0,1\}$ and 
+$\boldsymbol{p_{n}} \in \{ 1,2,3\}  $ and where $n = t\tau$ and $\tau = 15$ min  is the period.
+
+\begin{equation}
+    \begin{aligned}
+        \frac{ d }{dt}\tcont = -\frac{2.8811059759131854e^{-06}(\tcont-\tenv)}{\vcont}  
+        - \boldsymbol{v_{n}}.\frac{9.34673995175876e^{-05}(\tcont-\tin)}{\vcont} \\
+        - sgn(0.1\boldsymbol{p_{n}} - \vcont)\frac{9.34673995175876e^{-05}(\tcont-\tin)}{\vcont} \\
+                        + \boldsymbol{r_{n}}.\frac{0.00048018432931886426}{\vcont} +
+                        \frac{8.403225763080125e^{-07}\irradiance}{\vcont} \\
+    \end{aligned}
+\end{equation}
+
+\begin{equation}
+    \frac{d}{dt}\vcont = 0.001(0.1\boldsymbol{p_{n}} - \vcont)    
+\end{equation}
+
+
+\begin{equation}
+    \frac{d}{dt}\energycon = k\boldsymbol{r_{n}}0.00048018432931886426
+\end{equation}
+
+\subsubsection{DynIbex}
+
+$ \tenv \in [40-45] $, $\irradiance \in [0-900] $ and $ \tin \in [30-35]$
+
+
+
+
+
+
+\subsection{Equation 1:}
 
 
 \begin{equation}
