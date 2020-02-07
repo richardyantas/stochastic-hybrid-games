@@ -193,15 +193,16 @@ continuos environment variables.
 
 
 \begin{align}
-    \frac{d}{dt}\tcont &=   -\frac{1}{\vcont}  \constone(\tcont-\tenv) - 
-    \frac{ \textbf{v} }{\vcont}\consttwo (\tcont-\tin) + \notag\\ &\qquad +
-    \textbf{r} \frac{ \constthree \auxheat  }{\vcont}  + 
-    \frac{ \constfour \irradiance}{\vcont} 
+    \frac{d}{dt}\tcont &=   -\frac{1}{0.1\textbf{p}}  \constone(\tcont-\tenv) 
+    - \frac{ \textbf{v} }{0.1\textbf{p}}\consttwo (\tcont-\tin) + \notag\\ &\qquad
+    - \frac{ 1 }{0.1\textbf{p}} k( 0.1\textbf{p} - \vcont ) (\tcont-\tin)  \notag\\ &\qquad
+    + \textbf{r} \frac{ \constthree \auxheat  }{0.1\textbf{p}}  + 
+    \frac{ \constfour \irradiance}{0.1\textbf{p}} 
 \label{temperature-equation}
 \end{align}
 
 \begin{equation}
-    \frac{d}{dt}\vcont = k( - \vcont + (\textbf{p}+2) ); \quad
+    \frac{d}{dt}\vcont = k( 0.1\textbf{p} - \vcont ); \quad
 % \frac{d}{dt}\vcont = k .sgn(100 \textbf{p}  - \vcont); \quad
 \label{volume-equation}
 \end{equation}
