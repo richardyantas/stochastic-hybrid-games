@@ -26,7 +26,7 @@ include_directories(/usr/local/include/ibex)
 
 set(HEADERS Matplotlibcpp.h )
 set(SOURCES main.cpp)
-add_executable(out ${HEADERS} ${SOURCES})
+add_executable(main ${HEADERS} ${SOURCES})
 
-target_include_directories(out PRIVATE ${PYTHON_INCLUDE_DIRS})
-target_link_libraries(out ibex prim ${PYTHON_LIBRARIES})
+target_include_directories(main PRIVATE ${PYTHON_INCLUDE_DIRS})
+target_link_libraries(main ibex prim ${PYTHON_LIBRARIES})
