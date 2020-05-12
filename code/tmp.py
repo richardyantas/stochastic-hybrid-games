@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import subprocess
 import os
 import random
-from patterns import *
+from patterns2 import *
 
 
 def trapezoideToRectangleInterpolation(a, nnum):
@@ -44,45 +44,42 @@ class automaton:
         I_  = dataRead['GTI'].values.tolist()[0:num_+1]
         v_  = valveRead['Flow'].values.tolist()[0:num_+1] 
         self.dt  = 60
+        self.tau = 5*60
         self.num = int(self.H/self.dt)+1
         self.t   = np.linspace(0,self.H,self.num+1)
         self.Te  = np.interp(self.t,t_,T_e)
         self.I   = np.interp(self.t,t_,I_)
         self.v   = trapezoideToRectangleInterpolation(np.interp(self.t,t_ ,v_),self.num)  
         self.Ti  = np.ones(self.num+1)*10
-        self.si  = state(0,2*1300*0.001,50,0)
+        #self.si  = state(0,2*1300*0.001,50,0)   # v = 2.6 = 2*1300*0.001
+        self.si  = state(0,0.11,50,0)
         self.ai  = action()   #?
         self.actions = []
         self.states = []
         self.actions.append(self.ai)        
         self.states.append(self.si)
-
-        self.target = {
-                'Td' : 40,   # 21 temperatura de comfort humano
-                'Vd' : 100,
-              }, #data['Target']
+        self.target = { 'Td' : 40, 'Vd' : 100,}, #data['Target'],   # 21 temperatura de comfort humano
     
     def controller(self,s):
         patterns = query(s)
-        lista = []
         n = len(patterns)             # check
         nu = random.randint(0,n-1)    # check
-        for i in range(0,3): # check
-            if patterns[nu].item(i) != -1:
-                lista.append( patterns[nu].item(i) )
-        print("n: ",n,",nu: ",nu,",lista: ",lista)
-        return lista  # random 
+        print("patterns controller: ",patterns[nu])
+        return patterns[nu]  # random 
 
     def simulation(self):
         #fe = 2.5
-        fe = 1
-        fi = 0.5
-        
-        ke = 10 
+        #factorTe = 1
+        #factorI = 0.5
+        # Factors to calibrate
+        factorTe = 5.5
+        factorI  = 0.05
+        factorKe = 1 # antes 10 ahora 1(Ibex)
+        #ke = 10 
         s  = self.si        
         dt = self.dt
         mode = action()
-        tau = 5*60
+        tau = self.tau 
         num_tau = tau/dt
         modes = []
         modes.append( action(1,0,0,0) )
@@ -105,16 +102,19 @@ class automaton:
                     mode = modes[pat.pop()]
                 else:
                     mode = modes[pat.pop()]   #  ?? 
-            #mode.v = self.v[i]
+            mode.v = self.v[i]
             #print(mode.v)
             E = s.E + dt*mode.r*2  # dt = 0.1
-            V = s.V + dt*0.01*( 0.1*mode.p - s.V ) # 0.5 = rate            self.rate_volume_change = 0.0002 # 0.193 
+            # 0.5*( 0.1*p - x[1])
+            V = s.V + dt*0.01*( 0.1*mode.p - s.V ) # 0.5 = rate 0.01 = rate            self.rate_volume_change = 0.0002 # 0.193 
             T = s.T + dt*(1/(0.1*mode.p))*( 
-                        - fe*2.8811059759131854e-06*(s.T-self.Te[i]) 
+                        - factorTe*2.8811059759131854e-06*(s.T-self.Te[i]) 
                         - mode.v*9.34673995175876e-05*(s.T-self.Ti[i])
-                        - mode.f*ke*0.001005026*(0.1*mode.p-V)*(s.T-self.Ti[i])
-                        + fi*8.403225763080125e-07*self.I[i]
-                        + mode.r*0.00048018432931886426 )
+                        - mode.f*factorKe*0.001005026*(0.1*mode.p-V)*(s.T-self.Ti[i])
+                        + factorI*0.7*0.7*8.403225763080125e-07*self.I[i]
+                        + mode.r*0.00880184 )#0.00048018432931886426
+            
+            print("T: ",T,"V: ",V,"E: ",E)
             t = s.t + dt
             s = state(t,V,T,E)
             #s = self.post(s,a,i)
