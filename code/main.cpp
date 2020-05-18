@@ -2,7 +2,9 @@
 #include <string>
 #include <vector>
 #include <queue>
+#include <cmath>
 
+using namespace std;
 // some variables to test the different algorithms
 //#define POST 1
 //#define FIND_PATTERN 1
@@ -180,98 +182,130 @@ int main()
     sys.period = 5*60; // critical // CAMBIOS,  not works with 100
     // DynIbex Simulation
     int NB_K = 3;
-    int NB_D = 20;
+    int NB_D = 20;   //  NB_D = 20 , 5
     IntervalVector R(2);
-    R[0] = Interval(40.0,70.0);
-    R[1] = Interval(0.1,0.3);
+    R[0] = Interval(40.0,70.0); // 70
+    R[1] = Interval(0.1,0.3);   // 0.2
     IntervalVector W(2);
-    W[0] = Interval(40.0,70.0); // if you dont define is ENTIRE the second variable:
-    W[1] = Interval(0.1,0.3);
+    W[0] = Interval(40.0,70.0); // 70 if you dont define is ENTIRE the second variable:
+    W[1] = Interval(0.1,0.3);   // 0.2
     IntervalVector B(2);
     B[0] = Interval(0.0,0.0);
     B[1] = Interval(0.0,0.0);
     IntervalVector S(2);
     S[0] = Interval(30.0,80.0);
     S[1] = Interval(0.09,0.31);
-    Interval Te(0.0,30.0);
+
+    Interval Te(0.0,16.5);  // According to Data
     Interval Ti(20.0,25.0);
-    Interval I(0.0,900.0);
-    double factorI  = 0.05; 
-    double factorTe = 5.5; 
+    Interval I(0.0,920.0); // 910
+
+    double factorTe = 2.5;
+    double factorI  = 0.8; 
     double factorE  = 1.0;
+    double factorKe = 1.0;
     double rate     = 0.01; // 0.5
+    double TwaterIn = (Ti.ub()+Ti.lb())/2;//22.5; 
+      
+    ofstream file("../patterns6.py");
+
+    file << "\nR = [ ["   <<  R[1].lb()  << "," <<  R[1].ub() <<  "], [" <<  R[0].lb() <<  "," <<  R[0].ub() << "]] \n";
+    file << "S = [ ["     <<  S[1].lb()  << "," <<  S[1].ub() <<  "], [" <<  S[0].lb() <<  "," <<  S[0].ub() << "]] \n";
+    file << "tau = "      << sys.period << " # " << sys.period/60 << "min" <<"\n";
+    file << "factorTe = " << factorTe << "\n";
+    file << "factorI  = " << factorI << "\n";
+    file << "factorKe = " << factorKe << "\n";
+    file << "rate     = " << rate << "\n";
+    file << "TwaterIn = " << TwaterIn << "\n\n";
+    /*
+    Interval Te(0.0,30.0);\n \
+    Interval Ti(20.0,25.0);\n \
+    Interval I(0.0,900.0);\n \ 
+    */ 
+
+    file << "def query(X): \n";
+
     
     const int n = 2;
 	  Variable x(n);
 
     double p,r; 
     p = 1, r = 0; 
-    Function m1 = Function(x, Return( -factorTe*2.8811059759131854e-6*(x[0]-Te)/(0.1*p)                                        
+    Function m0 = Function(x, Return( -factorTe*2.8811059759131854e-6*(x[0]-Te)/(0.1*p)                                        
                                             - Interval(0,1)*9.34673995175876e-05*(x[0]-Ti)/(0.1*p)
                                             + factorI*0.7*0.7*8.403225763080125e-07*I/(0.1*p)       
                                             + factorE*r*0.008801843/(0.1*p)  
                                             ,rate*( 0.1*p - x[1]) ) ); // 10s time to assent
     p = 1, r = 1; 
-    Function m2 = Function(x, Return( -factorTe*2.8811059759131854e-6*(x[0]-Te)/(0.1*p)
+    Function m1 = Function(x, Return( -factorTe*2.8811059759131854e-6*(x[0]-Te)/(0.1*p)
                                             - Interval(0,1)*9.34673995175876e-05*(x[0]-Ti)/(0.1*p)                                            
                                             + factorI*0.7*0.7*8.403225763080125e-07*I/(0.1*p)       
                                             + factorE*r*0.008801843/(0.1*p)  
                                             ,rate*( 0.1*p - x[1]) ) ); // 10s time to assent
     p = 2, r = 0; 
-    Function m3 = Function(x, Return( -factorTe*2.8811059759131854e-6*(x[0]-Te)/(0.1*p)
+    Function m2 = Function(x, Return( -factorTe*2.8811059759131854e-6*(x[0]-Te)/(0.1*p)
                                             - Interval(0,1)*9.34673995175876e-05*(x[0]-Ti)/(0.1*p)
                                             + factorI*0.7*0.7*8.403225763080125e-07*I/(0.1*p)       
                                             + factorE*r*0.008801843/(0.1*p)  
                                             ,rate*( 0.1*p - x[1]) ) ); // 10s time to assent
     p = 2, r = 1; 
-    Function m4 = Function(x, Return( -factorTe*2.8811059759131854e-6*(x[0]-Te)/(0.1*p)
+    Function m3 = Function(x, Return( -factorTe*2.8811059759131854e-6*(x[0]-Te)/(0.1*p)
                                             - Interval(0,1)*9.34673995175876e-05*(x[0]-Ti)/(0.1*p)                                        
                                             + factorI*0.7*0.7*8.403225763080125e-07*I/(0.1*p)       
                                             + factorE*r*0.008801843/(0.1*p)  
                                             ,rate*( 0.1*p - x[1]) ) ); // 10s time to assent
     p = 3, r = 0; 
-    Function m5 = Function(x, Return( -factorTe*2.8811059759131854e-6*(x[0]-Te)/(0.1*p)
+    Function m4 = Function(x, Return( -factorTe*2.8811059759131854e-6*(x[0]-Te)/(0.1*p)
                                             - Interval(0,1)*9.34673995175876e-05*(x[0]-Ti)/(0.1*p)
                                             - 0.001005026*(0.1*p-x[1])*(x[0]-Ti)/(0.1*p)            //  original -> 0.00009346739
                                             + factorI*0.7*0.7*8.403225763080125e-07*I/(0.1*p)       
                                             + factorE*r*0.008801843/(0.1*p)  
                                             ,rate*( 0.1*p - x[1]) ) ); // 10s time to assent
     p = 3, r = 1; 
-    Function m6 = Function(x, Return( -factorTe*2.8811059759131854e-6*(x[0]-Te)/(0.1*p)
+    Function m5 = Function(x, Return( -factorTe*2.8811059759131854e-6*(x[0]-Te)/(0.1*p)
                                             - Interval(0,1)*9.34673995175876e-05*(x[0]-Ti)/(0.1*p)
                                             - 0.001005026*(0.1*p-x[1])*(x[0]-Ti)/(0.1*p)            //  original -> 0.00009346739
                                             + factorI*0.7*0.7*8.403225763080125e-07*I/(0.1*p)       
                                             + factorE*r*0.008801843/(0.1*p)  
                                             ,rate*( 0.1*p - x[1]) ) ); // 10s time to assent
     p = 2, r = 0; 
-    Function m7 = Function(x, Return( -factorTe*2.8811059759131854e-6*(x[0]-Te)/(0.1*p)
+    Function m6 = Function(x, Return( -factorTe*2.8811059759131854e-6*(x[0]-Te)/(0.1*p)
                                             - Interval(0,1)*9.34673995175876e-05*(x[0]-Ti)/(0.1*p)
                                             - 0.001005026*(0.1*p-x[1])*(x[0]-Ti)/(0.1*p)            //  original -> 0.00009346739
                                             + factorI*0.7*0.7*8.403225763080125e-07*I/(0.1*p)
                                             + factorE*r*0.008801843/(0.1*p)  
                                             ,rate*( 0.1*p - x[1]) ) ); // 10s time to assent
     p = 2, r = 1;     
-    Function m8 = Function(x, Return( -factorTe*2.8811059759131854e-6*(x[0]-Te)/(0.1*p)
+    Function m7 = Function(x, Return( -factorTe*2.8811059759131854e-6*(x[0]-Te)/(0.1*p)
                                             - Interval(0,1)*9.34673995175876e-05*(x[0]-Ti)/(0.1*p)
                                             - 0.001005026*(0.1*p-x[1])*(x[0]-Ti)/(0.1*p)           //  original -> 0.00009346739
                                             + factorI*0.7*0.7*8.403225763080125e-07*I/(0.1*p)       
                                             + factorE*r*0.008801843/(0.1*p)  
                                             ,rate*( 0.1*p - x[1]) ) ); // 10s time to assent
 
-    sys.dynamics.push_back(m1);
+    sys.dynamics.push_back(m0);
+    sys.dynamics.push_back(m1);    
     sys.dynamics.push_back(m2);
     sys.dynamics.push_back(m3);
     sys.dynamics.push_back(m4);
     sys.dynamics.push_back(m5);
     sys.dynamics.push_back(m6);
     sys.dynamics.push_back(m7);
-    sys.dynamics.push_back(m8);
-
+    
     sys.nb_dynamics = sys.dynamics.size();
     list<IntervalVector> list_W;
     list_W.push_back(W);
-    ofstream file("../patterns3.py");
-    file << "def query(X): \n";
+
+    /*
+    const area_t zonotopes[128] = {
+      {40.0,40.3125,0.09,0.31},
+      {40.3125,40.625,0.09,0.31},
+      {40.625,40.9375,0.09,0.31},
+      {40.9375,41.25,0.09,0.31}
+    }
+    */
+    
+    std::vector< std::vector<std::pair <IntervalVector, std::list<std::vector<int> >   > > > result_total;
 
     while(!list_W.empty())
     {
@@ -286,8 +320,8 @@ int main()
             continue;
         }
         std::cout << "taille list_W : " << list_W.size() << std::endl;
-        //std::vector< std::pair<IntervalVector, std::vector<int> > > result;
         std::vector<std::pair <IntervalVector, std::list<std::vector<int> >   > > result;
+        //result.clear();
         unsigned int k = NB_K;
         unsigned int d = NB_D;
         bool flag = decompose(sys, current_W, R, B, S, k, d, result);
@@ -299,12 +333,12 @@ int main()
             if (flag)
             {
                 std::cerr << "Complete result -> PROOF" << std::endl;
+                result_total.push_back(result);
             }
             else
             {
                 std::cerr << "Incomplete result" << std::endl;
-            }            
-            
+            }                      
             std::vector< std::pair<IntervalVector,std::list<std::vector<int> >  > >::const_iterator it = result.begin();
             for (; it != result.end(); it++)
             {
@@ -322,13 +356,70 @@ int main()
                 } 
                 file.seekp(-2, std::ios_base::end);
                 file << "]" << std::endl;
-            }
+            }            
         }        
     }
 
     file << "\tprint(\"Not Found\") \n";
     file << "\treturn [[-1,-1,-1]]";
-    file.close();
 
+    int mx=0;
+    
+    file << "\n\n{";
+    for(int i=0;i<result_total.size();i++)
+    {
+      for(int j=0;j<result_total[i].size();j++)
+      {
+        file << "{" << result_total[i][j].first[0].lb() << "," << result_total[i][j].first[0].ub() << "," << result_total[i][j].first[1].lb() << "," << result_total[i][j].first[1].ub() << "},\n";
+      
+        int y = result_total[i][j].second.size();
+        mx = max( y , mx);
+      }
+
+    }
+    file.seekp(-2, std::ios_base::end);
+    file << "\n}\n";
+
+
+    file << "\n\n{\n";
+    for(int i=0;i<result_total.size();i++)
+    {
+      std::vector< std::pair<IntervalVector,std::list<std::vector<int> >  > >::const_iterator i3 = result_total[i].begin();
+      file << "{";
+      for (; i3 != result_total[i].end(); i3++)
+      {   
+          std::list< std::vector<int> >::const_iterator i4 = (i3->second).begin();
+          int g = 0;
+          for (; i4 != (i3->second).end(); i4++,g++)
+          {
+              std::vector<int>::const_iterator i5 = i4->begin();
+              file << "{";
+              int c=0;
+              for(;i5 != i4->end(); i5++,c++) 
+              {
+                file << *i5 << ",";                   // Add -1 ,-2
+              }
+              for(int i=0;i<3-c;i++)
+              {
+                file << "-1" << ",";
+              }
+              file.seekp(-1, std::ios_base::end);
+              file << "}, ";
+          } 
+          for(int i=0;i<mx-g;i++)
+          {
+            file << "{-2,-2,-2}, ";
+          }
+          //file.seekp(-2, std::ios_base::end);
+          //file << "},\n";
+      } 
+      file.seekp(-2, std::ios_base::end);
+      file << "},\n";                     
+    }
+    file.seekp(-1, std::ios_base::end);
+    file << "}\n";
+    
+
+    file.close();
     return 0;
 }
