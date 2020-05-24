@@ -5,6 +5,11 @@ import multiprocessing #from multiprocessing import Process
 import os
 import random
 
+# predict
+# forecasting
+# valve probability distribution
+
+
 def controller(q):
     tp = 0
     time.sleep(3)
