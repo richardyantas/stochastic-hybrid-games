@@ -1,4 +1,0 @@
-zon = str2zon2("([20, 20.5] ; [20, 20.5] ; [20, 20.5] ; [20, 20.5])"); 
- if is_in_zonotope(X,zon) 	 
- pattern = [0 ]; 
- endif

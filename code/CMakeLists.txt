@@ -4,7 +4,7 @@
 cmake_minimum_required(VERSION 3.5)
 set(CMAKE_CXX_STANDARD 11)
 #set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-project(thesis)
+project(safesystems)
 
 #-I/usr/local/include/ibex
 # g++  -I/usr/local/include/ibex  -o main main.cpp -libex -lprim
@@ -24,9 +24,9 @@ endif()
 include_directories(/usr/local/include/ibex)
 #include_directories(/usr/local/dynibex-2.01/include/ibex)
 
-set(HEADERS GraphicsUtils.h Processing.h ProcessingUtils.h Matplotlibcpp.h )
-set(SOURCES test.cpp)
-add_executable(run ${HEADERS} ${SOURCES})
+set(HEADERS Matplotlibcpp.h )
+set(SOURCES main.cpp)
+add_executable(main ${HEADERS} ${SOURCES})
 
-target_include_directories(run PRIVATE ${PYTHON_INCLUDE_DIRS})
-target_link_libraries(run ibex prim ${PYTHON_LIBRARIES})
+target_include_directories(main PRIVATE ${PYTHON_INCLUDE_DIRS})
+target_link_libraries(main ibex prim ${PYTHON_LIBRARIES})
