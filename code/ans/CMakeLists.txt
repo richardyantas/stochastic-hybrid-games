@@ -25,7 +25,7 @@ include_directories(/usr/local/include/ibex)
 #include_directories(/usr/local/dynibex-2.01/include/ibex)
 
 #set(HEADERS Matplotlibcpp.h )
-set(SOURCES pattern_generator.cpp)
+set(SOURCES main.cpp)
 add_executable(main ${HEADERS} ${SOURCES})
 
 target_include_directories(main PRIVATE ${PYTHON_INCLUDE_DIRS})
