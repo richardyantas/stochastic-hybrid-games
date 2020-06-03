@@ -1,49 +1,4 @@
 
-import time
-import random
-import multiprocessing
-import os
-
-
-class A:
-    def __init__(self):
-        self.a = 3
-    def controller(self,q):
-        time.sleep(3)
-        a = random.randint(0,4)
-        b = random.randint(0,4)
-        pattern = [a,b]
-        q.put(pattern)
-        print('Control finished - process id:', os.getpid())
-    
-    def simulation(self):
-        q = multiprocessing.Queue()
-        p = multiprocessing.Process(target=self.controller, args=(q,))
-        print("calling controller for next i = 0 ")
-        p.start()
-        pattern = q.get()
-        print("Getting the pattern precalculated for it=0 and using in this status tp: ",pattern)
-        p.join()
-        p = multiprocessing.Process(target=self.controller, args=(q,))
-        print("calling controller for next i = 1 ")
-        p.start()
-        for i in range(0,100):
-            if(i%5 == 0 and i != 0):
-                pattern = q.get()
-                print("Getting the pattern precalculated for i=", i," and using in this status tp: ",pattern)
-                p.join()
-                p = multiprocessing.Process(target=self.controller, args=(q,))
-                print("calling controller for next i=", i+5)
-                p.start()
-            print("Pattern t = ", i, " is: ", pattern) # tau = 5 min
-            time.sleep(1)
-            #print(i)
-        
-a = A()
-a.simulation()
-
-
-'''
 from pandas import read_csv
 from statsmodels.tsa.arima_model import ARIMA
 import numpy
@@ -88,7 +43,54 @@ pred = forecast(X)
 plt.plot(X)
 plt.plot( range(len(X),len(X)+len(pred)),pred,'red')
 plt.show()
+
+
+
 '''
+import time
+import random
+import multiprocessing
+import os
+
+
+class A:
+    def __init__(self):
+        self.a = 3
+    def controller(self,q):
+        time.sleep(3)
+        a = random.randint(0,4)
+        b = random.randint(0,4)
+        pattern = [a,b]
+        q.put(pattern)
+        print('Control finished - process id:', os.getpid())
+    
+    def simulation(self):
+        q = multiprocessing.Queue()
+        p = multiprocessing.Process(target=self.controller, args=(q,))
+        print("calling controller for next i = 0 ")
+        p.start()
+        pattern = q.get()
+        print("Getting the pattern precalculated for it=0 and using in this status tp: ",pattern)
+        p.join()
+        p = multiprocessing.Process(target=self.controller, args=(q,))
+        print("calling controller for next i = 1 ")
+        p.start()
+        for i in range(0,100):
+            if(i%5 == 0 and i != 0):
+                pattern = q.get()
+                print("Getting the pattern precalculated for i=", i," and using in this status tp: ",pattern)
+                p.join()
+                p = multiprocessing.Process(target=self.controller, args=(q,))
+                print("calling controller for next i=", i+5)
+                p.start()
+            print("Pattern t = ", i, " is: ", pattern) # tau = 5 min
+            time.sleep(1)
+            #print(i)
+        
+a = A()
+a.simulation()
+'''
+
 
 
 '''

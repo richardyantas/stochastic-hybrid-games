@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>// Place global declarations here.
+clock x;
+clock y;
+clock z;
+
+</declaration>
+	<template>
+		<name x="5" y="5">Template</name>
+		<declaration>// Place local declarations here.</declaration>
+		<location id="id0" x="0" y="0">
+			<label kind="invariant" x="-10" y="17">x &lt;= 4</label>
+		</location>
+		<location id="id1" x="127" y="-8">
+			<label kind="invariant" x="117" y="9">x&lt;=4</label>
+		</location>
+		<location id="id2" x="263" y="-8">
+			<label kind="invariant" x="253" y="9">x&lt;=4</label>
+		</location>
+		<location id="id3" x="382" y="-17">
+			<name x="372" y="-51">END</name>
+		</location>
+		<location id="id4" x="578" y="-8">
+			<label kind="invariant" x="561" y="8">y&lt;=2.5</label>
+		</location>
+		<init ref="id4"/>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id4"/>
+			<label kind="guard" x="680" y="-17">y&gt;=2</label>
+			<label kind="assignment" x="596" y="55">y=0</label>
+			<nail x="663" y="119"/>
+			<nail x="671" y="-59"/>
+		</transition>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id3"/>
+			<label kind="guard" x="281" y="-46">x&gt;=2</label>
+			<label kind="assignment" x="281" y="-12">x=0</label>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id2"/>
+			<label kind="guard" x="145" y="-42">x&gt;=2</label>
+			<label kind="assignment" x="145" y="-8">x=0</label>
+		</transition>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<label kind="guard" x="42" y="-34">x&gt;=2</label>
+			<label kind="assignment" x="51" y="0">x=0</label>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+Process = Template();
+// List one or more processes to be composed into a system.
+system Process;
+    </system>
+	<queries>
+		<query>
+			<formula>simulate 1 [&lt;=100]{y}</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>simulate 1 [&lt;=100]{x}</formula>
+			<comment></comment>
+		</query>
+	</queries>
+</nta>

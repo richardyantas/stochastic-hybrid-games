@@ -1,4 +1,4 @@
-'''
+
 import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib import animation
@@ -32,20 +32,4 @@ anim = animation.FuncAnimation(fig, animate, init_func=init,
 anim.save('basic_animation.mp4', fps=30, extra_args=['-vcodec', 'libx264'])
 
 plt.show()
-'''
-
-import numpy as np
-import matplotlib.pyplot as plt
-
-
-i = 0
-while 1:
-    i = i + 1
-    plt.plot(i,5,"*")
-    # plt.hold(True)
-    if i>10:
-        break
-
-plt.show()
-
 

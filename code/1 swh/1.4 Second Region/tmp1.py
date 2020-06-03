@@ -1,12 +1,14 @@
 import numpy as np 
 import pandas as pd
+import datetime
 import matplotlib.pyplot as plt
+import matplotlib.dates as md
 import subprocess
 import os
 import random
 import time
 import multiprocessing
-from patterns1 import *
+from patterns2 import *
 from statsmodels.tsa.arima_model import ARIMA
 
 def trapezoideToRectangleInterpolation(a, nnum):
@@ -34,35 +36,36 @@ class automaton:
         valveRead= pd.read_csv("valve.csv")  # t1,t2,dur  
         dt_      = 15*60                          # Real time of the data 
         self.H   = 1*24*60*60                # Real time Interval from  [0-Horizont]
+        self.H_uppaal = 25*8+10
         num_ = int(self.H/dt_)               # Num of intervals         [0 - num*tau]  , but there are num+1 points  t[0] - t[num]
         t_  = np.linspace(0,self.H,num_+1)
-        T_e = dataRead['Temperature'].values.tolist()[0:num_+1]
-        I_  = dataRead['GTI'].values.tolist()[0:num_+1]
+        self.T_e = dataRead['Temperature'].values.tolist()[0:num_+1]
+        self.I_  = dataRead['GTI'].values.tolist()[0:num_+1]
         v_  = valveRead['Flow'].values.tolist()[0:num_+1] 
-        self.ite = 0
         self.dt  = 60.0
         self.num = int(self.H/self.dt)+1
         self.t   = np.linspace(0,self.H,self.num)
-        self.Te  = np.interp(self.t,t_,T_e)
-        self.I   = np.interp(self.t,t_,I_)
+        self.Te  = np.interp(self.t,t_,self.T_e)
+        self.I   = np.interp(self.t,t_,self.I_)
         self.v   = trapezoideToRectangleInterpolation(np.interp(self.t,t_ ,v_),self.num)  
         self.Ti  = np.ones(self.num+1)*TwaterIn  # In c++ 25
-        self.si  = state(0,0.23,50,0)
-        self.state_curr = self.si
+        #self.si  = state(200*60 ,0.23,50,0) #state(0,0.23,50,0)   # start in the future
+        self.si  = state(0 ,0.13,50,0) 
+        self.state_curr   = self.si
         self.pattern_curr = []
-        self.ai  = action()   #?
+        self.ai      = action()   #?
         self.actions = []
         self.states  = []
         self.actions.append(self.ai)        
         self.states.append(self.si)
         self.target = { 'Td' : 40, 'Vd' : 100,}, #data['Target'],   # 21 temperatura de comfort humanos
-        self.modes = [action(1,0,0,0), action(1,1,0,0), action(2,0,0,0), action(2,1,0,0), action(3,0,0,1), action(3,1,0,1), action(2,0,0,1),action(2,1,0,1)]
+        self.modes  = [action(1,0,0,0), action(1,1,0,0), action(2,0,0,0), action(2,1,0,0), action(3,0,0,1), action(3,1,0,1), action(2,0,0,1),action(2,1,0,1)]
         #print(self.t[0:3])       # ????????????
 
-    def forecast(self,X):
-        days_in_year = 10
+    def forecast(self,X,pivotWindow,predictionSize):
+        days_in_year = pivotWindow
         differenced = list()
-        print(X)   
+        #print(X)   
         for i in range(days_in_year, len(X)):
             value = X[i] - X[i - days_in_year]
             differenced.append(value)
@@ -71,9 +74,10 @@ class automaton:
         model_fit = model.fit(disp=0)
         # multi-step out-of-sample forecast
         start_index = len(differenced)
-        end_index   = start_index + 40#6
+        end_index   = start_index + predictionSize
+        #end_index   = start_index + 49#6
         forecast    = model_fit.predict(start=start_index, end=end_index)
-        print(forecast)
+        #print(forecast)
         # invert the differenced forecast to something usable
         history = [x for x in X]
         day = 1
@@ -86,23 +90,28 @@ class automaton:
             history.append(inverted)
             day += 1
         return pred
-
                         
     def configXML(self, f):
         fin = open (f[0], "r")
         fout= open (f[1], "w+")
         t_min = int(self.state_curr.t/60)
-        H_uppaal = 25*2+10   # minutes #print( self.Te[ t_min : t_min + H_uppaal ] )
-
-        
-
+        print("Predicting perturbations ..  ")
+        # 15 min to min, tau=5min,  
+        #pTe = self.forecast(list(self.Te[t_min-60*24:t_min]), 5*60, 59)
+        #pI  = self.forecast(list(self.I[t_min-60*24:t_min]), 5*60, 59)
+        #print("size pTe: ",len(pTe)," Te:",pTe)
+        #print("size pI: ",len(pI)," I: ",pI)
+        #print("t_min: ",t_min," H_uppaal: ",H_uppaal)
+        #print("size Ti: ",len(self.Ti)," Ti: ",self.Ti[ t_min : t_min + H_uppaal])
         pat_size = len(self.pattern_curr)
-        T_env_string = '{'+','.join([str(elem) for elem in self.Te[ t_min : t_min + H_uppaal] ])+'}'
-        T_in_string  = '{'+','.join([str(elem) for elem in self.Ti[ t_min : t_min + H_uppaal] ])+'}'
-        I_string     = '{'+','.join([str(elem) for elem in self.I [ t_min : t_min + H_uppaal] ])+'}'
-        t_string     = '{'+','.join([str(elem) for elem in self.t [ t_min : t_min + H_uppaal] ])+'}'
-        va_string    = '{'+','.join([str(elem) for elem in self.v [ t_min : t_min + H_uppaal] ])+'}'
-        pat_ans_string = '{'+','.join([str(elem) for elem in self.pattern_curr[ 0: pat_size] ]) + '}'
+        T_env_string = '{'+','.join([str(elem) for elem in self.Te[ t_min : t_min + self.H_uppaal] ])+'}'
+        I_string     = '{'+','.join([str(elem) for elem in self.I [ t_min : t_min + self.H_uppaal] ])+'}'
+        #T_env_string = '{'+','.join([str(elem) for elem in pTe ])+'}'
+        #I_string     = '{'+','.join([str(elem) for elem in pI  ])+'}'
+        T_in_string  = '{'+','.join([str(elem) for elem in self.Ti[ t_min : t_min + self.H_uppaal] ])+'}'
+        t_string     = '{'+','.join([str(elem) for elem in self.t [ t_min : t_min + self.H_uppaal] ])+'}'
+        va_string    = '{'+','.join([str(elem) for elem in self.v [ t_min : t_min + self.H_uppaal] ])+'}'
+        pat_ans_string = '{'+','.join([str(elem) for elem in self.pattern_curr[ 0: pat_size] ]) +'}'
         print("pattern_curr: ",self.pattern_curr)
         print("pat sent to uppaal: ",pat_ans_string)
         print("size: ",pat_size)
@@ -133,15 +142,15 @@ class automaton:
             if (line == "//HOLDER_tau\n"):
                 fout.write('const double tau      = %5.2f; \n' % tau)
             if (line == "//HOLDER_T_env[H+1]\n"):
-                fout.write('const double T_env[%d]= %s; \n' % (H_uppaal,T_env_string) )
+                fout.write('const double T_env[%d]= %s; \n' % (self.H_uppaal,T_env_string) )
             if (line == "//HOLDER_T_in[H+1]\n"):
-                fout.write('const double T_in[%d] = %s; \n' % (H_uppaal,T_in_string) )
+                fout.write('const double T_in[%d] = %s; \n' % (self.H_uppaal,T_in_string) )
             if (line == "//HOLDER_I[H+1]\n"):
-                fout.write('const double I[%d]    = %s; \n' % (H_uppaal,I_string) )
+                fout.write('const double I[%d]    = %s; \n' % (self.H_uppaal,I_string) )
             if (line == "//HOLDER_t[H+1]\n"):
-                fout.write('const double t[%d]    = %s; \n' % (H_uppaal,t_string) )
+                fout.write('const double t[%d]    = %s; \n' % (self.H_uppaal,t_string) )
             if (line == "//HOLDER_va[H+1]\n"):                                                  # ????
-                fout.write('const double va[%d]   = %s; \n' % (H_uppaal,va_string) )		
+                fout.write('const double va[%d]   = %s; \n' % (self.H_uppaal,va_string) )		
             if (line == "//HOLDER_pat_ans\n"):
                 fout.write('const int patAns[%d]   = %s; \n' % (pat_size,pat_ans_string) )
             if (line == "//HOLDER_pat_ans_size\n"):
@@ -154,9 +163,10 @@ class automaton:
 
     def callUppaal(self,f):
         print("calling .. ")
-        line = "/home/serendipita/Documents/software/uppaal64-4.1.20-stratego-7/bin-Linux/verifyta " + f[1] + " " + f[2] 
+        line = "/home/serendipita/Documents/software/uppaal64-4.1.20-stratego-7/bin-Linux/verifyta " + f[1] + " " + f[2] + " --learning-method 4"
         n = os.popen(line).readlines()
         i = 0
+        #print(line)
         while(1):
             if n[i] == "ppos:\n":
                 ppos = n[i+1].split()
@@ -236,7 +246,8 @@ class automaton:
         patterns = query(s)
         h = int( (s.t)/(60*60) ) 
         m = (s.t)/60- h*60
-        p = patterns[ random.randint(0,len(patterns)-1) ]
+        #p = patterns[ random.randint(0,len(patterns)-1) ]
+        p = patterns[0]
         print("time: %d h - %d min"%(h,m) , "-  patterns controller: ",p)
         return p
 
@@ -262,7 +273,8 @@ class automaton:
         n  = len(patterns)               
         h = int( (s.t)/(60*60) ) 
         m = (s.t)/60- h*60
-        p = patterns[random.randint(0,n-1)]
+        #p = patterns[random.randint(0,n-1)]
+        p = patterns[0]
         print("time: %d h - %d min"%(h,m) , "-  patterns controller: ",p)
         q.put(p)
     
@@ -288,7 +300,9 @@ class automaton:
         q = multiprocessing.Queue()
         p = multiprocessing.Process(target=controllers[controlName], args=(q,s))
         p.start()
-        for i in range(0,self.num-60):     # (0,self.num-1)         
+        #for i in range(0,self.num-60):     # (0,self.num-1)         
+        #for i in range(24*60,self.num-60):
+        for i in range(0,self.num-self.H_uppaal):
             if i%(num_tau) == 0 and i!=0: 
                 if( len(pat) == 0 ):
                     pat = q.get()                  
@@ -339,6 +353,7 @@ def plot(data,data2):
         V.append(i.V)
         E.append(i.E)
         time.append(i.t)
+
     for i in data["a"]:
         r.append(i.r)
         p.append(i.p+4)
@@ -348,27 +363,26 @@ def plot(data,data2):
         T2.append(i.T)
         V2.append(i.V)
         E2.append(i.E)
-        #time.append(i.t)
+
     for i in data2["a"]:
         r2.append(i.r)
         p2.append(i.p+4)
         v2.append(i.v+2)
 
-
     plt.figure( figsize=(11, 11))
     grid = plt.GridSpec(4, 4, wspace=0.8, hspace=0.7)
     plt.subplot( grid[0,:2] )
-    #plt.plot(t, A.getT() ,label='T')
-    plt.plot(time,T , 'red',linewidth=0.8, label='Random')
-    plt.plot(time,T2 , 'purple',linewidth=0.8, label='with Opt')                        # ?
+    plt.plot(time,T , 'red',linewidth=0.8, label='Zero Strategy')
+    plt.plot(time,T2 , 'purple',linewidth=0.8, label='Learned Strategy') 
+    plt.gcf().autofmt_xdate()                       # ?
     plt.ylabel('T(Celsius)')
     plt.xlabel('time(s)')
     plt.legend()
     plt.grid(True)
     plt.subplot( grid[0:1,2:4] )
-    plt.plot(time,E,'red',linewidth=0.8,label="Random Patterns")
-    plt.plot(time,E2,'purple',linewidth=0.8,label="Optimal Patterns")
-    plt.ylabel('E(kJ)')
+    plt.plot(time,E,'red',linewidth=0.8,label="Zero Strategy")
+    plt.plot(time,E2,'purple',linewidth=0.8,label="Learned Strategy")
+    plt.ylabel('Energy(kJ)')
     plt.xlabel('time(s)')
     plt.legend()
     plt.grid(True)
@@ -381,13 +395,13 @@ def plot(data,data2):
                 [S[0][0] , S[0][0], S[0][1], S[0][1],S[0][0]],
                 'purple',label="S region")
     plt.axis([10,100,0,0.4])
-    plt.title('Random Controller')
+    plt.title('Random Strategy')
     plt.ylabel('V(L)')
     plt.xlabel('T(C)')
     plt.legend()
+    plt.grid(True)
     plt.subplot( grid[1:3,2:4] )
     plt.plot(T2,V2,'black',linewidth=0.5)
-    plt.grid(True)
     plt.plot([R[1][0] , R[1][1], R[1][1], R[1][0],R[1][0]],
                 [R[0][0] , R[0][0], R[0][1], R[0][1],R[0][0] ],
                 'red',label="R region")
@@ -395,7 +409,7 @@ def plot(data,data2):
                 [S[0][0] , S[0][0], S[0][1], S[0][1],S[0][0]],
                 'purple',label="S region")
     plt.axis([10,100,0,0.4])
-    plt.title('Optimal Controller')
+    plt.title('Learned Strategy')
     plt.ylabel('V(L)')
     plt.xlabel('T(C)')
     plt.legend()
