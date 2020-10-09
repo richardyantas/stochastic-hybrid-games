@@ -207,7 +207,7 @@ int main()
     double rate     = 0.01; // 0.5
     double TwaterIn = (Ti.ub()+Ti.lb())/2;//22.5; 
       
-    ofstream file("../patterns7.py");
+    ofstream file("../patterns3.py");
 
     file << "\nR = [ ["   <<  R[1].lb()  << "," <<  R[1].ub() <<  "], [" <<  R[0].lb() <<  "," <<  R[0].ub() << "]] \n";
     file << "S = [ ["     <<  S[1].lb()  << "," <<  S[1].ub() <<  "], [" <<  S[0].lb() <<  "," <<  S[0].ub() << "]] \n";
@@ -365,6 +365,7 @@ int main()
 
     int mx=0;
     
+    // uppaal format list 
     file << "\n\n{";
     for(int i=0;i<result_total.size();i++)
     {
@@ -379,7 +380,6 @@ int main()
     }
     file.seekp(-2, std::ios_base::end);
     file << "\n}\n";
-
 
     file << "\n\n{\n";
     for(int i=0;i<result_total.size();i++)
@@ -419,6 +419,66 @@ int main()
     file.seekp(-1, std::ios_base::end);
     file << "}\n";
     
+
+    // python format list 
+    file << "\n\n[";
+    for(int i=0;i<result_total.size();i++)
+    {
+      for(int j=0;j<result_total[i].size();j++)
+      {
+        file << "[" << result_total[i][j].first[0].lb() << "," << result_total[i][j].first[0].ub() << "," << result_total[i][j].first[1].lb() << "," << result_total[i][j].first[1].ub() << "],\n";
+      
+        int y = result_total[i][j].second.size();
+        mx = max( y , mx);
+      }
+
+    }
+    file.seekp(-2, std::ios_base::end);
+    file << "\n]\n";
+
+
+
+    file << "\n\n[\n";
+    for(int i=0;i<result_total.size();i++)
+    {
+      std::vector< std::pair<IntervalVector,std::list<std::vector<int> >  > >::const_iterator i3 = result_total[i].begin();
+      file << "[";
+      for (; i3 != result_total[i].end(); i3++)
+      {   
+          std::list< std::vector<int> >::const_iterator i4 = (i3->second).begin();
+          int g = 0;
+          for (; i4 != (i3->second).end(); i4++,g++)
+          {
+              std::vector<int>::const_iterator i5 = i4->begin();
+              file << "[";
+              int c=0;
+              for(;i5 != i4->end(); i5++,c++) 
+              {
+                file << *i5 << ",";                   // Add -1 ,-2
+              }
+              /*
+              for(int i=0;i<3-c;i++)
+              {
+                file << "-1" << ",";
+              }
+              */
+              file.seekp(-1, std::ios_base::end);
+              file << "], ";
+          }
+          /* 
+          for(int i=0;i<mx-g;i++)
+          {
+            file << "{-2,-2,-2}, ";
+          }
+          */
+          //file.seekp(-2, std::ios_base::end);
+          //file << "},\n";
+      } 
+      file.seekp(-2, std::ios_base::end);
+      file << "],\n";                     
+    }
+    file.seekp(-1, std::ios_base::end);
+    file << "]\n";
 
     file.close();
     return 0;
