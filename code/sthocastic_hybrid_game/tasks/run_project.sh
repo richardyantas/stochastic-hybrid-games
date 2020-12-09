@@ -1,0 +1,1 @@
+python ./sthocastic_hybrid_game/model/main.py
