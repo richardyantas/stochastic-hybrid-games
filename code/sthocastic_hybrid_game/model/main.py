@@ -12,6 +12,8 @@ import json
 from   statsmodels.tsa.arima_model import ARIMA
 
 pat = json.load(open("./sthocastic_hybrid_game/datasets/pattern.json"))
+
+# Then add Json to UPPAAL
 R = pat["R"]
 S = pat["S"]
 tau = pat["tau"]
@@ -433,7 +435,7 @@ def plot(data):
     p = []
     v = []
     time = []
-    for i in data["s"]:
+    for i in data["s"]: # we chat the offspring .. 
         T.append(i.T)
         V.append(i.V)
         E.append(i.E)

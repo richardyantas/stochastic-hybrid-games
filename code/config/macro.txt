@@ -1,0 +1,112 @@
+
+
+// #define STATIC_CONFIG_GETTER(type, key)                                                            \
+//    type key() { return static_config.get<type>(#key); }
+
+
+// #define CONFIG_GETTER(type, json_type, from, key, default)                                         \
+//     type key()                                                                                     \
+//     {                                                                                              \
+//         try {                                                                                      \
+//             if (!loaded) {                                                                         \
+//                 load();                                                                            \
+//             }                                                                                      \
+//             return from.get<json_type>(#key);                                             \
+//         }                                                                                          \
+//         catch (const std::exception &e) {                                                          \
+//             log << e.what();                                                                       \
+//             return default;                                                                        \
+//         }                                                                                          \
+//     }
+
+
+// #define LIST_GETTER(p_type, list_type, from, key)                                                  \
+//     void key(int32_t num, p_type* arr)                                                              \
+//     {                                                                                              \
+//         if (!loaded) {                                                                             \
+//             load();                                                                                \
+//         }                                                                                          \
+//         try {                                                                                \
+//             auto tmp = from.get<std::vector<list_type>>(#key);                           \
+//             for (int i = 0; i < num; i++) {                                                        \
+//                  arr[i] = tmp.at(i);                                                                \
+//             }                                                                                      \
+//         }                                                                                          \
+//         catch (const std::exception &e) {                                                          \
+//             log << e.what();                                                                       \
+//         }                                                                                          \
+//     };
+
+
+// std::string get_name(std::string name)
+// {
+//     int name_length = name.size();
+//     std::string new_name = name.substr(3,name_length-4);
+//     return new_name;
+// }
+
+// CONFIG_GETTER(double, double, static_config, get_tau, 0)
+// CONFIG_GETTER(int, int, static_config, get_number_of_patterns, 0)
+// LIST_GETTER(int, int, dynamic_config, get_patterns);
+
+
+
+MAPCONVERSION→ station_schedullingcml 
+
+import "libconfig.so" {
+int[1, NUM_STATIONS] next_station();
+void station_visited(int num_stations, bool&amp; arr[int[1, NUM_STATIONS]]);
+};
+
+bool visited[int[1, NUM_STATIONS]];
+void set_global() {
+initial_station = destination();
+station_visited(NUM_STATIONS, visited);
+}
+
+
+config_wrapper.hpp 
+void waypoint_visited(int32_t number_of_stations, int8_t *arr); // Length = number_of_stations
+void waypoint_dist(int32_t number_of_waypoints, int32_t *arr); // Length = number_of_waypoints ^ 2
+void waypoint_visited(int32_t number_of_stations, int8_t *arr); // Length = number_of_stations
+
+
+P7-KODE config_wrapper.cpp
+#define LIST_GETTER(p_type, list_type, from, key) \
+void key(int32_t num, p_type arr) \
+{ \
+if (!loaded) { \
+load(); \
+} \
+try { \
+auto tmp = from.get<std::vector<list_type>>(#key); \
+for (int i = 0; i < num; i++) { \
+arr[i] = tmp.at(i); \
+} \
+} \
+catch (const std::exception &e) { \
+log << e.what(); \
+} \
+}
+
+import "libconfig.so" {
+    int number_of_stations();
+    int number_of_robots();
+    int number_of_waypoints();
+}
+
+const int NUM_STATIONS = number_of_stations();
+const int NUM_WAYPOINTS = number_of_waypoints();
+
+import "libconfig.so" {
+    void waypoint_visited(int num_waypoints, bool&amp; arr[int[0, NUM_WAYPOINTS - 1]]);
+    void station_list(int num_stations, int[0, NUM_WAYPOINTS - 1]&amp; arr[int[1, NUM_STATIONS]]);
+};
+
+int[0, NUM_WAYPOINTS - 1] station_waypoint[int[1, NUM_STATIONS]];
+bool visited[int[0, NUM_WAYPOINTS - 1]];
+
+void set_global() {
+    waypoint_visited(NUM_WAYPOINTS, visited);
+    station_list(NUM_STATIONS, station_waypoint);
+}

@@ -1,8 +1,10 @@
+
 #include <ibex.h>
 #include <string>
 #include <vector>
 #include <queue>
 #include <cmath>
+#include <json/json.h>
 
 using namespace std;
 // some variables to test the different algorithms
@@ -207,11 +209,21 @@ int main()
     double rate     = 0.01; // 0.5
     double TwaterIn = (Ti.ub()+Ti.lb())/2;//22.5; 
       
-    ofstream file("../patterns3.py");
+    //ofstream file("../patterns3.py");
 
-    // set ric
-    ofstream file_json("../patterns_test.json")
-
+    
+    ofstream file("../patterns_test.json");
+    Json::Value event;   
+    Json::Value vec(Json::arrayValue);
+    for (int i=0;i<10;i++)
+    {
+      vec.append(Json::Value(i));
+    }
+    event["R"] = []
+    //event["competitors"]["home"]["name"] = "Liverpool";
+    //event["competitors"]["away"]["name"] = "Aston Villa";
+    //event["competitors"]["away"]["code"] = vec;
+    std::cout << event << std::endl;
 
     file << "\nR = [ ["   <<  R[1].lb()  << "," <<  R[1].ub() <<  "], [" <<  R[0].lb() <<  "," <<  R[0].ub() << "]] \n";
     file << "S = [ ["     <<  S[1].lb()  << "," <<  S[1].ub() <<  "], [" <<  S[0].lb() <<  "," <<  S[0].ub() << "]] \n";
@@ -221,6 +233,8 @@ int main()
     file << "factorKe = " << factorKe << "\n";
     file << "rate     = " << rate << "\n";
     file << "TwaterIn = " << TwaterIn << "\n\n";
+
+
     /*
     Interval Te(0.0,30.0);\n \
     Interval Ti(20.0,25.0);\n \
@@ -367,6 +381,7 @@ int main()
     file << "\tprint(\"Not Found\") \n";
     file << "\treturn [[-1,-1,-1]]";
 
+    /*
     int mx=0;
     
     // uppaal format list 
@@ -466,23 +481,10 @@ int main()
               {
                 file << *i5 << ",";                   // Add -1 ,-2
               }
-              /*
-              for(int i=0;i<3-c;i++)
-              {
-                file << "-1" << ",";
-              }
-              */
               file.seekp(-1, std::ios_base::end);
               file << "], ";
           }
-          /* 
-          for(int i=0;i<mx-g;i++)
-          {
-            file << "{-2,-2,-2}, ";
-          }
-          */
-          //file.seekp(-2, std::ios_base::end);
-          //file << "},\n";
+
       } 
       file.seekp(-2, std::ios_base::end);
       file << "],\n";                     
@@ -525,21 +527,9 @@ int main()
               {
                 file << *i5 << ",";                   // Add -1 ,-2
               }
-              /*
-              for(int i=0;i<3-c;i++)
-              {
-                file << "-1" << ",";
-              }
-              */
               file.seekp(-1, std::ios_base::end);
               file << "], ";
           }
-          /* 
-          for(int i=0;i<mx-g;i++)
-          {
-            file << "{-2,-2,-2}, ";
-          }
-          */
           //file.seekp(-2, std::ios_base::end);
           //file << "},\n";
       } 
@@ -548,6 +538,7 @@ int main()
     }
     file.seekp(-1, std::ios_base::end);
     file << "]\n";
+    */   
 
     file.close();
     return 0;

@@ -27,5 +27,3 @@ bash ./sthocastic_hybrid_game/tasks/run_projectl.sh
 ```
 conda remove --name ucsp_solar --all
 ```
-# another format to .md is .rst 
-https://eli.thegreenplace.net/2017/restructuredtext-vs-markdown-for-technical-documentation/
