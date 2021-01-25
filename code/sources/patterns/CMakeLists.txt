@@ -22,21 +22,25 @@ elseif(WIN32)
 endif()
 
 # https://github.com/ibex-team/ibex-lib   try this then ! 
-include_directories(/usr/local/include/ibex
-                    ${PROJECT_SOURCE_DIR}/lib/jsoncpp/include)
-                    
-#include_directories(/usr/local/dynibex-2.01/include/ibex)
-#set(HEADERS Matplotlibcpp.h )
-set(SOURCES pattern_generator.cpp)
 
-add_executable(main 
-               ${HEADERS} 
-               ${SOURCES})
-target_include_directories(main 
-                           PRIVATE 
-                           ${PYTHON_INCLUDE_DIRS})
-target_link_libraries(main 
-                      ibex 
-                      prim 
-                      ${PYTHON_LIBRARIES} 
-                      ${PROJECT_SOURCE_DIR}/build/lib/libjsoncpp.so)
+## include_directories(/usr/local/include/ibex ${PROJECT_SOURCE_DIR}/lib/jsoncpp/include)
+
+
+# include_directories(${PROJECT_SOURCE_DIR}/lib/ibex/dynibex-2.01/src/  ${PROJECT_SOURCE_DIR}/lib/jsoncpp/include)
+
+##include_directories(/usr/local/dynibex-2.01/include/ibex)
+##set(HEADERS Matplotlibcpp.h )
+
+# set(SOURCES pattern_generator.cpp)
+
+# add_executable(main 
+#                ${HEADERS} 
+#                ${SOURCES})
+# target_include_directories(main 
+#                            PRIVATE 
+#                            ${PYTHON_INCLUDE_DIRS})
+# target_link_libraries(main 
+#                       ibex
+#                       prim
+#                       ${PYTHON_LIBRARIES} 
+#                       ${PROJECT_SOURCE_DIR}/build/lib/libjsoncpp.so)

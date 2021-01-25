@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
     //event["competitors"]["away"]["code"] = 89223;
     event["competitors"]["away"]["name"] = "Aston Villa";
     event["competitors"]["away"]["code"] = vec;
-    event["competitors"]["away"]["code2"] = [4,4,4];
+    //event["competitors"]["away"]["code2"] = [4,4,4];
     std::cout << event << std::endl;
     Json::StyledWriter styledWriter;
     file_id << styledWriter.write(event);
