@@ -1,5 +1,12 @@
 
 
+# Dependencies
+  c++17
+
+  uppaal - dependencies 
+  dynibex - dependencies
+  jsoncpp - depencencies
+
 # Install 
 
 Install Python Package Manager "anaconda"
