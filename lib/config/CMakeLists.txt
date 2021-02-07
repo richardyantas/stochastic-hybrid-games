@@ -8,10 +8,10 @@ target_link_libraries(config PUBLIC ${PROJECT_SOURCE_DIR}/build/lib/libjsoncpp.s
 install(TARGETS config DESTINATION bin)
 
 # Here
-add_library(mylib SHARED mylib.cpp)
+# add_library(mylib SHARED mylib.cpp)
 # https://stackoverflow.com/questions/17511496/how-to-create-a-shared-library-with-cmake
 #find_library(jsoncpp_location libjsoncpp)
 #target_link_libraries(mylib PUBLIC ${PROJECT_SOURCE_DIR}/build/lib/libjsoncpp.so)
-target_link_libraries(mylib PUBLIC ${PROJECT_SOURCE_DIR}/build/lib/libjsoncpp.so)
+# target_link_libraries(mylib PUBLIC ${PROJECT_SOURCE_DIR}/build/lib/libjsoncpp.so)
 #set_property(TARGET mylib PROPERTY IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/build/lib/libjsoncpp.so)
-install(TARGETS mylib DESTINATION bin )
+# install(TARGETS mylib DESTINATION bin )

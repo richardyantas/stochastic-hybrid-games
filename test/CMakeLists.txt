@@ -1,6 +1,6 @@
 # target_include_directories(${PROJECT_SOURCE_DIR}/build/lib)
 set(CMAKE_CXX_STANDARD 11)
-include_directories(${PROJECT_SOURCE_DIR}/config
+include_directories(${PROJECT_SOURCE_DIR}/lib/config
                     ${PROJECT_SOURCE_DIR}/lib/jsoncpp/include
                     
                     ${PROJECT_SOURCE_DIR}/lib/dynibex

@@ -60,8 +60,8 @@ add_executable(pattern_generator
                ${SOURCES})
 # target_include_directories(pattern_generator PRIVATE ${PYTHON_INCLUDE_DIRS})
 target_link_libraries(pattern_generator
-                      #ibex
-                      prim
+                      #ibex            
                       #${PYTHON_LIBRARIES} 
                       ${PROJECT_SOURCE_DIR}/lib/dynibex/libibex.a
+                      prim
                       ${PROJECT_SOURCE_DIR}/build/lib/libjsoncpp.so)
