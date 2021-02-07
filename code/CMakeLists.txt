@@ -1,9 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "-g -fno-omit-frame-pointer -Wall")
-project (jsonreader)
+project (ucsp-solar)
 add_subdirectory(lib/jsoncpp/)
 add_subdirectory(config/)
-add_subdirectory(test/)
-add_subdirectory(sources/patterns/)
-  
+#add_subdirectory(test/)
+#add_subdirectory(sources/patterns/)
