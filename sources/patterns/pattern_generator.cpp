@@ -1,4 +1,3 @@
-
 #include <ibex.h>
 #include <string>
 #include <vector>
@@ -18,6 +17,39 @@ using namespace std;
 // #define NB_D 20
 using namespace ibex;
 // Data type for sampled switched systems
+
+template<class T>
+Json::Value jvec1D(vector<T> in)
+{
+  Json::Value jvec;
+  for (int i = 0; i < in.size(); i++)
+  {
+    jvec.append(in[i]);
+  }
+  return jvec;
+}
+
+template<class T>
+Json::Value jvec2D(vector<vector<T>> in)
+{
+  Json::Value jvec;
+  for (int i = 0; i < in.size(); i++)
+  {
+    jvec.append( jvec1D<T>(in[i]));
+  }
+  return jvec;
+}
+
+Json::Value jBox(IntervalVector box)
+{
+  Json::Value jvec;
+  for(int i=0;i<box.size();i++)
+  {
+    jvec.append(jvec1D<float>(vector<float> {float(box[i].lb()), float(box[i].ub())}));
+  }
+  return jvec;
+}
+
 typedef struct {
   double period;
   //std::vector<Function*> dynamics;
@@ -30,7 +62,6 @@ typedef struct {
   Affine2Vector *Ycurrent;
   std::vector<int> pattern;  
 } node;
-
 
 //find a pattern with new algo 
 bool findPattern2 (const sampledSwitchedSystem& sys, const IntervalVector W,
@@ -108,7 +139,6 @@ bool findPattern2 (const sampledSwitchedSystem& sys, const IntervalVector W,
           
           if (stay_S)// && !cross_B)
           {
-              //std::cout << "plop !" << std::endl;
             if (node_current.pattern.size() < k)
             {
               // In this part add  the filter
@@ -183,8 +213,8 @@ int main()
     sampledSwitchedSystem sys;
     sys.period = 5*60; // critical // CAMBIOS,  not works with 100
     // DynIbex Simulation
-    int NB_K = 3;
-    int NB_D = 20;   //  NB_D = 20 , 5
+    int NB_K = 3; // IMPORTANT BACK TO 3 VALUE  CURRENT VALUE TO TEST
+    int NB_D = 20;   //  NB_D = 20 , 5 IMPORTANT BACK TO 20 VALUE  CURRENT VALUE TO TEST
     IntervalVector R(2);
     R[0] = Interval(40.0,70.0); // 70
     R[1] = Interval(0.1,0.2);   // 0.2
@@ -208,34 +238,19 @@ int main()
     double factorKe = 1.0;
     double rate     = 0.01; // 0.5
     double TwaterIn = (Ti.ub()+Ti.lb())/2;//22.5; 
-      
-    //ofstream file("../patterns3.py");    
-    ofstream file("../patterns_test.json");
+  
+    ofstream file("./patterns_test.json");
+    Json::StyledWriter styledWriter;
     Json::Value event;   
-    Json::Value vec(Json::arrayValue);
-    for (int i=0;i<10;i++)
-    {
-      vec.append(Json::Value(i));
-    }
 
-    file << "\nR = [ ["   <<  R[1].lb()  << "," <<  R[1].ub() <<  "], [" <<  R[0].lb() <<  "," <<  R[0].ub() << "]] \n";
-    file << "S = [ ["     <<  S[1].lb()  << "," <<  S[1].ub() <<  "], [" <<  S[0].lb() <<  "," <<  S[0].ub() << "]] \n";
-    file << "tau = "      << sys.period << " # " << sys.period/60 << "min" <<"\n";
-    file << "factorTe = " << factorTe << "\n";
-    file << "factorI  = " << factorI << "\n";
-    file << "factorKe = " << factorKe << "\n";
-    file << "rate     = " << rate << "\n";
-    file << "TwaterIn = " << TwaterIn << "\n\n";
-
-
-    /*
-    Interval Te(0.0,30.0);\n \
-    Interval Ti(20.0,25.0);\n \
-    Interval I(0.0,900.0);\n \ 
-    */ 
-
-    file << "def query(X): \n";
-
+    event["R"] = jBox(R);
+    event["S"] = jBox(S);
+    event["tau"] = sys.period;
+    event["factorTe"] = factorTe;
+    event["factorI"] = factorI;
+    event["factorKe"] = factorKe;
+    event["rate"] = rate;
+    event["TwaterIn"] = TwaterIn;
     
     const int n = 2;
 	  Variable x(n);
@@ -306,15 +321,6 @@ int main()
     sys.nb_dynamics = sys.dynamics.size();
     list<IntervalVector> list_W;
     list_W.push_back(W);
-
-    /*
-    const area_t zonotopes[128] = {
-      {40.0,40.3125,0.09,0.31},
-      {40.3125,40.625,0.09,0.31},
-      {40.625,40.9375,0.09,0.31},
-      {40.9375,41.25,0.09,0.31}
-    }
-    */
     
     std::vector< std::vector<std::pair <IntervalVector, std::list<std::vector<int> >   > > > result_total;
 
@@ -322,8 +328,10 @@ int main()
     {
         IntervalVector current_W = list_W.front();
         list_W.pop_front();
-        if (current_W.diam().max() > 0.6)
+        if (current_W.diam().max() > 0.6)  // IMPORTANT BACK FROM 10 to 6
+        //if (current_W.diam().max() > 10.0)
         {
+            cout << ":)" <<current_W << endl;
             LargestFirst bbb(0.1,0.5);
             std::pair<IntervalVector,IntervalVector> p = bbb.bisect(current_W);
             list_W.push_back(p.first);
@@ -332,13 +340,12 @@ int main()
         }
         std::cout << "taille list_W : " << list_W.size() << std::endl;
         std::vector<std::pair <IntervalVector, std::list<std::vector<int> >   > > result;
-        //result.clear();
         unsigned int k = NB_K;
         unsigned int d = NB_D;
         bool flag = decompose(sys, current_W, R, B, S, k, d, result);
         if (result.empty()) {
             std::cerr << "No solution with k = " << k << " and d = " << d << std::endl;
-            file << current_W << " : no sol" << std::endl;
+            //file << current_W << " : no sol" << std::endl;
         }
         else{
             if (flag)
@@ -352,187 +359,18 @@ int main()
             }                      
             std::vector< std::pair<IntervalVector,std::list<std::vector<int> >  > >::const_iterator it = result.begin();
             for (; it != result.end(); it++)
-            {
-                file << "\tif " << "(" << it->first[0].lb() << "<= X.T and X.T <= " << it->first[0].ub() << ") and (" << it->first[1].lb() << "<= X.V and X.V <= " << it->first[1].ub() << "):\n\t\treturn [";
+            {              
+                event["zonotope"].append(jBox(it->first));              
                 std::list< std::vector<int> >::const_iterator it_pat = (it->second).begin();
+                Json::Value tmp;
                 for (; it_pat != (it->second).end(); it_pat++) {
-                    std::vector<int>::const_iterator it_it_pat = it_pat->begin();
-                    file << "[";
-                    for(;it_it_pat != it_pat->end(); it_it_pat++)
-                    {
-                        file << *it_it_pat << ",";
-                    }
-                    file.seekp(-1, std::ios_base::end);
-                    file << "], ";
-                } 
-                file.seekp(-2, std::ios_base::end);
-                file << "]" << std::endl;
+                    tmp.append(jvec1D(*it_pat));
+                }
+                event["patterns"].append(tmp);            
             }            
         }        
     }
-
-    file << "\tprint(\"Not Found\") \n";
-    file << "\treturn [[-1,-1,-1]]";
-
-    /*
-    int mx=0;
-    
-    // uppaal format list 
-    file << "\n\n{";
-    for(int i=0;i<result_total.size();i++)
-    {
-      for(int j=0;j<result_total[i].size();j++)
-      {
-        file << "{" << result_total[i][j].first[0].lb() << "," << result_total[i][j].first[0].ub() << "," << result_total[i][j].first[1].lb() << "," << result_total[i][j].first[1].ub() << "},\n";
-      
-        int y = result_total[i][j].second.size();
-        mx = max( y , mx);
-      }
-
-    }
-    file.seekp(-2, std::ios_base::end);
-    file << "\n}\n";
-
-    file << "\n\n{\n";
-    for(int i=0;i<result_total.size();i++)
-    {
-      std::vector< std::pair<IntervalVector,std::list<std::vector<int> >  > >::const_iterator i3 = result_total[i].begin();
-      file << "{";
-      for (; i3 != result_total[i].end(); i3++)
-      {   
-          std::list< std::vector<int> >::const_iterator i4 = (i3->second).begin();
-          int g = 0;
-          for (; i4 != (i3->second).end(); i4++,g++)
-          {
-              std::vector<int>::const_iterator i5 = i4->begin();
-              file << "{";
-              int c=0;
-              for(;i5 != i4->end(); i5++,c++) 
-              {
-                file << *i5 << ",";                   // Add -1 ,-2
-              }
-              for(int i=0;i<3-c;i++)
-              {
-                file << "-1" << ",";
-              }
-              file.seekp(-1, std::ios_base::end);
-              file << "}, ";
-          } 
-          for(int i=0;i<mx-g;i++)
-          {
-            file << "{-2,-2,-2}, ";
-          }
-          //file.seekp(-2, std::ios_base::end);
-          //file << "},\n";
-      } 
-      file.seekp(-2, std::ios_base::end);
-      file << "},\n";                     
-    }
-    file.seekp(-1, std::ios_base::end);
-    file << "}\n";
-
-    // Json format list
-    file_json << "{\n\n[";
-    file_json << "\"R\": \n";
-    file_json << "\"S\": \n";
-    file_json << "\"tau\": \n";
-    file_json << "\"factorTe\": \n";
-    file_json << "\"factorI\": \n";
-    file_json << "\"factorKe\": \n";
-    file_json << "\"rate\": \n";
-    file_json << "\"factorI\": \n";
-    file_json << "\"z\": ";
-    for(int i=0;i<result_total.size();i++)
-    {
-      for(int j=0;j<result_total[i].size();j++)
-      {
-        file_json << "[" << result_total[i][j].first[0].lb() << "," << result_total[i][j].first[0].ub() << "," << result_total[i][j].first[1].lb() << "," << result_total[i][j].first[1].ub() << "],\n";
-      
-        int y = result_total[i][j].second.size();
-        mx = max( y , mx);
-      }
-
-    }
-    file_json.seekp(-2, std::ios_base::end);
-    file_json << "\n]\n";
-
-    file_json << "\n\n[\n";
-    for(int i=0;i<result_total.size();i++)
-    {
-      std::vector< std::pair<IntervalVector,std::list<std::vector<int> >  > >::const_iterator i3 = result_total[i].begin();
-      file << "[";
-      for (; i3 != result_total[i].end(); i3++)
-      {   
-          std::list< std::vector<int> >::const_iterator i4 = (i3->second).begin();
-          int g = 0;
-          for (; i4 != (i3->second).end(); i4++,g++)
-          {
-              std::vector<int>::const_iterator i5 = i4->begin();
-              file << "[";
-              int c=0;
-              for(;i5 != i4->end(); i5++,c++) 
-              {
-                file << *i5 << ",";                   // Add -1 ,-2
-              }
-              file.seekp(-1, std::ios_base::end);
-              file << "], ";
-          }
-
-      } 
-      file.seekp(-2, std::ios_base::end);
-      file << "],\n";                     
-    }
-    file_json.seekp(-1, std::ios_base::end);
-    file_json << "]\n}";
-
-    // python format list 
-    file << "\n\n[";
-
-    for(int i=0;i<result_total.size();i++)
-    {
-      for(int j=0;j<result_total[i].size();j++)
-      {
-        file << "[" << result_total[i][j].first[0].lb() << "," << result_total[i][j].first[0].ub() << "," << result_total[i][j].first[1].lb() << "," << result_total[i][j].first[1].ub() << "],\n";
-      
-        int y = result_total[i][j].second.size();
-        mx = max( y , mx);
-      }
-
-    }
-    file.seekp(-2, std::ios_base::end);
-    file << "\n]\n";
-
-    file << "\n\n[\n";
-    for(int i=0;i<result_total.size();i++)
-    {
-      std::vector< std::pair<IntervalVector,std::list<std::vector<int> >  > >::const_iterator i3 = result_total[i].begin();
-      file << "[";
-      for (; i3 != result_total[i].end(); i3++)
-      {   
-          std::list< std::vector<int> >::const_iterator i4 = (i3->second).begin();
-          int g = 0;
-          for (; i4 != (i3->second).end(); i4++,g++)
-          {
-              std::vector<int>::const_iterator i5 = i4->begin();
-              file << "[";
-              int c=0;
-              for(;i5 != i4->end(); i5++,c++) 
-              {
-                file << *i5 << ",";                   // Add -1 ,-2
-              }
-              file.seekp(-1, std::ios_base::end);
-              file << "], ";
-          }
-          //file.seekp(-2, std::ios_base::end);
-          //file << "},\n";
-      } 
-      file.seekp(-2, std::ios_base::end);
-      file << "],\n";                     
-    }
-    file.seekp(-1, std::ios_base::end);
-    file << "]\n";
-    */   
-
+    file << styledWriter.write(event);
     file.close();
     return 0;
 }
