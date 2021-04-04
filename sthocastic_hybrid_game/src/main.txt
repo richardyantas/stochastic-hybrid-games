@@ -1,0 +1,607 @@
+import numpy as np 
+import pandas as pd
+import datetime
+import matplotlib.pyplot as plt
+import matplotlib.dates as md
+import subprocess
+import os
+import random
+import time
+import multiprocessing
+import json
+from   statsmodels.tsa.arima_model import ARIMA
+
+pat = json.load(open("./sthocastic_hybrid_game/datasets/pattern.json"))
+
+# Then add Json to UPPAAL
+R = pat["R"]
+S = pat["S"]
+tau = pat["tau"]
+factorTe = pat["factorTe"]
+factorI = pat["factorI"]
+factorKe = pat["factorKe"]
+rate = pat["rate"]
+TwaterIn = pat["TwaterIn"]
+z = pat["z"]
+x = pat["x"]
+
+# gValves = []
+# self.mode.v = gValves[int(i/num_tau)]
+
+gValves = (np.zeros(24*12)).tolist()
+
+def randomValve():
+        value = random.randint(0,20)
+        if value == 3:
+            return 1 
+        return 0
+
+def valvesGeneration():
+    '''
+    n = int(2*24*60/5)
+    for i in range(0,n):
+        gValves.append( randomValve() )
+    '''
+    # total 24*60/5
+    numValveActions = 5
+    dvs = 1*3  # 1*60/5
+    for i in range(0,numValveActions):
+        # int(random.gauss(7*60/5,1*60/5) )
+        gValves[ int(random.gauss(7*60/5, dvs) )  ] = 1
+        gValves[ int(random.gauss(13*60/5,dvs) )  ] = 1
+        gValves[ int(random.gauss(19*60/5,dvs) )  ] = 1
+    print("Valves: ", gValves)
+
+def query(X):
+    for i in range(0,len(z)):
+        if (z[i][0] <= X.T  and X.T < z[i][1]) and (z[i][2] <= X.V and X.V <= z[i][3]):
+            #print("i: ",i,x[i][1]),
+            #n = random.randint(0,len(x[i])-1) # 1
+            n = 1
+            return {"pat":list(x[i][n]),"i":i}
+    
+    print("Not found state: ",X)
+    return {"pat":[-1,-1,-1],"i":-1}
+
+def trapezoideToRectangleInterpolation(a, nnum):
+    for i in range(0,len(a)):
+        if a[i] != 1.0 and  a[i] != 0.0:
+            a[i] = 0.0
+    return a
+
+class state:
+    def __init__(self, time, volume, temperature, energyComsuption ):
+        self.t = time
+        self.V = volume 
+        self.T = temperature
+        self.E = energyComsuption
+    def __str__(self):
+        return '(%5.5f,%5.5f,%5.5f)' % ( self.T,self.V,self.E)
+
+        
+class action:
+    def __init__(self, piston=0, resistor=0, valve=0, expand=0):
+        self.p   = piston
+        self.r   = resistor 
+        self.v   = valve   
+        self.f   = expand
+    def __str__(self):
+        return '(p=%d,r=%d,v=%d,f=%d)' % (self.p, self.r,self.v,self.f)
+        #return '(%5.2f,%5.2f,%5.2f,%5.2f)' % (self.p, self.r,self.v,self.f)
+        
+class automaton:
+    def __init__(self):
+        dataRead = pd.read_csv("./sthocastic_hybrid_game/datasets/Solargis_min15_Almeria_Spain.csv")
+        valveRead= pd.read_csv("./sthocastic_hybrid_game/datasets/valve.csv")  # t1,t2,dur  
+        # dataRead = pd.read_csv("../datasets/Solargis_min15_Almeria_Spain.csv")
+        # valveRead= pd.read_csv("../datasets/valve.csv")  # t1,t2,dur  
+        dt_      = 15*60                          # Real time of the data 
+        self.H   = 1*24*60*60                # Real time Interval from  [0-Horizont]
+        self.H_uppaal = 25*8+10       
+        self.nrSteps  = 15              # UPPAAL
+        self.step     = tau/60          # UPPAAAL 
+
+        num_ = int(self.H/dt_)               # Num of intervals         [0 - num*tau]  , but there are num+1 points  t[0] - t[num]
+        t_ = np.linspace(0,self.H,num_+1)
+        self.T_e = dataRead['Temperature'].values.tolist()[0:num_+1]
+        self.I_  = dataRead['GTI'].values.tolist()[0:num_+1]
+        v_  = valveRead['Flow'].values.tolist()[0:num_+1] 
+        self.dt  = 60.0
+        self.num = int(self.H/self.dt)+1
+        self.t   = np.linspace(0,self.H,self.num)
+        self.Te  = np.interp(self.t,t_,self.T_e)
+        self.I   = np.interp(self.t,t_,self.I_)
+        self.v   = trapezoideToRectangleInterpolation(np.interp(self.t,t_ ,v_),self.num)  
+        self.Ti  = np.ones(self.num+1)*TwaterIn  # In c++ 25
+        #self.si  = state(200*60 ,0.23,50,0) #state(0,0.23,50,0)   # start in the future
+        
+        
+        self.si  = state(0 ,0.130000,50.000000,0.000000) 
+        self.it  = 0
+        self.state_curr   = self.si
+        self.pattern_curr = []
+        self.ai      = action()   #?
+        self.actions = []
+        self.states  = []
+        self.actions.append(self.ai)        
+        self.states.append(self.si)
+        self.target = { 'Td' : 40, 'Vd' : 100,}, #data['Target'],   # 21 temperatura de comfort humanos
+        self.modes  = [action(1,0,0,0), 
+                       action(1,1,0,0), 
+                       action(2,0,0,0), 
+                       action(2,1,0,0), 
+                       action(3,0,0,1), 
+                       action(3,1,0,1), 
+                       action(2,0,0,1),
+                       action(2,1,0,1)]
+        
+    def forecast(self,X,pivotWindow,predictionSize):
+        days_in_year = pivotWindow
+        differenced = list()
+        #print(X)   
+        for i in range(days_in_year, len(X)):
+            value = X[i] - X[i - days_in_year]
+            differenced.append(value)
+        # fit model
+        model = ARIMA(differenced, order=(7,0,1))
+        model_fit = model.fit(disp=0)
+        # multi-step out-of-sample forecast
+        start_index = len(differenced)
+        end_index   = start_index + predictionSize
+        #end_index   = start_index + 49#6
+        forecast    = model_fit.predict(start=start_index, end=end_index)
+        #print(forecast)
+        # invert the differenced forecast to something usable
+        history = [x for x in X]
+        day = 1
+        pred = []
+        for yhat in forecast:
+            #inverted = inverse_difference(history, yhat, days_in_year)
+            inverted = yhat + history[-days_in_year] 
+            #print('Day %d: %f' % (day, inverted))
+            pred.append(inverted)
+            history.append(inverted)
+            day += 1
+        return pred
+                        
+    def configXML(self, f, it):
+        fin = open (f[0], "r")
+        fout= open (f[1], "w+")
+        t_min = int(it)+1 # +1    - t_min = int(self.state_curr.t/60)  #  ???????????????????????????????
+        print("configXML t_min it:", t_min)
+        #print("Predicting perturbations ..  ")
+        #pTe = self.forecast(list(self.Te[t_min-60*24:t_min]), 5*60, 59)
+        #pI  = self.forecast(list(self.I[t_min-60*24:t_min]), 5*60, 59)
+        pat_size = len(self.pattern_curr)
+        a = list( self.Te[ t_min : t_min + self.H_uppaal] ) 
+        b = list( self.I [ t_min : t_min + self.H_uppaal] )
+        c = list( self.Ti[ t_min : t_min + self.H_uppaal] )
+        d = list( self.t [ t_min : t_min + self.H_uppaal] )
+        e = list( self.v [ t_min : t_min + self.H_uppaal] )
+        f = list( self.pattern_curr[ 0: pat_size])
+        T_env_string = '{'+','.join([str(elem) for elem in a] )+'}'
+        I_string     = '{'+','.join([str(elem) for elem in b] )+'}'
+        #T_env_string = '{'+','.join([str(elem) for elem in pTe ])+'}'
+        #I_string     = '{'+','.join([str(elem) for elem in pI  ])+'}'
+        T_in_string  = '{'+','.join([str(elem) for elem in c] )+'}'
+        t_string     = '{'+','.join([str(elem) for elem in d] )+'}'
+        va_string    = '{'+','.join([str(elem) for elem in e] )+'}'
+        pat_ans_string = '{'+','.join([str(elem) for elem in f ] ) +'}'
+        #print("pattern_curr: ",self.pattern_curr)
+        #print("pat sent to uppaal: ",pat_ans_string)
+        #print("size: ",pat_size)
+        #print("Te sent to uppaal: %d "%(t_min),self.Te[ t_min:t_min+15])
+        while True:
+            line = fin.readline()
+            if (line == "//HOLDER_T_ini\n"):
+                fout.write('const double T_ini    = %5.5f; \n' % self.state_curr.T)
+            if (line == "//HOLDER_V_ini\n"):
+                fout.write('const double V_ini    = %5.5f; \n' % self.state_curr.V)
+            if (line == "//HOLDER_E_ini\n"):
+                fout.write('const double E_ini    = %5.5f; \n' % self.state_curr.E)
+            if (line == "//HOLDER_t_ini\n"):
+                fout.write('const double t_ini    = %5.5f; \n' % self.state_curr.t)
+            if (line == "//HOLDER_u\n"):
+                fout.write('int u                 = %d; \n' % int(self.state_curr.t/60) )
+            if (line == "//HOLDER_taumin\n"):
+                fout.write('int taumin            = %d; \n' % int(tau/60) )
+            if (line == "//HOLDER_factorTe\n"):
+                fout.write('const double factorTe = %5.5f; \n' % factorTe)
+            if (line == "//HOLDER_factorI\n"):
+                fout.write('const double factorI  = %5.5f; \n' % factorI)
+            if (line == "//HOLDER_factorKe\n"):
+                fout.write('const double factorKe = %5.5f; \n' % factorKe)
+            if (line == "//HOLDER_rateVo\n"):
+                fout.write('const double rateVo   = %5.5f; \n' % rate)
+            if (line == "//HOLDER_TwaterIn\n"):
+                fout.write('const double TwaterIn = %5.5f; \n' % TwaterIn)
+            if (line == "//HOLDER_tau\n"):
+                fout.write('const double tau      = %5.5f; \n' % tau)
+            if (line == "//HOLDER_T_env[H+1]\n"):
+                fout.write('const double T_env[%d]= %s; \n' % (self.H_uppaal,T_env_string) )
+            if (line == "//HOLDER_T_in[H+1]\n"):
+                fout.write('const double T_in[%d] = %s; \n' % (self.H_uppaal,T_in_string) )
+            if (line == "//HOLDER_I[H+1]\n"):
+                fout.write('const double I[%d]    = %s; \n' % (self.H_uppaal,I_string) )
+            if (line == "//HOLDER_t[H+1]\n"):
+                fout.write('const double t[%d]    = %s; \n' % (self.H_uppaal,t_string) )
+            if (line == "//HOLDER_va[H+1]\n"):                                                  # ????
+                fout.write('const double va[%d]   = %s; \n' % (self.H_uppaal,va_string) )		
+            if (line == "//HOLDER_modeAns\n"):
+                fout.write('const int modeAns     = %d; \n' % (self.d) )
+            if (line == "//HOLDER_mvalve\n"):
+                fout.write('int mvalve            = %d; \n' % (self.mode.v) )
+            if (line == "//HOLDER_robot\n"):
+                fout.write('int robot             =  0; \n')
+            else:
+                fout.write(line)
+            if not line :
+                break
+        return
+
+    def readUppaalValues(self,v):
+        v.pop(0)
+        for i in range(0,len(v)):
+            v[i] = v[i][1:len(v[i])-1].split(",")
+            v[i][0] = float(v[i][0])
+            v[i][1] = float(v[i][1])
+        #values = self.coordToVector(values)
+        l = [None]*self.nrSteps
+        print("v len: ",len(v))
+        for i in range(0,len(v)-1):
+            if (v[i][0] == v[i+1][0] and v[i+1][0]!=self.nrSteps*self.step ) :
+                it = int(v[i][0]/self.step)
+                l[it] = int(v[i+1][1])
+        for i in range(0,self.nrSteps):
+            if l[i] == None:
+                l[i] = 0
+        print("l:", l)
+        return l
+
+    def callUppaal(self,f):
+        print("calling Uppaal .. ")
+        line = "/home/serendipita/Documents/Ans/AugustFiles/software/uppaal64-4.1.20-stratego-7/bin-Linux/verifyta " + f[1] + " " + f[2] + " --learning-method 5"
+        n = os.popen(line).readlines()
+        i = 0
+        #print("line:  ",n)
+        while(1):
+            if n[i] == "ppos:\n":
+                ppos = n[i+1].split()
+            if n[i] == "visitedPatterns:\n":
+                visitedPatterns = n[i+1].split()
+            if n[i] == "mode:\n":
+                mode  = n[i+1].split()
+            if n[i] == "flag:\n":
+                flag  = n[i+1].split()
+            if n[i] == "Tnext:\n":
+                Tnext = n[i+1].split()
+            if n[i] == "zi:\n":
+                zi = n[i+1].split()
+            if n[i] == "mvalve:\n":
+                mvalve = n[i+1].split()
+                break
+            i = i + 1
+        mvalve = self.readUppaalValues(mvalve)
+        ppos   = self.readUppaalValues(ppos)
+        mode   = self.readUppaalValues(mode)
+        flag   = self.readUppaalValues(flag)
+        visitedPatterns = self.readUppaalValues(visitedPatterns)
+        
+        #print("Tnext: ", Tnext)
+        #print("zi: ", zi)
+        Tnext = Tnext[2][1:len(Tnext[2])-1].split(",")
+        zi    = zi[2][1:len(zi[2])-1].split(",")
+        print("Tnext uppaal: ",Tnext[1])
+        print("zonotope uppaal:  ",zi[1])
+        index = len(ppos)-1
+        for i in range(0,len(ppos)):
+            if ppos[index]==1:
+                break
+            index = index -1
+        pt = mode[0:index]
+        print("pt: ", pt)
+        #gValves.append(mvalve[0:index])
+        return pt
+
+    def uppaalController(self,q,s):
+        it = int(self.it)
+        f = ["./sources/uppaal/random.xml","./sources/uppaal/randomc.xml","./sources/uppaal/1c.q"] 
+        self.configXML(f,it)
+        p = self.callUppaal(f)
+        h = int( (s.t)/(60*60) ) 
+        m = (s.t)/60- h*60
+        print("time: %d h - %d min"%(h,m) , "-  patterns uppaal controller: ",p, "  +",len(p)*5)
+        q.put(p)
+
+    def initialSafeController(self,s):
+        pattern = query(s)["pat"]
+        print(":)) ",s.t,s.T,s.V, pattern)
+        h = int( (s.t)/(60*60) ) 
+        m = (s.t)/60- h*60
+        print("time: %d h - %d min"%(h,m) , "-  pattern simple once controller: ",pattern, " +",len(pattern)*5)
+        return pattern
+
+    def predictiveSafeController(self,q,s):  # perturbations predictions
+        #pat = self.pattern_curr
+        #print("s func: ", s)
+        s_future = s
+        taumin   = int(tau/60)
+        for i in range(self.it,self.it+taumin):
+            E = s_future.E + self.dt*self.mode.r*2  # dt = 0.1
+            V = s_future.V + self.dt*rate*( 0.1*self.mode.p - s_future.V ) # 0.5 = rate 0.01 = rate            self.rate_volume_change = 0.0002 # 0.193 
+            T = s_future.T + self.dt*(1/(0.1*self.mode.p))*( 
+                        - factorTe*2.8811059759131854e-06*(s_future.T-self.Te[i]) 
+                        - self.mode.v*9.34673995175876e-05*(s_future.T-self.Ti[i])                 # valve
+                        - self.mode.f*factorKe*0.001005026*(0.1*self.mode.p-s_future.V)*(s_future.T-self.Ti[i])
+                        + factorI*0.7*0.7*8.403225763080125e-07*self.I[i]
+                        + self.mode.r*0.008801843 )#0.00048018432931886426
+            s_future.E = E
+            s_future.V = V
+            s_future.T = T
+            s_future.t = s_future.t + self.dt
+        obj = query(s_future)
+        pattern = obj["pat"]            
+        h = int( (s_future.t)/(60*60) ) 
+        m = (s_future.t)/60- h*60
+        #p = patterns[ int((len(patterns)-1)/2) ]
+        #print("time: %d h - %d min"%(h,m) ,"self.d: ",self.d, " mode: ", self.mode, "s: ",s," sfuture: ", s_future , " zonotope: ",z[iz],"-  patterns predictive safe controller: ",pattern)
+        #print("s future: ",s_future, "valve: ", self.mode.v , "pattern predicted: ", pattern)
+        print("zonotope in controller: ", obj["i"], " Te: {%d %d %d %d %d} "%(self.Te[self.it],self.Te[self.it+1],self.Te[self.it+2],self.Te[self.it+3],self.Te[self.it+4]),"pattern: ",pattern)
+        q.put(pattern)
+
+    def randomValve(self):
+        value = random.randint(0,20)
+        if value == 3:
+            return 1 
+        return 0
+
+    def test(self,s):
+        s_test = state(s.t,s.V,s.T,s.E)
+        taumin   = int(tau/60)
+        for i in range(self.it,self.it+taumin):
+            Es = s_test.E + self.dt*self.mode.r*2  # dt = 0.1
+            Vs = s_test.V + self.dt*rate*( 0.1*self.mode.p - s_test.V) # 0.5 = rate 0.01 = rate            self.rate_volume_change = 0.0002 # 0.193 
+            Ts = s_test.T + self.dt*(1/(0.1*self.mode.p))*(
+                        - factorTe*2.8811059759131854e-06*(s_test.T-self.Te[i]) 
+                        - self.mode.v*9.34673995175876e-05*(s_test.T-self.Ti[i])                 # valve
+                        - self.mode.f*factorKe*0.001005026*(0.1*self.mode.p-s_test.V)*(s_test.T-self.Ti[i])
+                        + factorI*0.7*0.7*8.403225763080125e-07*self.I[i]
+                        + self.mode.r*0.008801843 )#0.00048018432931886426
+            s_test.E = Es
+            s_test.V = Vs
+            s_test.T = Ts
+            s_test.t = s_test.t + self.dt        
+        print("then: ",s_test, " mode: ",self.mode)
+        return s_test
+
+    def simulation(self,controlName):      
+        controllers = {"normal":self.predictiveSafeController,"uppaal":self.uppaalController,}
+        s        = self.si        
+        dt       = self.dt 
+        num_tau  = tau/dt                  
+        pat      = self.initialSafeController(s)   # Safe Pattern to start
+        self.pattern_curr = list(pat)
+        self.state_curr = s
+        print("***********************************ONCE********")
+        q = multiprocessing.Queue()
+        p = multiprocessing.Process(target=controllers[controlName], args=(q,s))
+        for i in range(0,self.num-self.H_uppaal):  # H_uppaal offset - Sending Predictions Pertirbuation 
+            if i%(num_tau) == 0:
+                if(len(pat) == 0):
+                    pat = q.get()  
+                    print("*************************************************")                                     
+                    print(" zonotope in python: ", query(s)["i"]  )
+                    self.d = pat.pop(0)
+                    self.mode = action(self.modes[self.d].p,self.modes[self.d].r,0,self.modes[self.d].f) 
+                elif(len(pat) == 1):
+                    print("..................................................")             
+                    print("state sent to uppaal: ",s," valve: ",  )
+                    #time.sleep(1)
+                    self.d = pat.pop(0)           
+                    self.mode = action(self.modes[self.d].p,self.modes[self.d].r,0,self.modes[self.d].f) 
+                    print("mode python: ", self.mode)
+                    print("List of possible patterns to next state:", x[query(self.test(s))["i"]])   ## ??????????
+                    #p.join()               #??
+                    p = multiprocessing.Process(target=controllers[controlName], args=(q,s))
+                    p.start()
+                elif(len(pat) > 1):
+                    self.d = pat.pop(0) 
+                    self.mode = action(self.modes[self.d].p,self.modes[self.d].r,0,self.modes[self.d].f) 
+                self.mode.v = gValves[int(i/num_tau)]
+                
+                print("d: ",self.d)
+            E = s.E + dt*self.mode.r*2
+            V = s.V + dt*0.01000*( 0.1*self.mode.p - s.V ) 
+            T = s.T + dt*(1/(0.1*self.mode.p))*( 
+                        - factorTe*2.8811059759131854e-06*(s.T-self.Te[i])
+                        - self.mode.v*9.34673995175876e-05*(s.T-self.Ti[i])
+                        - self.mode.f*factorKe*0.001005026*(0.1*self.mode.p-s.V)*(s.T-self.Ti[i]) 
+                        + factorI*0.7*0.7*8.403225763080125e-07*self.I[i]
+                        + self.mode.r*0.008801843 )#0.00048018432931886426 #  0.1*mode.p-V  ->  T.T
+            t = s.t + dt
+            s = state(t,V,T,E)
+            h = int( (s.t)/(60*60) ) 
+            m = (s.t)/60-h*60
+            self.it = i
+            self.state_curr = s         
+            #print("it: ",self.it,"time: %d h - %d min"%(h,m)," state: ",self.state_curr,"- Te: ",self.Te[i])
+            self.actions.append(self.mode)
+            self.states.append( s )
+        return {"s": self.states, "a": self.actions, "H":self.H}
+
+def plot(data):
+    T = []
+    V = []
+    E = []
+    r = []
+    p = []
+    v = []
+    time = []
+    for i in data["s"]: # we chat the offspring .. 
+        T.append(i.T)
+        V.append(i.V)
+        E.append(i.E)
+        time.append(i.t)
+    for i in data["a"]:
+        r.append(i.r)
+        p.append(i.p+4)
+        v.append(i.v+2)
+    plt.figure( figsize=(11, 11))
+    grid = plt.GridSpec(4, 4, wspace=0.8, hspace=0.7)
+    plt.subplot( grid[0,:2] )
+    plt.plot(time,T , 'red',linewidth=0.8, label='Zero Strategy') 
+    plt.gcf().autofmt_xdate()                       # ?
+    plt.ylabel('T(Celsius)')
+    plt.xlabel('time(s)')
+    plt.legend()
+    plt.grid(True)
+    plt.subplot( grid[0:1,2:4] )
+    plt.plot(time,E,'red',linewidth=0.8,label="Zero Strategy")
+    plt.ylabel('Energy(kJ)')
+    plt.xlabel('time(s)')
+    plt.legend()
+    plt.grid(True)
+    plt.subplot( grid[1:3,0:2] )
+    plt.plot(V,T,'black',linewidth=0.5)
+    plt.plot([R[0][0] , R[0][0], R[0][1], R[0][1],R[0][0]],
+             [R[1][0] , R[1][1], R[1][1], R[1][0],R[1][0]],
+                'red',label="R region")
+    plt.plot([S[0][0] , S[0][0], S[0][1], S[0][1],S[0][0]],
+             [S[1][0] , S[1][1], S[1][1], S[1][0],S[1][0]],
+                'purple',label="S region")
+    #plt.axis([10,100,0,0.4])
+    plt.axis([0,0.4,10,100])
+    plt.title('zero Strategy')
+    plt.ylabel('T(L)')
+    plt.xlabel('V(C)')
+    plt.legend()
+    plt.grid(True)
+    # but have shapes (2881,) and (576,)
+    plt.subplot( grid[3,:2] )
+    plt.plot(time,r,'red',linewidth=0.8,label="resistance")
+    plt.plot(time,v,'purple',linewidth=0.8,label="valve")
+    plt.plot(time,p,'orange',linewidth=0.8,label="piston")
+    plt.axis([0,data["H"],0,8])
+    plt.ylabel('{r,v,p}')
+    plt.xlabel('time(s)')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
+def plot2(data,data2):
+    T = []
+    V = []
+    E = []
+    r = []
+    p = []
+    v = []
+
+    T2 = []
+    V2 = []
+    E2 = []
+    r2 = []
+    p2 = []
+    v2 = []
+
+    time = []
+    for i in data["s"]:
+        T.append(i.T)
+        V.append(i.V)
+        E.append(i.E)
+        time.append(i.t)
+
+    for i in data["a"]:
+        r.append(i.r)
+        p.append(i.p+4)
+        v.append(i.v+2)
+    
+    for i in data2["s"]:
+        T2.append(i.T)
+        V2.append(i.V)
+        E2.append(i.E)
+
+    for i in data2["a"]:
+        r2.append(i.r)
+        p2.append(i.p+4)
+        v2.append(i.v+2)
+
+    plt.figure( figsize=(11, 11))
+    grid = plt.GridSpec(4, 4, wspace=0.8, hspace=0.7)
+    plt.subplot( grid[0,:2] )
+    plt.plot(time,T , 'red',linewidth=0.8, label='Zero Strategy')
+    plt.plot(time,T2 , 'purple',linewidth=0.8, label='Learned Strategy') 
+    #plt.gcf().autofmt_xdate()                       # ?
+    plt.ylabel('T(Celsius)')
+    plt.xlabel('time(s)')
+    plt.legend()
+    plt.grid(True)
+    plt.subplot( grid[0:1,2:4] )
+    plt.plot(time,E,'red',linewidth=0.8,label="No Strategy")
+    plt.plot(time,E2,'purple',linewidth=0.8,label="Learned Strategy")
+    plt.ylabel('Energy(kJ)')
+    plt.xlabel('time(s)')
+    plt.legend()
+    plt.grid(True)
+    plt.subplot( grid[1:3,0:2] )
+    plt.plot(V,T,'black',linewidth=0.5)
+    plt.plot([R[0][0] , R[0][0], R[0][1], R[0][1],R[0][0]],
+             [R[1][0] , R[1][1], R[1][1], R[1][0],R[1][0]],
+                'red',label="R region")
+    plt.plot([S[0][0] , S[0][0], S[0][1], S[0][1],S[0][0]],
+             [S[1][0] , S[1][1], S[1][1], S[1][0],S[1][0]],
+                'purple',label="S region")
+    #plt.axis([10,100,0,0.4])
+    plt.axis([0,0.4,10,100])
+    plt.title('No Strategy')
+    plt.ylabel('Temperature(C)')
+    plt.xlabel('Volume(L)')
+    plt.legend()
+    plt.grid(True)
+    plt.subplot( grid[1:3,2:4] )
+    plt.plot(V2,T2,'black',linewidth=0.5)
+    plt.plot([R[0][0] , R[0][0], R[0][1], R[0][1],R[0][0]],
+             [R[1][0] , R[1][1], R[1][1], R[1][0],R[1][0]],
+                'red',label="R region")
+    plt.plot([S[0][0] , S[0][0], S[0][1], S[0][1],S[0][0]],
+             [S[1][0] , S[1][1], S[1][1], S[1][0],S[1][0]],
+                'purple',label="S region")
+    #plt.axis([10,100,0,0.4])
+    plt.axis([0,0.4,10,100])
+    plt.title('Learned Strategy')
+    plt.ylabel('Temperature(C)')
+    plt.xlabel('Volume(L)')
+    plt.legend()
+    plt.grid(True)
+    # but have shapes (2881,) and (576,)
+    plt.subplot( grid[3,:2] )
+    plt.plot(time,r,'red',linewidth=0.8)
+    plt.plot(time,v,'purple',linewidth=0.8)
+    plt.plot(time,p,'orange',linewidth=0.8)
+    plt.axis([0,data["H"],0,8])
+    plt.ylabel('{r,v,p}')
+    plt.xlabel('time(s)')
+    plt.legend()
+    plt.grid(True)
+    plt.subplot( grid[3,2:4] )
+    plt.plot(time,r2,'red',linewidth=0.8,label="resistance")
+    plt.plot(time,v2,'purple',linewidth=0.8,label="valve")
+    plt.plot(time,p2,'orange',linewidth=0.8,label="piston")
+    plt.axis([0,data2["H"],0,8])
+    plt.ylabel('{r,v,p}')
+    plt.xlabel('time(s)')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
+valvesGeneration()
+B = automaton()
+data2 = B.simulation("uppaal")
+A = automaton()
+data  = A.simulation("normal")
+plot2(data,data2)
+#plot(data)
+
+
+# https://pyinterval.readthedocs.io/en/latest/guide.html
+# https://www.programiz.com/python-programming/json
+# https://www.programiz.com/python-programming/json

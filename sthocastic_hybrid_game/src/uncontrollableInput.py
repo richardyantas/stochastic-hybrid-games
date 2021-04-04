@@ -10,5 +10,5 @@ def setUncontrallableInput():
     uInput[ int(random.gauss(7*60/5, standardDeviation) )  ] = 1
     uInput[ int(random.gauss(13*60/5,standardDeviation) )  ] = 1
     uInput[ int(random.gauss(19*60/5,standardDeviation) )  ] = 1
-  print("uInput: ", uInput) 
+  # print("uInput: ", uInput) 
   return uInput
