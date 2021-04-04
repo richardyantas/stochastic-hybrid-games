@@ -4,7 +4,7 @@
 #include <queue>
 #include <cmath>
 #include <json/json.h>
-
+#include "jsonUtils.h"
 using namespace std;
 // some variables to test the different algorithms
 //#define POST 1
@@ -18,37 +18,6 @@ using namespace std;
 using namespace ibex;
 // Data type for sampled switched systems
 
-template<class T>
-Json::Value jvec1D(vector<T> in)
-{
-  Json::Value jvec;
-  for (int i = 0; i < in.size(); i++)
-  {
-    jvec.append(in[i]);
-  }
-  return jvec;
-}
-
-template<class T>
-Json::Value jvec2D(vector<vector<T>> in)
-{
-  Json::Value jvec;
-  for (int i = 0; i < in.size(); i++)
-  {
-    jvec.append( jvec1D<T>(in[i]));
-  }
-  return jvec;
-}
-
-Json::Value jBox(IntervalVector box)
-{
-  Json::Value jvec;
-  for(int i=0;i<box.size();i++)
-  {
-    jvec.append(jvec1D<float>(vector<float> {float(box[i].lb()), float(box[i].ub())}));
-  }
-  return jvec;
-}
 
 typedef struct {
   double period;
@@ -162,7 +131,6 @@ bool findPattern2 (const sampledSwitchedSystem& sys, const IntervalVector W,
   return res;
 }
 
-
 // The main algorithm of minimator
 bool decompose (const sampledSwitchedSystem& sys, const IntervalVector W,
 		const IntervalVector R, const IntervalVector B,
@@ -205,8 +173,6 @@ bool decompose (const sampledSwitchedSystem& sys, const IntervalVector W,
     return true;
   }
 }
-
-
 
 int main()
 {
@@ -257,7 +223,7 @@ int main()
 
     double p,r; 
     p = 1, r = 0; 
-    Function m0 = Function(x, Return( -factorTe*2.8811059759131854e-6*(x[0]-Te)/(0.1*p)                                        
+    Function m0 = Function(x, Return( -factorTe*2.8811059759131854e-6*(x[0]-Te)/(0.1*p)
                                             - Interval(0,1)*9.34673995175876e-05*(x[0]-Ti)/(0.1*p)
                                             + factorI*0.7*0.7*8.403225763080125e-07*I/(0.1*p)       
                                             + factorE*r*0.008801843/(0.1*p)  

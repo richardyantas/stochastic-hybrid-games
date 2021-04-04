@@ -11,8 +11,7 @@ def query(state):   # state[0] = E, state[1] = V, state[2] = T
         if (state[2] in z0 and state[1] in z1):
             # We can implement a optimal logical her e, deep learning
             # n = random.randint(0,len(x[i])-1) # 1
-            n = 1
-            
+            n = 1            
             return {"pat":list(patterns[i][n]),"i":i}
     print("Not found state: ", state)
     
@@ -62,7 +61,7 @@ def uppaalController(q,s):
     # p = callUppaal(f)
     # h = int( (s.t)/(60*60) )
     # m = (s.t)/60- h*60
-    print("time: %d h - %d min"%(h,m) , "-  patterns uppaal controller: ",p, "  +",len(p)*5)
+    # print("time: %d h - %d min"%(h,m) , "-  patterns uppaal controller: ",p, "  +",len(p)*5)
     q.put(p)
 
 controllers = {"normal": predictiveSafeController, "uppaal": uppaalController}
