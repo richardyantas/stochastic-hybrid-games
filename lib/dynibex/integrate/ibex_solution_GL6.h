@@ -111,8 +111,8 @@ private:
 	  Affine2Vector remainder_gauss6(ivp_ode* _ode)
 	  {
 	    double h=time_j.diam();
-	    double tol = 1e-20;//atol*0.001;
-
+	    //double tol = 1e-20;//atol*0.001;
+			// dfd
 	    IntervalVector k1 = _ode->compute_derivatives(1,*box_j1);
 	    IntervalVector k2(k1);
 	    IntervalVector k3(k1);

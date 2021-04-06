@@ -735,8 +735,8 @@ namespace ibex{
     /**give first instant when tube crosses a box y*/
     Interval has_crossed_when(IntervalVector& y)
     {
-      if (y.size()!=embedded_ode->nbvar)
-	return Interval(-1.0);
+      if (y.size() != int(embedded_ode->nbvar) )
+				return Interval(-1.0);
 
       if(!list_solution_g.empty())
 	{
@@ -760,7 +760,7 @@ namespace ibex{
     bool has_crossed_before(IntervalVector& y, double time)
     {
       bool test = false;
-      if (y.size()!=embedded_ode->nbvar)
+      if (y.size()!=int(embedded_ode->nbvar))
 	return test;
 
       if(!list_solution_g.empty())
