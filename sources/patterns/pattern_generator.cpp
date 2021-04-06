@@ -6,18 +6,12 @@
 #include <json/json.h>
 #include "jsonUtils.h"
 using namespace std;
-// some variables to test the different algorithms
-//#define POST 1
-//#define FIND_PATTERN 1
-#define DECOMPOSE 1
+using namespace ibex;
 // Macro variables to set the values of the maximal length of a
 // pattern (NB_K) and the maximal number of splittings of the
 // state-space (NB_D)
 // #define NB_K 3
 // #define NB_D 20
-using namespace ibex;
-// Data type for sampled switched systems
-
 
 typedef struct {
   double period;

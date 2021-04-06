@@ -22,7 +22,8 @@ include_directories(${PROJECT_SOURCE_DIR}/config
   ${PROJECT_SOURCE_DIR}/lib/dynibex/tools
 )
 
-set(SOURCES pattern_generator_test.cpp ${PROJECT_SOURCE_DIR}/sources/patterns/foo.cpp)
+# set(SOURCES pattern_generator_test.cpp ${PROJECT_SOURCE_DIR}/sources/patterns/foo.cpp)
+set(SOURCES pattern_generator_test.cpp)
 
 add_executable (
   pattern_generator_test
