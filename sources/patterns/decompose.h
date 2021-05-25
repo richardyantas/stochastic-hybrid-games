@@ -16,6 +16,7 @@ bool decompose (const sampledSwitchedSystem& sys, const IntervalVector W,
   q.push (W);
   unsigned int nbStep = d;
   while (!q.empty() && nbStep > 0) {
+    
     IntervalVector current = q.front ();
     q.pop();
     bool flag = findPattern2(sys, current, R, B, S, k, res_pattern_list);

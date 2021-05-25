@@ -29,12 +29,12 @@ void parseResultsToJson(vector<pair <IntervalVector, list<vector<int> > > > resu
 }
 
 void decomposeBoxes(IntervalVector current_W){
-    //cout << "taille list_W : " << list_W.size() << endl;
+    cout << "taille list_W : " << list_W.size() << endl;
     vector<pair <IntervalVector, list<vector<int> >   > > result;
     unsigned int k = NB_K, d = NB_D;
     bool flag = decompose(sys, current_W, R, B, S, k, d, result);
     if (result.empty()) {
-        //cerr << "No solution with k = " << k << " and d = " << d << endl;
+        cerr << "No solution with k = " << k << " and d = " << d << endl;
         //file << current_W << " : no sol" << std::endl;
     }
     else{
@@ -42,31 +42,57 @@ void decomposeBoxes(IntervalVector current_W){
             cerr << "Complete result -> PROOF" << endl;
             result_total.push_back(result);
         }
-        else                
-            cerr << "Incomplete result" << endl;   
+        else
+            cerr << "Incomplete result" << endl;
         // this part
         parseResultsToJson(result);
     }
 }
 
-int main(){
-    readParameters();
+// running from build directory
+// make && ./bin/pattern_generator ../sources/patterns/parameters.json ../sources/patterns/pattern.json
+
+int main(int argc, char* argv[]){
+    readParameters(argv[1], argv[2]);
     setModel();
-    setFunction();
+    
+    // setFunction();
+    list<IntervalVector> list_W;
+    
     list_W.push_back(W);
     while(!list_W.empty()){
         IntervalVector current_W = list_W.front();
-        list_W.pop_front();
+        list_W.pop_front();        
         if (current_W.diam().max() > 0.6){
+            // cout << current_W << endl;
             LargestFirst bbb(0.1,0.5);
             pair<IntervalVector, IntervalVector> p = bbb.bisect(current_W);
             list_W.push_back(p.first);
             list_W.push_back(p.second);
             continue;
         }
-        decomposeBoxes(current_W); 
+        //decomposeBoxes(current_W); 
+
+        cout << "taille list_W : " << list_W.size() << endl;
+        vector<pair <IntervalVector, list<vector<int> >   > > result;
+        unsigned int k = NB_K, d = NB_D;
+        bool flag = decompose(sys, current_W, R, B, S, k, d, result);
+        if (result.empty()) {
+            cerr << "No solution with k = " << k << " and d = " << d << endl;
+            //file << current_W << " : no sol" << std::endl;
+        }
+        else{
+            if (flag){
+                cerr << "Complete result -> PROOF" << endl;
+                result_total.push_back(result);
+            }
+            else                
+                cerr << "Incomplete result" << endl;   
+            // this part
+            parseResultsToJson(result);
+        }
     }
-    //file << jsonWriter.write(event); 
+    // //file << jsonWriter.write(event); 
     ofile << writeString(jsonWriter,event); // ?
     ofile.close();
     return 0;
