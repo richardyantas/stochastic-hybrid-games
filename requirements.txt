@@ -4,28 +4,31 @@
 #
 #    pip-compile requirements.in
 #
-attrs==20.3.0             # via pytest
+attrs==21.2.0             # via pytest
+autopep8==1.5.7           # via -r requirements.in
 crlibm==1.0.3             # via pyinterval
 cycler==0.10.0            # via matplotlib
-importlib-metadata==3.7.1  # via pluggy, pytest
+importlib-metadata==4.0.1  # via pluggy, pytest
 iniconfig==1.1.1          # via pytest
 kiwisolver==1.3.1         # via matplotlib
-matplotlib==3.3.3         # via -r requirements.in
-numpy==1.19.4             # via -r requirements.in, matplotlib, pandas, patsy, scipy, statsmodels
+matplotlib==3.4.2         # via -r requirements.in
+numpy==1.20.3             # via -r requirements.in, matplotlib, pandas, patsy, scipy, statsmodels
 packaging==20.9           # via pytest
-pandas==1.1.5             # via -r requirements.in, statsmodels
+pandas==1.2.4             # via -r requirements.in, statsmodels
 patsy==0.5.1              # via statsmodels
-pillow==8.0.1             # via matplotlib
+pep8==1.7.1               # via -r requirements.in
+pillow==8.2.0             # via matplotlib
 pluggy==0.13.1            # via pytest
 py==1.10.0                # via pytest
+pycodestyle==2.7.0        # via autopep8
 pyinterval==1.2.0         # via -r requirements.in
 pyparsing==2.4.7          # via matplotlib, packaging
-pytest==6.2.2             # via -r requirements.in
+pytest==6.2.4             # via -r requirements.in
 python-dateutil==2.8.1    # via matplotlib, pandas
-pytz==2020.4              # via pandas
-scipy==1.5.4              # via statsmodels
-six==1.15.0               # via cycler, patsy, pyinterval, python-dateutil
-statsmodels==0.12.1       # via -r requirements.in
-toml==0.10.2              # via pytest
-typing-extensions==3.7.4.3  # via importlib-metadata
+pytz==2021.1              # via pandas
+scipy==1.6.3              # via statsmodels
+six==1.16.0               # via cycler, patsy, pyinterval, python-dateutil
+statsmodels==0.12.2       # via -r requirements.in
+toml==0.10.2              # via autopep8, pytest
+typing-extensions==3.10.0.0  # via importlib-metadata
 zipp==3.4.1               # via importlib-metadata

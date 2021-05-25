@@ -25,9 +25,12 @@ include_directories(${PROJECT_SOURCE_DIR}/lib/config
 file(GLOB SOURCES "*.cpp")
 # target_link_libraries(config)
 add_executable(test_libconfig test_libconfig.cpp)
-add_executable(test_json_ofstream test_json_ofstream.cpp)
-add_executable(test_ibex_json test_ibex_json.cpp)
+# add_executable(test_json_ofstream test_json_ofstream.cpp)
+# add_executable(test_json_ifstream test_json_ifstream.cpp)
+# add_executable(test_ibex_json test_ibex_json.cpp)
 
-target_link_libraries(test_json_ofstream ${PROJECT_SOURCE_DIR}/build/lib/libjsoncpp.so)
+
+# target_link_libraries(test_json_ifstream ${PROJECT_SOURCE_DIR}/build/lib/libjsoncpp.so)
+# target_link_libraries(test_json_ofstream ${PROJECT_SOURCE_DIR}/build/lib/libjsoncpp.so)
 target_link_libraries(test_libconfig PUBLIC config ${PROJECT_SOURCE_DIR}/build/lib/libjsoncpp.so)
-target_link_libraries(test_ibex_json ${PROJECT_SOURCE_DIR}/lib/dynibex/libibex.a prim ${PROJECT_SOURCE_DIR}/build/lib/libjsoncpp.so)
+# target_link_libraries(test_ibex_json ${PROJECT_SOURCE_DIR}/lib/dynibex/libibex.a prim ${PROJECT_SOURCE_DIR}/build/lib/libjsoncpp.so)

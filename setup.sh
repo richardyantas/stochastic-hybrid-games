@@ -14,7 +14,6 @@
 # alias uppaaltest="/home/serendipita/Documents/Ans/AugustFiles/software/uppaal64-4.1.20-stratego-7/bin-Linux/verifyta"
 # alias uppaal="/home/serendipita/Documents/Ans/AugustFiles/software/uppaal64-4.1.20-stratego-7/uppaal"
 
-
 # Automate make and test operation from one file
 #export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/serendipita/Documents/uppaalLibrary/build/lib/
 
