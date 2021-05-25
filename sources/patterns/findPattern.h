@@ -15,11 +15,12 @@ bool findPattern2 (const sampledSwitchedSystem& sys, const IntervalVector W,
   list<pair <IntervalVector,vector<int> > > list_sol;
   list_node.push_back(node_init);
   //int nb_pattern = NB_M;
-  int nb_pattern = sys.nb_dynamics;
+  int nb_pattern = sys.nb_dynamics;   // number of ODE's 
   bool res = false;
   //bool res_temp = false;
   while(!list_node.empty())
   {    
+    
     //std::cout << "size of list : " << list_node.size() << std::endl;    
     node node_current = list_node.front();
     list_node.pop_front();     
@@ -42,6 +43,7 @@ bool findPattern2 (const sampledSwitchedSystem& sys, const IntervalVector W,
           continue;
         } 
       }
+      //cout << "dev " << endl;
       //res_temp = false;
       if (node_current.pattern.empty())
 	      std::cout << "current pattern : " << i << std::endl;
@@ -73,14 +75,13 @@ bool findPattern2 (const sampledSwitchedSystem& sys, const IntervalVector W,
           //nop
         }
         else
-        {
-          
+        {          
           if (stay_S)// && !cross_B)
           {
             if (node_current.pattern.size() < k)
             {
               // In this part add  the filter
-              std::cout << "Increment of pattern !" << std::endl;	      
+              std::cout << "Increment of pattern !" << std::endl;
               node new_node;
               new_node.Yinit = new IntervalVector(*node_current.Yinit);
               new_node.Ycurrent = new Affine2Vector(simu.get_last());     
@@ -91,7 +92,7 @@ bool findPattern2 (const sampledSwitchedSystem& sys, const IntervalVector W,
               new_node.pattern = new_pattern;
               list_node.push_back(new_node);	                                             
             }
-          }
+           }
         }
       }
     }
