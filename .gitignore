@@ -1,3 +1,6 @@
+__pycache__/
+*.py[cod]
 /literature/BOOKS
 /build
 .vscode/
+.pytest_cache
