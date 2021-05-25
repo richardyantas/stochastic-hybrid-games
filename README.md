@@ -68,3 +68,9 @@ add `import argparse` arparse is already incorporated in python (standar package
 ```
 conda remove --name ucsp_solar --all
 ```
+
+# 4.- run the project
+
+    export PYTHONPATH=.
+    python sthocastic_hybrid_game/src/run_experiment.py
+
