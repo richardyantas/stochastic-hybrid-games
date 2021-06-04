@@ -20,7 +20,10 @@ FACTOR_I = SAFE_DATA["factorI"]
 FACTOR_KE = SAFE_DATA["factorKe"]
 RATE = SAFE_DATA["rate"]
 TWATER_IN = SAFE_DATA["TwaterIn"]
+R_BOUNDARY = SAFE_DATA["R"]
+S_BOUNDARY = SAFE_DATA["S"]
 
+#           p, r, f    -> this c_mode order is copied from c++ code model.cpp
 C_MODES = [[1, 0, 0],
            [1, 1, 0],
            [2, 0, 0],
@@ -30,39 +33,28 @@ C_MODES = [[1, 0, 0],
            [2, 0, 1],
            [2, 1, 1]]
 
-U_MODES = np.zeros(24*12).tolist()
-
-
-def uncontrollable_action_generation():
-    U_MODES = (np.zeros(24*12)).tolist()
-    num_actions = random.randrange(5, 8)
-    standard_deviation = 1*3  # 1*60/5
-    for i in range(0, num_actions):
-        U_MODES[int(random.gauss(7*60/5, standard_deviation))] = 1
-        U_MODES[int(random.gauss(13*60/5, standard_deviation))] = 1
-        U_MODES[int(random.gauss(19*60/5, standard_deviation))] = 1
-    return U_MODES
-
 
 class SWH():
-    def __init__(self, data_config: Dict[str, Any], disturbs: Dict[str, Any], args: argparse.Namespace = None) -> None:
+    def __init__(self, data_config: Dict[str, Any], disturbs: Dict[str, Any], u_actions: list, args: argparse.Namespace = None) -> None:
         self.args = vars(args) if args is not None else {}
         self.life_time = data_config["life_time"]
         self.data_sample_time = data_config["data_sample_time"]
         self.dt = data_config["dt"]
+        self.u_actions = u_actions
         self.Te = disturbs["Te"]
         self.Ti = disturbs["Ti"]
         self.I = disturbs["I"]
+        self.t = disturbs["t"]
         self.factorTe = FACTOR_TE
         self.factorI = FACTOR_I
         self.factorKe = FACTOR_KE
         self.x = INITIAL_STATE
-        uncontrollable_action_generation()
+        R = R_BOUNDARY
+        S = S_BOUNDARY
 
-    # @classmethod
     def post(self, mode: int, x: list, index: int) -> list:
         c_actions = C_MODES[mode]
-        u_action = 0  # U_MODES[index]
+        u_action = self.u_actions[index]  # u_action = 1   U_MODES[index]
         x[0] = x[0] + self.dt*c_actions[1]*2
         x[1] = x[1] + self.dt*0.01000*(0.1*c_actions[0] - x[1])
         x[2] = x[2] + self.dt*(1/(0.1*c_actions[0]))*(
@@ -80,9 +72,12 @@ class SWH():
     def get_controllable_modes(self):
         return C_MODES
 
-    def update(self, mode, x, index):
-        self.x = self.post(mode, x, index)
-        return self.x
+    def get_uncontrollable_actions(self):
+        return self.u_actions
+
+    def update(self, mode, state, index):
+        state = self.post(mode, state, index)
+        return state
 
     @ staticmethod
     def add_to_argparse(parser):
