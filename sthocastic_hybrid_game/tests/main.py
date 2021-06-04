@@ -20,16 +20,29 @@ import sys
 #command_line = "/home/serendipita/Documents/uppaalLibrary/lib/uppaal/bin-Linux/verifyta " + f[0] + " " + f[1] + " --learning-method 5"
 # f = ["foo.xml","foo.q"]
 # callUppaal(f)
-#print(callUppaal(f))
+# print(callUppaal(f))
+
+# export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/serendipita/Documents/ansmay/aalborgUniversity/uppaalLibrary/build/lib/
+# python sthocastic_hybrid_game/tests/main.py lib/uppaal/bin-Linux/verifyta sthocastic_hybrid_game/tests/foo.xml sthocastic_hybrid_game/tests/foo.q
+
 
 def callUppaal():
-  print("calling Uppaal .. ")
-  command_line = str(sys.argv[1]) + " " + str(sys.argv[2]) + " " + str(sys.argv[3]) + " --learning-method 5"
-  print(command_line)
-  n = os.popen(command_line).readlines()
-  print(n)
+    print("calling Uppaal .. ")
+    command_line = str(sys.argv[1]) + " " + str(sys.argv[2]) + \
+        " " + str(sys.argv[3]) + " --learning-method 5"
+    print(command_line)
+    n = os.popen(command_line).readlines()
+    print(n)
 
-# python main.py ../lib/uppaal/bin-Linux/verifyta foo.xml foo.q 
+# export PYTHONPATH=.
+# export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./build/lib/
+# python sthocastic_hybrid_game/tests/main.py lib/uppaal/bin-Linux/verifyta sthocastic_hybrid_game/tests/foo.xml sthocastic_hybrid_game/tests/foo.q
+# python main.py ../../lib/uppaal/bin-Linux/verifyta foo.xml foo.q
+
+
+# open uppaal from the .xml directory
+# aunque tambien funciona ejecutando desde otra ruta como por ejemploe:
+# python sthocastic_hybrid_game/tests/main.py lib/uppaal/bin-Linux/verifyta sthocastic_hybrid_game/tests/foo.xml sthocastic_hybrid_game/tests/foo.q
 callUppaal()
 # /home/serendipita/Documents/Ans/AugustFiles/software/uppaal64-4.1.20-stratego-7/bin-Linux/verifyta
 

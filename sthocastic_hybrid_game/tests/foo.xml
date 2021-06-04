@@ -9,14 +9,14 @@ clock x;
 //const int step    = 5;    //30, 5
 //const int horizon = step*nrSteps;
 
-import "../build/lib/libconfig.so" {
+import "../../build/lib/libconfig.so" {
 	int get_number_of_patterns();
 };
 
 const int NUM_PATTERNS=get_number_of_patterns();
 const int MAX_PATTERN=100;
 
-import "../build/lib/libconfig.so" { 
+import "../../build/lib/libconfig.so" { 
 	//void get_patterns(int num_patterns, int[0, MAX_PATTERN]&amp; arr[int[0, NUM_PATTERNS-1]]);
     void get_patterns(int num_patterns, int&amp; arr[NUM_PATTERNS]);
     //void get_prueba(int&amp; arr[2]);
@@ -47,26 +47,26 @@ void toogle_value(){
 	<template>
 		<name x="5" y="5">Template</name>
 		<declaration>// Place local declarations here.</declaration>
-		<location id="id0" x="-1623" y="-510">
-			<name x="-1666" y="-543">START</name>
-			<label kind="exponentialrate" x="-1633" y="-476">1</label>
+		<location id="id0" x="-1649" y="-603">
+			<name x="-1692" y="-636">START</name>
+			<label kind="exponentialrate" x="-1659" y="-569">1</label>
 		</location>
-		<location id="id1" x="-1419" y="-510">
-			<label kind="exponentialrate" x="-1429" y="-476">1</label>
+		<location id="id1" x="-1445" y="-603">
+			<label kind="exponentialrate" x="-1455" y="-569">1</label>
 		</location>
-		<location id="id2" x="-1249" y="-510">
-			<name x="-1259" y="-544">END</name>
+		<location id="id2" x="-1275" y="-603">
+			<name x="-1285" y="-637">END</name>
 		</location>
 		<init ref="id0"/>
 		<transition>
 			<source ref="id1"/>
 			<target ref="id2"/>
-			<label kind="assignment" x="-1360" y="-502">value=patterns[1]</label>
+			<label kind="assignment" x="-1386" y="-595">value=patterns[1]</label>
 		</transition>
 		<transition>
 			<source ref="id0"/>
 			<target ref="id1"/>
-			<label kind="assignment" x="-1564" y="-501">value=patterns[0],
+			<label kind="assignment" x="-1590" y="-594">value=patterns[0],
 set_global()</label>
 		</transition>
 	</template>
