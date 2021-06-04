@@ -16,8 +16,10 @@ void load(){
     {
         return;
     }
-    static_config.load_from_file("/home/serendipita/Documents/uppaalLibrary/config/static_json.json");
-    dynamic_config.load_from_file("/home/serendipita/Documents/uppaalLibrary/config/dynamic_json.json");
+    // static_config.load_from_file("/home/serendipita/Documents/uppaalLibrary/config/static_json.json");
+    static_config.load_from_file("/home/serendipita/Documents/tesis/ucsp-solar/lib/config/static_json.json");
+    //dynamic_config.load_from_file("/home/serendipita/Documents/uppaalLibrary/config/dynamic_json.json");
+    dynamic_config.load_from_file("/home/serendipita/Documents/tesis/ucsp-solar/lib/config/dynamic_json.json");
     loaded = true;
 }
 
