@@ -1,0 +1,1 @@
+simulate 1 [<=10] {value,x,NUM_PATTERNS}
