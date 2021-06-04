@@ -1,9 +1,9 @@
 
+project (SAFE)
 set(CMAKE_CXX_STANDARD 14)
 
 include_directories(${PROJECT_SOURCE_DIR}/config
-                    ${PROJECT_SOURCE_DIR}/lib/jsoncpp/include
-                    
+                    ${PROJECT_SOURCE_DIR}/lib/jsoncpp/include                    
                     ${PROJECT_SOURCE_DIR}/lib/dynibex
                     ${PROJECT_SOURCE_DIR}/lib/dynibex/arithmetic
                     ${PROJECT_SOURCE_DIR}/lib/dynibex/bisector
@@ -24,11 +24,8 @@ include_directories(${PROJECT_SOURCE_DIR}/config
                     ${PROJECT_SOURCE_DIR}/lib/dynibex/tools
                     )
 
-set(SOURCES main.cpp)
+add_subdirectory(src)
 
-add_executable(pattern_generator ${HEADERS}  ${SOURCES})
+#enable_testing()
+#add_subdirectory(test)
 
-target_link_libraries(pattern_generator
-                      ${PROJECT_SOURCE_DIR}/lib/dynibex/libibex.a
-                      prim
-                      ${PROJECT_SOURCE_DIR}/build/lib/libjsoncpp.so)
