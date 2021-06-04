@@ -3,6 +3,7 @@ import multiprocessing
 import argparse
 import importlib
 from sthocastic_hybrid_game.src.controllers import UPPAAL, MPC
+from sthocastic_hybrid_game.src.viz import viz, viz2
 
 
 def _import_class(module_and_clas_name: str) -> type:
@@ -45,20 +46,32 @@ def main():
         f"sthocastic_hybrid_game.src.controllers.{args.controller_class}")
     data = data_class(args)
     model = model_class(data_config=data.config(),
-                        disturbs=data.loader_data(), args=args)
+                        disturbs=data.loader_data(), u_actions=data.uncontrollable_action_generation(), args=args)
     controller = controller_class(
         data_config=data.config(), model=model, args=args)
     t = 0
     dt = 60
+    times = [0]
     num_tau = controller.get_tau()
+    # K = 3 (maximum size), D, thus send 3 steps more to uppal T,I
     for i in range(0, data.config()["life_time"]):
-        if i >= (data.config()["life_time"] - len(controller.get_pat())*num_tau):
-            break
+        # here is the problem !! it can be exact!!
         if i % (num_tau) == 0:
+            # if (int(i/num_tau)+len(controller.get_pat()) > int(data.config()["life_time"]/num_tau)):
+            #    break
             pat = controller.control(int(i/num_tau))
+            times.append(i)  # here !
         t = t + dt
 
-    print("completed!")
+    print("Simulation completed!")
+    print("Plotting ..")
+
+    # one idea is to consider an aproximation error so one strategy  would be increasy the boundary over R [n + e, m + e] in python
+    c_actions = controller.get_controllable_actions()
+    u_actions = controller.get_uncontrollable_actions()
+    c_actions.pop()
+    viz2(controller.get_states(), c_actions, u_actions,
+         data.config(), data.loader_data(), times)
     return
 
 
