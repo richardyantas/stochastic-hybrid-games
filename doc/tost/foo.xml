@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>clock GTime;
+// Place global declarations here
+clock x;
+//int a = NUM;
+//const int nrSteps = 15; //6(work sometimes)
+//const int step    = 5;    //30, 5
+//const int horizon = step*nrSteps;
+
+import "../build/lib/libconfig.so" {
+	int get_number_of_patterns();
+};
+
+const int NUM_PATTERNS=get_number_of_patterns();
+const int MAX_PATTERN=100;
+
+import "../build/lib/libconfig.so" { 
+	//void get_patterns(int num_patterns, int[0, MAX_PATTERN]&amp; arr[int[0, NUM_PATTERNS-1]]);
+    void get_patterns(int num_patterns, int&amp; arr[NUM_PATTERNS]);
+    //void get_prueba(int&amp; arr[2]);
+};
+
+// I think because arr
+// ../lib/uppaal/uppaal foo.xml
+//int[0, MAX_PATTERN] patterns[int[0, NUM_PATTERNS-1]];
+
+int patterns[NUM_PATTERNS];
+//int[0, MAX_PATTERN] value=1;
+int value=1;
+int i=0;
+
+//int prueba[2];
+
+void set_global(){
+	get_patterns(NUM_PATTERNS, patterns);
+    //get_prueba(prueba);
+}
+
+
+/*
+void toogle_value(){
+    value=10;
+}
+*/</declaration>
+	<template>
+		<name x="5" y="5">Template</name>
+		<declaration>// Place local declarations here.</declaration>
+		<location id="id0" x="-1623" y="-510">
+			<name x="-1666" y="-543">START</name>
+			<label kind="exponentialrate" x="-1633" y="-476">1</label>
+		</location>
+		<location id="id1" x="-1419" y="-510">
+			<label kind="exponentialrate" x="-1429" y="-476">1</label>
+		</location>
+		<location id="id2" x="-1249" y="-510">
+			<name x="-1259" y="-544">END</name>
+		</location>
+		<init ref="id0"/>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id2"/>
+			<label kind="assignment" x="-1360" y="-502">value=patterns[1]</label>
+		</transition>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<label kind="assignment" x="-1564" y="-501">value=patterns[0],
+set_global()</label>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+Process = Template();
+// List one or more processes to be composed into a system.
+system Process;
+    </system>
+	<queries>
+		<query>
+			<formula></formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>saveStrategy("test3.json")</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>simulate 1 [&lt;=20] {value,x,NUM_PATTERNS, patterns[0], patterns[1], patterns[2], patterns[3], patterns[4]}
+</formula>
+			<comment></comment>
+		</query>
+	</queries>
+</nta>
