@@ -5,6 +5,7 @@ import argparse
 import multiprocessing
 from interval import interval
 from sthocastic_hybrid_game.src.data.base_data_module import BaseDataModule
+from sthocastic_hybrid_game.src.models.SWH import C_MODES
 """MPC predictive model controller"""
 
 DATA_DIR = BaseDataModule.data_dirname()
@@ -35,13 +36,18 @@ class MPC():
         self.pat = list(self.optimal_pattern_search(
             query_safe_patterns(self.state)))
         self.modes = self.model.get_controllable_modes()
+        self.u_actions = self.model.get_uncontrollable_actions()
         self.queue = multiprocessing.Queue()
         self.process = multiprocessing.Process(
             target=self.predict, args=(self.pat.pop(0), self.state, 0))
+        # states to plot
+        self.c_actions = [self.modes[self.pat[-1]]]
+        #self.u_actions = []
+        self.states = [self.state]
 
     def optimal_pattern_search(self, patterns):
         # ANN controller
-        print("pattern choosen: ", patterns[1])
+        #print("pattern choosen: ", patterns[1])
         return patterns[1]  # for the moment
 
     def predict(self, mode, state, index):
@@ -65,7 +71,10 @@ class MPC():
             process.start()
         elif(len(self.pat) > 1):
             controllable_mode = self.pat.pop(0)
+
         self.state = self.model.update(controllable_mode, self.state, index)
+        self.c_actions.append(list(self.modes[controllable_mode]))
+        self.states.append(list(self.state))
         return self.pat
 
     def get_tau(self):
@@ -73,6 +82,15 @@ class MPC():
 
     def get_pat(self):
         return self.pat
+
+    def get_states(self):
+        return self.states
+
+    def get_controllable_actions(self):
+        return self.c_actions
+
+    def get_uncontrollable_actions(self):
+        return self.u_actions
 
     @ staticmethod
     def add_to_argparse(parser):
