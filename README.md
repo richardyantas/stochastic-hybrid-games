@@ -74,3 +74,19 @@ conda remove --name ucsp_solar --all
     export PYTHONPATH=.
     python sthocastic_hybrid_game/src/run_experiment.py
 
+# 5.- Development
+
+    git rm -r --cached . && git add . && git commit -m "fixing .gitignore"
+
+# 5.- Github and Bitbucket
+
+    git remote rename origin github
+    git remote add bitbucket https://richardyantas@bitbucket.org/muniz-cs/ucsp-solar.git
+    git push origin github HEAD
+    git push origin bitbucket HEAD
+    git push origin github your_branch
+    git push origin bitbucket your_branch
+
+# 6.- C++ safe dynbex running to find patterns
+
+    cmake .. && make && make test
