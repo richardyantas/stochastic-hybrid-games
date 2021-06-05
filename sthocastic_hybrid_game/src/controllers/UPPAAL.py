@@ -1,4 +1,5 @@
 from typing import Any, Dict
+import time
 import os
 import json
 import numpy as np
@@ -11,9 +12,8 @@ from sthocastic_hybrid_game.src.models.SWH import C_MODES
 
 # export PYTHONPATH=.
 # export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./build/lib/   # desde el main
-COMMAND = "python sthocastic_hybrid_game/tests/main.py lib/uppaal/bin-Linux/verifyta sthocastic_hybrid_game/tests/foo.xml sthocastic_hybrid_game/tests/foo.q"
+#COMMAND = "python sthocastic_hybrid_game/tests/main.py lib/uppaal/bin-Linux/verifyta sthocastic_hybrid_game/tests/foo.xml sthocastic_hybrid_game/tests/foo.q"
 
-#
 DATA_DIR = BaseDataModule.data_dirname()
 SAFE_RES = json.load(open(f"{DATA_DIR}/pattern.json"))
 #STATIC_DATA = json.load(open(f"{DATA_DIR}/static_data.json"))
@@ -65,13 +65,44 @@ class UPPAAL():
         dynamic_data["valve"] = self.u_actions[self.index]
         dynamic_data["t"] = self.index
         dynamic_data["pattern"] = self.pat
+        # disturbance
         json.dump(dynamic_data, open(f"{DATA_DIR}/dynamic_data.json", 'w'))
         return
 
-    def parse2array(self):
-        # read console or json from uppaal
-        pattern = [0]
-        return pattern
+    def co2array(self, points):  # it only affect2list
+        signal = []
+        coord = {}
+        for i in range(0, len(points)):
+            point = points[i][1:-1].split(',')
+            coord[point[0]] = point[1]
+        # for i in range(0, len(points)-1):
+        #    if coord4[0]
+        return signal
+
+    def parse2array(self, res):  # parse2dict
+        params = {}
+        params["value"] = 0
+        params["X"] = 0
+        params["NUM_PATTERNS"] = 0
+        for i in range(0, len(res)):
+            if params.get(res[i][:-2]) != None:  # removing :\n with -3
+                params[res[i][:-2]] = self.co2array(res[i+1][:-1].split()[1:])
+        time.sleep(1)
+        # for key in params:
+        #    params[key] = params[key].split()
+        # mvalve = self.readUppaalValues(mvalve)
+        # ppos = self.readUppaalValues(ppos)
+        # mode = self.readUppaalValues(mode)
+        # flag = self.readUppaalValues(flag)
+        # visitedPatterns = self.readUppaalValues(visitedPatterns)
+        #pattern = [0]
+        # res[10] : title
+        # res[11] : data
+        return params
+
+    # **************** Taks **************
+    # modified libconfig to pass
+    # patterns
 
     def predict(self, mode, state, index):
         predicted_state = state
@@ -80,17 +111,14 @@ class UPPAAL():
             predicted_state = self.model.post(mode, predicted_state, index)
         patterns = query_safe_patterns(predicted_state)
         # save pattern and disturbances to json
-
         self.save_data2uppaal(patterns)
-
         # call uppaal executing a command
-        #
-        data = os.popen(COMMAND).readlines()
-        print(data)
-
+        # data = os.popen("lib/uppaal/bin-Linux/verifyta sources/uppaal/random.xml sources/uppaal/foo.q").readlines()
+        data = os.popen(
+            "lib/uppaal/bin-Linux/verifyta sthocastic_hybrid_game/tests/foo.xml sthocastic_hybrid_game/tests/foo.q").readlines()
+        print(self.parse2array(data))
         optimal_pattern = self.optimal_pattern_search(patterns)
-        # optimal_pattern = self.parse2array(data)
-        # read terminal response or even better a json from uppaal
+        # read terminal response or even better a json from upppaal
         self.queue.put(optimal_pattern)
         return
 
