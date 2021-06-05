@@ -10,7 +10,7 @@ const int max_setListsPa= 64-1;
 const int max_listPa    = 22-1;
 const int max_paLen     = 3-1;
 typedef int[0,max_zonotopes]  id_zonotope_t;
-typedef int[0,max_setListsPa] id_list_patterns_t
+typedef int[0,max_setListsPa] id_list_patterns_t;
 typedef int[0,max_listPa]     id_pattern_t;
 typedef int[0,max_paLen]      pattern_len_t;   // 8
 typedef int[0,max_zonotopes]  zid_t;
@@ -550,6 +550,10 @@ system Process;
 			<comment></comment>
 		</query>
 		<query>
+			<formula>saveStrategy("strategy.txt",Opt)</formula>
+			<comment></comment>
+		</query>
+		<query>
 			<formula></formula>
 			<comment></comment>
 		</query>
@@ -559,6 +563,14 @@ system Process;
 		</query>
 		<query>
 			<formula>simulate 1 [&lt;=horizon] { mvalve,x[0] }</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula></formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula></formula>
 			<comment></comment>
 		</query>
 		<query>
