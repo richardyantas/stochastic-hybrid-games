@@ -48,7 +48,7 @@ def main():
     model = model_class(data_config=data.config(),
                         disturbs=data.loader_data(), u_actions=data.uncontrollable_action_generation(), args=args)
     controller = controller_class(
-        data_config=data.config(), model=model, args=args)
+        data_config=data.config(), disturbs=data.loader_data(), model=model, args=args)
     t = 0
     dt = 60
     times = [0]

@@ -28,7 +28,7 @@ def query_safe_patterns(state):
 
 
 class MPC():
-    def __init__(self, model: Any, data_config: Dict[str, Any], args: argparse.Namespace = None):
+    def __init__(self, model: Any, data_config: Dict[str, Any], disturbs: Dict[str, Any], args: argparse.Namespace = None):
         #self.tau = self.args.get("tau", TAU)
         self.tau = TAU
         self.model = model
