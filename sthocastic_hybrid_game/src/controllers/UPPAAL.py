@@ -2,6 +2,7 @@ from typing import Any, Dict
 import time
 import os
 import json
+import jsbeautifier
 import numpy as np
 import argparse
 import multiprocessing
@@ -12,11 +13,13 @@ from sthocastic_hybrid_game.src.models.SWH import C_MODES
 
 # export PYTHONPATH=.
 # export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./build/lib/   # desde el main
-#COMMAND = "python sthocastic_hybrid_game/tests/main.py lib/uppaal/bin-Linux/verifyta sthocastic_hybrid_game/tests/foo.xml sthocastic_hybrid_game/tests/foo.q"
+# COMMAND = "python sthocastic_hybrid_game/tests/main.py lib/uppaal/bin-Linux/verifyta sthocastic_hybrid_game/tests/foo.xml sthocastic_hybrid_game/tests/foo.q"
+# data = os.popen("lib/uppaal/bin-Linux/verifyta sthocastic_hybrid_game/tests/foo.xml sthocastic_hybrid_game/tests/foo.q").readlines()
 
+COMMAND = "lib/uppaal/bin-Linux/verifyta sources/uppaal/swh.xml sources/uppaal/swh.q"
 DATA_DIR = BaseDataModule.data_dirname()
 SAFE_RES = json.load(open(f"{DATA_DIR}/pattern.json"))
-#STATIC_DATA = json.load(open(f"{DATA_DIR}/static_data.json"))
+# STATIC_DATA = json.load(open(f"{DATA_DIR}/static_data.json"))
 PATTERNS = SAFE_RES["patterns"]
 ZONOTOPES = SAFE_RES["zonotopes"]
 TAU = SAFE_RES["tau"]  # 300 should be fixed by safe patterns
@@ -35,8 +38,12 @@ def query_safe_patterns(state):
 
 
 class UPPAAL():
-    def __init__(self, model: Any, data_config: Dict[str, Any], args: argparse.Namespace = None):
-        #self.tau = self.args.get("tau", TAU)
+    def __init__(self, model: Any, data_config: Dict[str, Any], disturbs: Dict[str, Any], args: argparse.Namespace = None):
+        # self.tau = self.args.get("tau", TAU)
+        self.Te = disturbs["Te"]
+        self.Ti = disturbs["Ti"]
+        self.I = disturbs["I"]
+        self.t = disturbs["t"]
         self.tau = TAU
         self.model = model
         self.state = self.model.get_initial_state()
@@ -49,80 +56,74 @@ class UPPAAL():
             target=self.predict, args=(self.pat.pop(0), self.state, 0))
         # states to plot
         self.c_actions = [self.modes[self.pat[-1]]]
-        #self.u_actions = []
+        # self.u_actions = []
         self.index = 0
+        self.H = 210
         self.states = [self.state]
 
     def optimal_pattern_search(self, patterns):
         return patterns[1]
 
-    def save_data2uppaal(self, patterns):
+    # python write a json -> uppal read that json -> return by console -> read python
+
+    def send_save_data2uppaal(self, patterns):
         dynamic_data = {}
         dynamic_data["T"] = self.state[2]
         dynamic_data["V"] = self.state[1]
         dynamic_data["E"] = self.state[0]
-        dynamic_data["modeans"] = self.modes[0]  # self.controllable_mode
+        dynamic_data["mode"] = self.modes[0]  # self.controllable_mode
         dynamic_data["valve"] = self.u_actions[self.index]
         dynamic_data["t"] = self.index
-        dynamic_data["pattern"] = self.pat
-        # disturbance
-        json.dump(dynamic_data, open(f"{DATA_DIR}/dynamic_data.json", 'w'))
+        dynamic_data["patterns"] = list(patterns)          # ERROR !!
+        dynamic_data["Te"] = list(self.Te[self.index:self.index+self.H])
+        dynamic_data["Ti"] = list(self.Ti[self.index:self.index+self.H])
+        dynamic_data["I"] = list(self.I[self.index:self.index+self.H])
+        # opts = jsbeautifier.default_options()
+        # opts.indent_size = 2
+        # print(jsbeautifier.beautify(json.dumps(dynamic_data), opts))
+        file = open(f"{DATA_DIR}/dynamic_data.json", 'w', encoding='utf-8')
+        file.write(json.dumps(dynamic_data, indent=4, sort_keys=True))
+        #
         return
 
-    def co2array(self, points):  # it only affect2list
+    def parse2array(self, points):  # it only affect2list
         signal = []
         coord = {}
         for i in range(0, len(points)):
             point = points[i][1:-1].split(',')
             coord[point[0]] = point[1]
-        # for i in range(0, len(points)-1):
-        #    if coord4[0]
         return signal
 
-    def parse2array(self, res):  # parse2dict
+    def receive_strategy_from_uppaal(self):
+        res = os.popen(COMMAND).readlines()
         params = {}
         params["value"] = 0
         params["X"] = 0
         params["NUM_PATTERNS"] = 0
         for i in range(0, len(res)):
             if params.get(res[i][:-2]) != None:  # removing :\n with -3
-                params[res[i][:-2]] = self.co2array(res[i+1][:-1].split()[1:])
-        time.sleep(1)
-        # for key in params:
-        #    params[key] = params[key].split()
-        # mvalve = self.readUppaalValues(mvalve)
-        # ppos = self.readUppaalValues(ppos)
-        # mode = self.readUppaalValues(mode)
-        # flag = self.readUppaalValues(flag)
-        # visitedPatterns = self.readUppaalValues(visitedPatterns)
-        #pattern = [0]
-        # res[10] : title
-        # res[11] : data
+                params[res[i][:-2]
+                       ] = self.parse2array(res[i+1][: -1].split()[1:])
         return params
 
-    # **************** Taks **************
-    # modified libconfig to pass
-    # patterns
+    #   **************** Tasks **************
 
-    def predict(self, mode, state, index):
+    def predict(self, controllable_mode, state, index):
         predicted_state = state
         taumin = int(self.tau/60)
         for i in range(index, index + taumin):
-            predicted_state = self.model.post(mode, predicted_state, index)
+            predicted_state = self.model.post(
+                controllable_mode, predicted_state, index)
         patterns = query_safe_patterns(predicted_state)
-        # save pattern and disturbances to json
-        self.save_data2uppaal(patterns)
-        # call uppaal executing a command
-        # data = os.popen("lib/uppaal/bin-Linux/verifyta sources/uppaal/random.xml sources/uppaal/foo.q").readlines()
-        data = os.popen(
-            "lib/uppaal/bin-Linux/verifyta sthocastic_hybrid_game/tests/foo.xml sthocastic_hybrid_game/tests/foo.q").readlines()
-        print(self.parse2array(data))
+        self.send_save_data2uppaal(patterns)
+        time.sleep(3)
+        print(self.receive_strategy_from_uppaal())
         optimal_pattern = self.optimal_pattern_search(patterns)
-        # read terminal response or even better a json from upppaal
         self.queue.put(optimal_pattern)
         return
 
     def control(self, index):
+        print("patcontrol:", self.pat)
         if(len(self.pat) == 0):
             self.pat = self.queue.get()
             controllable_mode = self.pat.pop(0)

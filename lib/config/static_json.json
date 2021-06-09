@@ -1,11 +1,15 @@
 {
-  "get_number_of_patterns":5,
-  "get_tau": 5.0,
-  "get_foo": 12.1234,
+  "horizon": 210,
+  "number_of_patterns": 5,
+  "tau": 5.0,
+  "foo": 12.1234,
   "factorTe": 2.5,
-  "factorI":  0.8,
+  "factorI": 0.8,
   "TwaterIn": 2.5,
   "rate": 0.01,
-  "R": [[0.1,0.2],[40,70]],
-  "T_env": [1,1,1,1,1]
+  "R": [
+    [0.1, 0.2],
+    [40, 70]
+  ],
+  "T_env": [1, 1, 1, 1, 1]
 }

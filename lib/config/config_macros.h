@@ -1,7 +1,7 @@
-    #pragma once
+#pragma once
 
-#define CONFIG_GETTER(type, from, key)                               \
-    type key() { load(); return from.get<type>(#key); }  
+#define CONFIG_GETTER(type, from, key, func)                               \
+    type func() { load(); return from.get<type>(#key); }
 
 #define LIST_GETTER(p_type, list_type, from, key)                            \
     void key(p_type* arr)                                            \
