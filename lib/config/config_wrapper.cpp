@@ -20,18 +20,16 @@ void load(){
     loaded = true;
 }
 
-//CONFIG_GETTER(double, static_config, tau,get_taumin)
-
+// static variables
 CONFIG_GETTER(double, static_config, tau,get_tau)
 CONFIG_GETTER(double, static_config, factorTe,get_factorTe)
 CONFIG_GETTER(double, static_config, factorI,get_factorI)
 CONFIG_GETTER(double, static_config, factorKe, get_factorKe)
 CONFIG_GETTER(double, static_config, rate_water_input, get_rate_water_input)  // Change in Ibex !! 
 CONFIG_GETTER(double, static_config, TwaterIn, get_TwaterIn)
-CONFIG_GETTER(int, static_config, number_of_patterns, get_number_of_patterns)
+CONFIG_GETTER(int, static_config, number_of_array, get_number_of_array)
 CONFIG_GETTER(int, static_config, horizon, get_horizon)
-//CONFIG_GETTER(int, static_config, get_number_of_patterns)
-//LIST_GETTER(int, int, dynamic_config, get_patterns)
+// dynamic variables
 CONFIG_GETTER(double, dynamic_config, T, get_T)
 CONFIG_GETTER(double, dynamic_config, V, get_V)
 CONFIG_GETTER(double, dynamic_config, E, get_E)
@@ -39,12 +37,25 @@ CONFIG_GETTER(int, dynamic_config, t, get_time)
 CONFIG_GETTER(int, dynamic_config, mode, get_mode)
 CONFIG_GETTER(int, dynamic_config, valve, get_valve)
 
-//void get_patterns(int number_of_patterns, int* arr)
-void get_patterns(int32_t number_of_patterns, int32_t *arr){
+void get_double_array(int number_of_array, double* arr){
     load();
     try{
-        static auto tmp = dynamic_config.get<std::vector<int>>("get_patterns");
-        for (int i = 0; i < number_of_patterns; i++) {
+        static auto tmp = dynamic_config.get<std::vector<double>>("double_array");
+        for (int i = 0; i < number_of_array; i++) {
+            arr[i] = tmp.at(i);
+        }
+    }
+    catch (const std::exception &e) {
+        log << e.what();
+    }
+}
+
+void get_array(int number_of_array, int* arr){
+//void get_array(int32_t number_of_array, int32_t *arr){
+    load();
+    try{
+        static auto tmp = dynamic_config.get<std::vector<int>>("array");
+        for (int i = 0; i < number_of_array; i++) {
             arr[i] = tmp.at(i);
         }
     }

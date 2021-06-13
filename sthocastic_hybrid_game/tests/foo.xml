@@ -1,4 +1,4 @@
-	<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
 <nta>
 	<declaration>clock GTime;
@@ -85,8 +85,7 @@ system Process;
 			<comment></comment>
 		</query>
 		<query>
-			<formula>simulate 1 [&lt;=20] {value,x,NUM_PATTERNS, patterns[0], patterns[1], patterns[2], patterns[3], patterns[4]}
-</formula>
+			<formula>simulate 1 [&lt;=20] {value,x,NUM_PATTERNS, patterns[0], patterns[1], patterns[2], patterns[3], patterns[4]}</formula>
 			<comment></comment>
 		</query>
 	</queries>

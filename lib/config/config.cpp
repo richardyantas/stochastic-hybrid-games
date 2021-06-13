@@ -30,6 +30,44 @@ std::vector<int> config::convert_from_json<std::vector<int>>(const Json::Value &
     return result;
 }
 
+
+// added by richard
+template <>
+std::vector<double> config::convert_from_json<std::vector<double>>(const Json::Value &value)
+{
+    if (value.type() != Json::ValueType::arrayValue) {
+        throw config::InvalidValueException();
+    }
+
+    std::vector<double> result;
+
+    for (auto itr = value.begin(); itr != value.end(); itr++) {
+        result.push_back(value[itr.index()].asDouble());
+    }
+
+    return result;
+}
+
+template <>
+std::vector<std::vector<double>> config::convert_from_json<std::vector<std::vector<double>>>(const Json::Value &value)
+{
+    if (value.type() != Json::ValueType::arrayValue) {
+        throw config::InvalidValueException();
+    }
+    std::vector<std::vector<double>> result;
+    for (auto itr = value.begin(); itr != value.end(); itr++) {
+        std::vector<double> tmp;
+        for (auto i = (*itr).begin(); i != (*itr).end(); i++){
+           tmp.push_back(value[i.index()].asDouble());
+        }   
+        result.push_back(tmp);
+    }
+    return result;
+}
+
+//////////////////////////////////////////////////////////////////
+
+
 config::Config::Config(const std::string &file_path)
 {
     load_from_file(file_path);
@@ -90,6 +128,35 @@ std::vector<int> config::Config::get<std::vector<int>>(const std::string &key)
 
     return config::convert_from_json<std::vector<int>>(json[key]);
 }
+
+// Added by richard
+template <>
+std::vector<double> config::Config::get<std::vector<double>>(const std::string &key)
+{
+    if (!json.isMember(key)) {
+        throw config::InvalidKeyException(key);
+    }
+
+    if (json[key].type() != Json::ValueType::arrayValue) {
+        throw config::InvalidValueException();
+    }
+
+    return config::convert_from_json<std::vector<double>>(json[key]);
+}
+
+template <>
+std::vector<std::vector<double>> config::Config::get<std::vector<std::vector<double>>>(const std::string &key)
+{
+    if (!json.isMember(key)) {
+        throw config::InvalidKeyException(key);
+    }
+    if (json[key].type() != Json::ValueType::arrayValue) {
+        throw config::InvalidValueException();
+    }
+    return config::convert_from_json<std::vector<std::vector<double>>>(json[key]);
+}
+
+//
 
 template <>
 std::map<int, std::vector<int>>

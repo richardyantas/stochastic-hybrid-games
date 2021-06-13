@@ -71,7 +71,7 @@ class UPPAAL():
         dynamic_data["T"] = self.state[2]
         dynamic_data["V"] = self.state[1]
         dynamic_data["E"] = self.state[0]
-        dynamic_data["mode"] = self.modes[0]  # self.controllable_mode
+        dynamic_data["mode"] = self.pat[0]  # self.modes[0]
         dynamic_data["valve"] = self.u_actions[self.index]
         dynamic_data["t"] = self.index
         dynamic_data["patterns"] = list(patterns)          # ERROR !!
