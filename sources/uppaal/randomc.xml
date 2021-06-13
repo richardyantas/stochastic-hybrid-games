@@ -361,9 +361,9 @@ const int allPatterns[id_list_patterns_t][id_pattern_t][pattern_len_t] = {
 		<name x="5" y="5">Template</name>
 		<declaration>
 /*
-predict
-
+    predict
 */
+
 bool validPatternId(id_pattern_t p,id_list_patterns_t  ind_patterns)
 {
     if (allPatterns[ind_patterns][p][1] == -2) 
@@ -459,8 +459,8 @@ mvalve = valve[it]</label>
 		<transition controllable="false">
 			<source ref="id6"/>
 			<target ref="id1"/>
-			<label kind="guard" x="-595" y="-1207">yc &lt;= horizon</label>
-			<label kind="assignment" x="-570" y="-1173">it=it+1</label>
+			<label kind="guard" x="-629" y="-1198">yc &lt;= horizon</label>
+			<label kind="assignment" x="-595" y="-1173">it=it+1</label>
 			<nail x="-527" y="-952"/>
 			<nail x="-527" y="-1437"/>
 		</transition>

@@ -1,5 +1,5 @@
-{
-  "get_number_of_patterns": 10,
+  {
+  "number_of_array": 3,
   "K": 3,
   "D": 20,
   "R": [
@@ -19,7 +19,7 @@
     [0.09, 0.31]
   ],
   "horizon": 210,
-  "tau": 300,
+  "tau": 7.0,
   "factorTe": 2.5,
   "factorI": 0.8,
   "factorKe": 1,
