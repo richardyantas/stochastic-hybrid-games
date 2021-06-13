@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>// Place global declarations here.
+
+clock GTime;
+clock x;
+
+//const int nrSteps = 15; //6(work sometimes)
+//const int step    = 5;    //30, 5
+//const int horizon = step*nrSteps;
+//clock horizon;
+//double tau=2.0;  // Is not possible ! 
+
+import "../../build/lib/libconfig.so" {
+  double get_tau();
+  int get_taumin();
+  double get_factorTe();
+  double get_factorI();
+  double get_factorKe();
+  double get_rate_water_input();
+  double get_TwaterIn();
+  int get_number_of_array();
+  int get_horizon();
+};
+
+double tau, taumin, factorTe, factorI, factorKe, rateVo, TwaterIn, num_patterns;
+const int NUM_ARRAY = get_number_of_array();
+const int horizon = get_horizon();
+const int mhorizon=20;
+
+//const int A = 2;
+//const int B = 2;
+
+import "../../build/lib/libconfig.so" {
+    double get_T();
+    int get_valve();
+    void get_array(int number_of_array, int&amp; arr[NUM_ARRAY]);
+    void get_double_array(int number_of_array, double&amp; arr[NUM_ARRAY]);
+    //void get_2double_array(int a,int b, double &amp;arr[A][B]); // only single array to external C is supported
+    void get_Te(int horizontal, double&amp; arr[horizon]); // horizon ?? 
+};
+
+//double mu[2]={2.0,2.0};
+double Te[horizon];
+int array[NUM_ARRAY];
+double darray[NUM_ARRAY];
+
+void set_dynamic(){
+    get_array(NUM_ARRAY, array);
+    get_double_array(3, darray);
+    //get_Te(horizon, Te);
+}
+
+void initialize(){
+    tau=get_tau();
+    taumin=get_taumin();
+    factorTe=get_factorTe();
+    factorKe=get_factorKe();
+    rateVo=get_rate_water_input();
+    TwaterIn=get_TwaterIn();
+    set_dynamic();
+    //num_patterns=get_number_of_patterns();
+    //horizon=get_horizon();
+}
+
+
+</declaration>
+	<template>
+		<name x="5" y="5">Template</name>
+		<declaration>    // Place local declarations here.</declaration>
+		<location id="id0" x="-4760" y="-1980">
+			<label kind="exponentialrate" x="-4770" y="-1946">1</label>
+		</location>
+		<location id="id1" x="-4573" y="-1980">
+			<label kind="exponentialrate" x="-4583" y="-1946">1</label>
+		</location>
+		<location id="id2" x="-4395" y="-1980">
+			<label kind="exponentialrate" x="-4405" y="-1946">1</label>
+		</location>
+		<location id="id3" x="-4275" y="-1980">
+			<label kind="exponentialrate" x="-4285" y="-1946">1</label>
+		</location>
+		<init ref="id0"/>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id3"/>
+			<label kind="assignment" x="-4377" y="-1972">tau=7.0</label>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id2"/>
+			<label kind="assignment" x="-4522" y="-1972">tau=3.0</label>
+		</transition>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<label kind="assignment" x="-4709" y="-1971">initialize(),
+x=0</label>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+Process = Template();
+// List one or more processes to be composed into a system.
+system Process;
+    </system>
+	<queries>
+		<query>
+			<formula>simulate 1 [&lt;=mhorizon] { factorKe, array[1],darray[1]}</formula>
+			<comment></comment>
+		</query>
+	</queries>
+</nta>
