@@ -28,41 +28,14 @@ CONFIG_GETTER(double, static_config, factorKe, get_factorKe)
 CONFIG_GETTER(double, static_config, rate_water_input, get_rate_water_input)  // Change in Ibex !! 
 CONFIG_GETTER(double, static_config, TwaterIn, get_TwaterIn)
 CONFIG_GETTER(int, static_config, number_of_array, get_number_of_array)
-CONFIG_GETTER(int, static_config, horizon, get_horizon)
+CONFIG_GETTER(int, static_config, nrSteps, get_number_steps)
 // dynamic variables
-CONFIG_GETTER(double, dynamic_config, T, get_T)
-CONFIG_GETTER(double, dynamic_config, V, get_V)
-CONFIG_GETTER(double, dynamic_config, E, get_E)
-CONFIG_GETTER(int, dynamic_config, t, get_time)
-CONFIG_GETTER(int, dynamic_config, mode, get_mode)
-CONFIG_GETTER(int, dynamic_config, valve, get_valve)
-
-void get_double_array(int number_of_array, double* arr){
-    load();
-    try{
-        static auto tmp = dynamic_config.get<std::vector<double>>("double_array");
-        for (int i = 0; i < number_of_array; i++) {
-            arr[i] = tmp.at(i);
-        }
-    }
-    catch (const std::exception &e) {
-        log << e.what();
-    }
-}
-
-void get_array(int number_of_array, int* arr){
-//void get_array(int32_t number_of_array, int32_t *arr){
-    load();
-    try{
-        static auto tmp = dynamic_config.get<std::vector<int>>("array");
-        for (int i = 0; i < number_of_array; i++) {
-            arr[i] = tmp.at(i);
-        }
-    }
-    catch (const std::exception &e) {
-        log << e.what();
-    }
-}
+CONFIG_GETTER(double, dynamic_config, T, get_T)      // OK
+CONFIG_GETTER(double, dynamic_config, V, get_V)      // OK
+CONFIG_GETTER(double, dynamic_config, E, get_E)      // OK
+CONFIG_GETTER(int, dynamic_config, t, get_time)      // OK
+CONFIG_GETTER(int, dynamic_config, mode, get_mode)   // OK
+CONFIG_GETTER(int, dynamic_config, valve, get_valve) // OK
 
 void get_Te(int32_t horizon, double *arr){
     load();
@@ -101,10 +74,4 @@ void get_I(int32_t horizon, double *arr){
     catch (const std::exception &e) {
         log << e.what();
     }
-}
-
-void get_prueba(int32_t *arr){
-    //int arreglo[2] = {9,9};
-    arr[0] = 7;
-    arr[1] = 6;  
 }
