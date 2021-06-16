@@ -13,7 +13,7 @@ from sthocastic_hybrid_game.src.data.base_data_module import BaseDataModule
 #            |------------------------------------------------>  API
 
 DATA_DIR = BaseDataModule.data_dirname()
-SAFE_DATA = json.load(open(f"{DATA_DIR}/parameters.json"))
+SAFE_DATA = json.load(open(f"{DATA_DIR}/static_data.json"))
 INITIAL_STATE = [0.0, 0.13, 50.0]  # -> [E,V,T] # [0.13, 50.0, 0.0]
 FACTOR_TE = SAFE_DATA["factorTe"]
 FACTOR_I = SAFE_DATA["factorI"]
@@ -22,6 +22,7 @@ RATE = SAFE_DATA["rate"]
 TWATER_IN = SAFE_DATA["TwaterIn"]
 R_BOUNDARY = SAFE_DATA["R"]
 S_BOUNDARY = SAFE_DATA["S"]
+NUMBER_STEPS = SAFE_DATA["nrSteps"]
 
 #           p, r, f    -> this c_mode order is copied from c++ code model.cpp
 C_MODES = [[1, 0, 0],
@@ -54,7 +55,8 @@ class SWH():
 
     def post(self, mode: int, x: list, index: int) -> list:
         c_actions = C_MODES[mode]
-        u_action = self.u_actions[index]  # u_action = 1   U_MODES[index]
+        u_action = 0  # self.u_actions[index]  # u_action = 1   U_MODES[index]
+        #dt_sec = self.dt*60
         x[0] = x[0] + self.dt*c_actions[1]*2
         x[1] = x[1] + self.dt*0.01000*(0.1*c_actions[0] - x[1])
         x[2] = x[2] + self.dt*(1/(0.1*c_actions[0]))*(
@@ -71,6 +73,9 @@ class SWH():
 
     def get_controllable_modes(self):
         return C_MODES
+
+    def get_number_steps(self):
+        return NUMBER_STEPS
 
     def get_uncontrollable_actions(self):
         return self.u_actions

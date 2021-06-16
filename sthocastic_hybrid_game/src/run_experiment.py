@@ -52,16 +52,18 @@ def main():
     t = 0
     dt = 60
     times = [0]
-    num_tau = controller.get_tau()
+    num_tau_min = int(controller.get_tau()/60)  # 5*60
     # K = 3 (maximum size), D, thus send 3 steps more to uppal T,I
-    for i in range(0, data.config()["life_time"]):
+    for i in range(0, int(data.config()["life_time"]/60)):  # in minutes
         # here is the problem !! it can be exact!!
-        if i % (num_tau) == 0:
+        if i % (num_tau_min) == 0:
             # if (int(i/num_tau)+len(controller.get_pat()) > int(data.config()["life_time"]/num_tau)):
             #    break
-            pat = controller.control(int(i/num_tau))
+            if int(i)+15 * 5 >= data.config()["life_time"]/60:
+                break
+            pat = controller.control(int(i))
             times.append(i)  # here !
-        t = t + dt
+        # t = t + dt  # cada 60 segundos <> 1 minuto <> i esta en minutos
 
     print("Simulation completed!")
     print("Plotting ..")
