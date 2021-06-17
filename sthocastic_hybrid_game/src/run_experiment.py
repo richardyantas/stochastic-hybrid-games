@@ -3,7 +3,7 @@ import multiprocessing
 import argparse
 import importlib
 from sthocastic_hybrid_game.src.controllers import UPPAAL, MPC
-from sthocastic_hybrid_game.src.viz import viz, viz2
+from sthocastic_hybrid_game.src.viz import viz2
 
 
 def _import_class(module_and_clas_name: str) -> type:
@@ -49,31 +49,35 @@ def main():
                         disturbs=data.loader_data(), u_actions=data.uncontrollable_action_generation(), args=args)
     controller = controller_class(
         data_config=data.config(), disturbs=data.loader_data(), model=model, args=args)
-    t = 0
-    dt = 60
-    times = [0]
-    num_tau_min = int(controller.get_tau()/60)  # 5*60
-    # K = 3 (maximum size), D, thus send 3 steps more to uppal T,I
-    for i in range(0, int(data.config()["life_time"]/60)):  # in minutes
-        # here is the problem !! it can be exact!!
-        if i % (num_tau_min) == 0:
-            # if (int(i/num_tau)+len(controller.get_pat()) > int(data.config()["life_time"]/num_tau)):
-            #    break
-            if int(i)+15 * 5 >= data.config()["life_time"]/60:
-                break
-            pat = controller.control(int(i))
-            times.append(i)  # here !
-        # t = t + dt  # cada 60 segundos <> 1 minuto <> i esta en minutos
 
+    state_times = [0]
+    tau = controller.get_tau()
+    nrSteps = controller.get_nrSteps()
+    life_time = data.config()["life_time"]
+    state = model.get_initial_state()
+    states = [state]
+    control_times = []
+    # K = 3 (maximum size), D, thus send 3 steps more to uppal T,I
+    for i in range(0, life_time):  # in minutes
+        if i % (tau) == 0:
+            if i + nrSteps*tau >= life_time:  # regresar el tamanio del ultimo patron IMPORTANTE !!!
+                break
+            controllable_mode = controller.control(state, i)
+            control_times.append(i)
+        # add here u_modes
+        state = model.update(controllable_mode, state, i)
+        state_times.append(i)
+        states.append(list(state))
     print("Simulation completed!")
     print("Plotting ..")
-
     # one idea is to consider an aproximation error so one strategy  would be increasy the boundary over R [n + e, m + e] in python
     c_actions = controller.get_controllable_actions()
     u_actions = controller.get_uncontrollable_actions()
-    c_actions.pop()
-    viz2(controller.get_states(), c_actions, u_actions,
-         data.config(), data.loader_data(), times)
+    u_actions = u_actions[0:len(c_actions)]
+    # c_actions.pop()
+
+    viz2(states, c_actions, u_actions,
+         data.config(), data.loader_data(), control_times, state_times)
     return
 
 
