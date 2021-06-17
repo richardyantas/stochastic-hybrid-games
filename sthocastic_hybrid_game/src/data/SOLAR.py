@@ -1,10 +1,13 @@
 import numpy as np
 import pandas as pd
+import json
 import random
 import argparse
 from sthocastic_hybrid_game.src.data.base_data_module import BaseDataModule
 
 DATA_DIR = BaseDataModule.data_dirname()
+SAFE_DATA = json.load(open(f"{DATA_DIR}/static_data.json"))
+TAU = SAFE_DATA["tau"]  # 300 should be fixed by safe patterns
 
 WATER_TEMPERATURE_INPUT = 25
 
@@ -26,7 +29,7 @@ class SOLAR(BaseDataModule):
 
     def transform_data(self, *args, **kwargs) -> None:
         previous_data = self.extraction_data()
-        new_num_intervals = int(self.life_time/self.dt) + 1
+        new_num_intervals = int(self.life_time/self.dt) + 1  # each minute
         t = np.linspace(0, self.life_time, new_num_intervals)
         Te = np.interp(t, previous_data["t"], previous_data["Te"])
         I = np.interp(t, previous_data["t"], previous_data["I"])
@@ -36,7 +39,7 @@ class SOLAR(BaseDataModule):
     def uncontrollable_action_generation(self):
         # valves for water consumption on buildings , tau = 5 !!! IMPORTANT to link with the general tau from controller in some way
         print("dt:", self.dt)
-        U_MODES = (np.zeros(int(self.life_time/(5*60)))).tolist()
+        U_MODES = (np.zeros(int(self.life_time/int(TAU)))).tolist()
         num_actions = random.randrange(5, 8)
         standard_deviation = 1*3  # 1*60/5
         for i in range(0, num_actions):
