@@ -21,7 +21,7 @@ void load(){
 }
 
 // static variables
-CONFIG_GETTER(double, static_config, tau,get_tau)
+CONFIG_GETTER(int, static_config, tau,get_tau)
 CONFIG_GETTER(double, static_config, factorTe,get_factorTe)
 CONFIG_GETTER(double, static_config, factorI,get_factorI)
 CONFIG_GETTER(double, static_config, factorKe, get_factorKe)
