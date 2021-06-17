@@ -5,10 +5,11 @@
 extern "C" {
 #endif
     // static file
-    double get_tau();
-    double get_taumin(){
-        return int(get_tau()/60);
-    };
+    //double get_tau();
+    int get_tau();
+    // double get_taumin(){
+    //     return int(get_tau()/60);
+    // };
     double get_factorTe();
     double get_factorI();
     double get_factorKe();
