@@ -9,6 +9,7 @@ import multiprocessing
 from interval import interval
 from sthocastic_hybrid_game.src.data.base_data_module import BaseDataModule
 from sthocastic_hybrid_game.src.models.SWH import C_MODES
+import matplotlib.pyplot as plt
 """MPC predictive model controller"""
 
 # export PYTHONPATH=.
@@ -18,11 +19,13 @@ from sthocastic_hybrid_game.src.models.SWH import C_MODES
 
 COMMAND = "lib/uppaal/bin-Linux/verifyta sources/uppaal/swh.xml sources/uppaal/swh.q"
 DATA_DIR = BaseDataModule.data_dirname()
+
 SAFE_RES = json.load(open(f"{DATA_DIR}/pattern.json"))
-# STATIC_DATA = json.load(open(f"{DATA_DIR}/static_data.json"))
 PATTERNS = SAFE_RES["patterns"]
 ZONOTOPES = SAFE_RES["zonotopes"]
-TAU = SAFE_RES["tau"]  # 300 should be fixed by safe patterns
+
+SAFE_DATA = json.load(open(f"{DATA_DIR}/static_data.json"))
+TAU = SAFE_DATA["tau"]  # 300 should be fixed by safe patterns
 
 
 def query_safe_patterns(state):
@@ -45,27 +48,25 @@ class UPPAAL():
         self.I = disturbs["I"]
         self.t = disturbs["t"]
         self.tau = TAU
-        self.taumin = int(self.tau/60)
         self.model = model
-        self.modes = self.model.get_controllable_modes()
+        self.initial_state = self.model.get_initial_state()
         self.u_actions = self.model.get_uncontrollable_actions()
         self.nrSteps = self.model.get_number_steps()
-        self.state = self.model.get_initial_state()
-        self.pat = list(query_safe_patterns(self.state)[0])
-        self.controllable_mode = self.pat.pop(0)
+
+        self.pat = list(query_safe_patterns(list(self.initial_state))[0])
+        self.controllable_mode = -1
+        self.c_actions = []  # [C_MODES[self.controllable_mode]]
         self.queue = multiprocessing.Queue()
-        self.c_actions = list(self.modes[self.controllable_mode])
-        #self.index = 0
-        self.H = self.nrSteps*self.taumin
-        self.states = [self.state]
+        self.H = self.nrSteps*self.tau
 
     # this method would be better on model SWH python instead or generalize!!!!
+
     def send_save_data2uppaal(self, controllable_mode, state, index):
         dynamic_data = {}
         dynamic_data["E"] = state[0]
         dynamic_data["V"] = state[1]
         dynamic_data["T"] = state[2]
-        dynamic_data["mode"] = controllable_mode  # self.modes[0]
+        dynamic_data["mode"] = controllable_mode
         dynamic_data["valve"] = 0  # self.u_actions[index]
         dynamic_data["t"] = index
         dynamic_data["Te"] = list(self.Te[index:index+self.H])
@@ -75,117 +76,113 @@ class UPPAAL():
         file.write(json.dumps(dynamic_data, indent=4, sort_keys=True))
         return
 
-    def p2array(self, points):
+    def p2array(self, points, key):
         for i in range(0, len(points)):
             points[i] = points[i][1:-1].split(",")
             points[i][0] = float(points[i][0])
             points[i][1] = float(points[i][1])
         mlist = [None]*self.nrSteps
         for i in range(0, len(points)-1):
-            if (points[i][0] == points[i+1][0] and points[i+1][0] != self.nrSteps*self.taumin):
-                it = int(points[i][0]/self.taumin)
+            if (points[i][0] == points[i+1][0] and points[i+1][0] != self.nrSteps*self.tau):
+                it = int(points[i][0]/self.tau)
                 mlist[it] = points[i+1][1]  # int
-                mlist.append(points[i+1][1])
-        nlist = []
         for i in range(0, self.nrSteps):
-            if mlist[i] != None:
-                nlist.append(mlist[i])
-        return nlist
+            if mlist[i] == None:
+                # estoy en duda pero parece que funciona xd
+                mlist[i] = mlist[i-1]
+        maxl = int(points[-1][0]/5)
+        if key == "visitedPatterns":
+            print("visitedpatterns: ", points,
+                  "  we can also plot this in real time")
+            # for p in points:
+            #     plt.plot(p[0], p[1], '-ok', linewidth=0.8)
+            #     plt.ylabel('visited pat')
+            #     plt.xlabel('t(hr)')
+            #     plt.grid(True, linewidth=0.6, linestyle='--')
+            #     plt.pause(0.05)
+            # plt.pause(5.0)
+            return maxl
+        return mlist
 
     def receive_strategy_from_uppaal(self):
         res = os.popen(COMMAND).readlines()
         # print("Res: ", res)
         params = {}
-        params["ppos"] = 0
+        # params["ppos"] = 0
         params["visitedPatterns"] = 0
         params["mode"] = 0
-        params["flag"] = 0
-        params["value"] = 0
+        # params["flag"] = 0
+        # params["value"] = 0
         params["Tnext"] = 0
-        params["zi"] = 0
-        params["mvalve"] = 0
-        params["X"] = 0
-        params["NUM_PATTERNS"] = 0
+        # params["zi"] = 0
+        # params["mvalve"] = 0
+        # params["X"] = 0
+        # params["NUM_PATTERNS"] = 0
         for i in range(0, len(res)-1):
             if params.get(res[i][:-2]) != None:  # removing :\n with -3
-                params[res[i][:-2]] = self.p2array(res[i+1][:-1].split()[1:])
+                key = res[i][:-2]
+                params[key] = self.p2array(res[i+1][:-1].split()[1:], key)
+
         # time.sleep(2)
-        params["mode"] = [int(v) for v in params["mode"]]
+        params["Tnext"] = params["Tnext"][0]
+        max = params["visitedPatterns"]
+        params["mode"] = [int(v) for v in params["mode"][0:max]]
         print("T predicted uppaal: ", params["Tnext"])
-        print("pattern:", params["mode"])
+        print("pattern:", params["mode"], "size:", len(params["mode"]))
         return params["mode"]
 
     #   **************** Tasks **************
     '''
-        pattern_id - > p_id
-        zonotope -> ind_l_patterns
-        pattern_size -> availablePattern
-        pattern_position -> ppos
-        mode_clock -> xc
-        horizon_clock -> yc
         cost_function -> paretoFunc
         cost -> pareto
         forecasting of T, Te, Ti
-
-        add sthocasticity on uppaal template for valve 0.5 and 0.5 
-
+        add sthocasticity on uppaal template for valve 0.5 and 0.5
         intrerval??
-        dynamic_data["Te"] = list(self.Te[index:index+self.H]) 
+        dynamic_data["Te"] = list(self.Te[index:index+self.H])
         extras:
         ******
         move  send_save_parameters on SWH model
     '''
 
     def predict(self, controllable_mode, state, index):
+        # hay un error en el index 765 previo a 695,  luego en otra iteracion error en index 480 previo a 405
+        print("index: ", index)
         print("mode to predict: ", controllable_mode)
         print("T: ", state[2])
         predicted_state = list(state)
-        taumin = int(self.tau/60)
-        for i in range(index, index + taumin):
+        for i in range(index, index + self.tau):
             predicted_state = self.model.post(
-                int(controllable_mode), predicted_state, index)
+                controllable_mode, predicted_state, i)  # antes era index
         print("T predicted on step: ", predicted_state[2])
+        time.sleep(3)
         self.send_save_data2uppaal(controllable_mode, list(state), index)
         optimal_pattern = self.receive_strategy_from_uppaal()
         self.queue.put(optimal_pattern)
         return
 
-    def control(self, index):
-        # criterios de depuracion
-        # zonotope id
-        # se tiene que comparar la temperatura al momento del control con la temeratura despues del initialize en uppaal
-        # THE FIRST ONE HAS NOT COINCIDENCE WE AHVE TO CHECK ON UPPAAL XML TEST OR PYTHON, json.
-        # dt: 60
-        # umodes: 288
-        # T predicted on step:  62.33557182714501
-        # T predicted uppaal:  [61.79162138158503]
-        # pattern: [6, 0, 2, 0, 2, 0, 2, 0, 4, 0, 2, 0, 7, 4, 0]
-        # self.index = index  # minutes
+    def control(self, state, index):
         if(len(self.pat) == 0):
             self.pat = self.queue.get()
             self.controllable_mode = self.pat.pop(0)
         elif(len(self.pat) == 1):
             self.controllable_mode = self.pat.pop(0)
             process = multiprocessing.Process(target=self.predict, args=(
-                int(self.controllable_mode), list(self.state), int(index)))
+                int(self.controllable_mode), state, index))
             process.start()
         elif(len(self.pat) > 1):
             self.controllable_mode = self.pat.pop(0)
-        print("k")
-        self.state = self.model.update(
-            self.controllable_mode, self.state, index)
-        self.c_actions.append(list(self.modes[self.controllable_mode]))
-        self.states.append(list(self.state))
-        return self.pat
+        print("W")
+        self.c_actions.append(C_MODES[self.controllable_mode])
+        return self.controllable_mode
+
+    def get_nrSteps(self):
+        return self.nrSteps
 
     def get_tau(self):
         return self.tau
 
     def get_pat(self):
         return self.pat
-
-    def get_states(self):
-        return self.states
 
     def get_controllable_actions(self):
         return self.c_actions
