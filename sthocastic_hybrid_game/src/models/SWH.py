@@ -14,7 +14,8 @@ from sthocastic_hybrid_game.src.data.base_data_module import BaseDataModule
 
 DATA_DIR = BaseDataModule.data_dirname()
 SAFE_DATA = json.load(open(f"{DATA_DIR}/static_data.json"))
-INITIAL_STATE = [0.0, 0.13, 50.0]  # -> [E,V,T] # [0.13, 50.0, 0.0]
+# -> [E,V,T] # [0.13, 50.0, 0.0]  # pattern [0, 7]
+INITIAL_STATE = [0.0, 0.13, 50.0]
 FACTOR_TE = SAFE_DATA["factorTe"]
 FACTOR_I = SAFE_DATA["factorI"]
 FACTOR_KE = SAFE_DATA["factorKe"]
@@ -53,19 +54,23 @@ class SWH():
         R = R_BOUNDARY
         S = S_BOUNDARY
 
-    def post(self, mode: int, x: list, index: int) -> list:
+    def post(self, mode: int, x: list, index: int) -> list:  # u_action: int
         c_actions = C_MODES[mode]
-        u_action = 0  # self.u_actions[index]  # u_action = 1   U_MODES[index]
-        #dt_sec = self.dt*60
-        x[0] = x[0] + self.dt*c_actions[1]*2
-        x[1] = x[1] + self.dt*0.01000*(0.1*c_actions[0] - x[1])
-        x[2] = x[2] + self.dt*(1/(0.1*c_actions[0]))*(
+        # u_action = 1   U_MODES[index]  this should be received externally
+        u_action = self.u_actions[index]
+        dt_sec = self.dt*60
+        E = x[0] + dt_sec*c_actions[1]*2
+        V = x[1] + dt_sec*0.01000*(0.1*c_actions[0] - x[1])
+        T = x[2] + dt_sec*(1/(0.1*c_actions[0]))*(
             - self.factorTe*2.8811059759131854e-06*(x[2]-self.Te[index])
             - u_action*9.34673995175876e-05*(x[2]-self.Ti[index])
             - c_actions[2]*self.factorKe*0.001005026 *
             (0.1*c_actions[0]-x[1])*(x[2]-self.Ti[index])
             + self.factorI*0.7*0.7*8.403225763080125e-07*self.I[index]
             + c_actions[1]*0.008801843)
+        x[0] = E
+        x[1] = V
+        x[2] = T
         return x
 
     def get_initial_state(self):
