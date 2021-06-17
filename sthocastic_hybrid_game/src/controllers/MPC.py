@@ -50,6 +50,8 @@ class MPC():
         #print("pattern choosen: ", patterns[1])
         return patterns[1]  # for the moment
 
+#  ############################# CAMBIAR TAU sec -> min ###################
+
     def predict(self, mode, state, index):
         predicted_state = state
         taumin = int(self.tau/60)
