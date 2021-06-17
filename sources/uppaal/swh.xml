@@ -6,8 +6,9 @@
 
 
 import "../../build/lib/libconfig.so" {
-  double get_tau();      // OK
-  int    get_taumin();   // OK
+  int get_tau();
+  //double get_tau();      // OK
+  //int    get_taumin();   // OK
   double get_factorTe();
   double get_factorI();
   double get_factorKe();
@@ -16,8 +17,8 @@ import "../../build/lib/libconfig.so" {
   int    get_number_steps();
 };
 
-const double tau=get_tau();
-const int    taumin=get_taumin();
+const int tau=get_tau();
+//const int    taumin=get_taumin();
 const double factorTe=get_factorTe();
 const double factorI=get_factorI();
 const double factorKe=get_factorKe();
@@ -27,7 +28,8 @@ const double TwaterIn=get_TwaterIn();
 // ------------------------------------------------------------------------
 
 const int nrSteps = get_number_steps(); //15  -- 6(work sometimes)
-const int step    = taumin;    //30, 5min
+//const int step    = taumin;    //30, 5min
+const int step    = tau;
 const int horizon = step*nrSteps; // 75 steps
 
 
@@ -186,7 +188,7 @@ double paretoFunc()
 	return pareto+( alpha*x[0] + (1.0-alpha)*fabs(Tg-x[2]) );
 }
 
-double dt=60.0;
+double dt_sec=60.0;
 double E=0.0, V=0.0, T=0.0;
 int j;
 int h;
@@ -200,7 +202,7 @@ double media_tm1 = 7*60.0/5;
 double media_tm2 = 13*60.0/5;
 double media_tm3 = 19*60.0/5;
 
-int valve[16] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+int valve[16] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}; // de momento es 16 , IMPORTANTE !!
 int a = 0, b = 0, c = 0;
 int tm = 0;
 int _p,_r,_v,_f;
@@ -211,7 +213,7 @@ void initialize()
     x[0] = E_ini;
     x[1] = V_ini;
     x[2] = T_ini;
-    /*
+    // initialize valve array [] 
     tm = fint(t_ini/(60.0*5));
     for(j = 0; j &lt; 14; j=j+1)
     {
@@ -231,18 +233,19 @@ void initialize()
             valve[c-tm] = 1;
         }
     }
-    */
+    
+
     //{
     _p = modes[modeAns][0];
     _r = modes[modeAns][1];
     _f = modes[modeAns][2];  ;
-    _v = 0;//mvalve;             // v = random(0.1);va[h];
+    _v = mvalve;             // v = random(0.1);va[h];
 
-    for( j = 0; j &lt; taumin; j=j+1)
+    for( j = 0; j &lt; tau; j=j+1)
     {       
-        E = x[0] + dt*_r*2;
-        V = x[1] + dt*rateVo*( 0.1*_p - x[1] );
-        T = x[2] + dt*(1/(0.1*_p))*( 
+        E = x[0] + dt_sec*_r*2;
+        V = x[1] + dt_sec*rateVo*( 0.1*_p - x[1] );
+        T = x[2] + dt_sec*(1/(0.1*_p))*( 
                - factorTe*2.8811059759131854e-06*(x[2]-Te[j]) 
                - _v*9.34673995175876e-05*(x[2]-Ti[j])
                - _f*0.001005026*(0.1*_p-x[1])*(x[2]-Ti[j])
@@ -272,17 +275,16 @@ void update(int k)
     p = modes[mode][0];
     r = modes[mode][1];
     f = modes[mode][2];
-    //mvalve = valve[k];
-    v = 0;//mvalve;
+    v = valve[k];
     // double normal(double mean, double stddev)
     //v = normal();
     //fer  =  random(0,3);
-    for(j=0; j &lt; taumin; j=j+1)
+    for(j=0; j &lt; tau; j=j+1)
     {
-        h = k*taumin+j;
-        E = x[0] + dt*r*2;
-        V = x[1] + dt*rateVo*( 0.1*p - x[1] );
-        T = x[2] + dt*(1/(0.1*p))*(
+        h = k*tau+j;
+        E = x[0] + dt_sec*r*2;
+        V = x[1] + dt_sec*rateVo*( 0.1*p - x[1] );
+        T = x[2] + dt_sec*(1/(0.1*p))*(
                         - factorTe*2.8811059759131854e-06*(x[2]-Te[h])
                         - v*9.34673995175876e-05*(x[2]-Ti[h])
                         - f*0.001005026*(0.1*p-x[1])*(x[2]-Ti[h])
@@ -568,7 +570,7 @@ system Process;
 			<comment></comment>
 		</query>
 		<query>
-			<formula>simulate 1 [&lt;=horizon] { Tnext, x[2]  }</formula>
+			<formula>simulate 1 [&lt;=horizon] { Tnext, x[2], visitedPatterns,mode  }</formula>
 			<comment></comment>
 		</query>
 		<query>

@@ -3,10 +3,12 @@
 <nta>
 	<declaration>// Place global declarations here.
 clock GTime;
+clock xc;
 
 import "../../build/lib/libconfig.so" {
-  double get_tau();
-  int    get_taumin();
+  int get_tau();
+  //double get_tau();
+  //int    get_taumin();
   double get_factorTe();
   double get_factorI();
   double get_factorKe();
@@ -15,8 +17,9 @@ import "../../build/lib/libconfig.so" {
   int    get_number_steps();
 };
 
-double tau=get_tau();
-const int    taumin=get_taumin();
+const int    tau=get_tau();
+//double tau=get_tau();
+//const int    taumin=get_taumin();
 const double factorTe=get_factorTe();
 const double factorI=get_factorI();
 const double factorKe=get_factorKe();
@@ -26,12 +29,9 @@ const double TwaterIn=get_TwaterIn();
 // ------------------------------------------------------------------------
 
 const int nrSteps = get_number_steps(); //15  -- 6(work sometimes)
-const int step=taumin;          //30, 5min
+//const int step=taumin;          //30, 5min
+const int step=tau;
 const int horizon=step*nrSteps;       // 75 steps
-
-void set_static(){
-    //horizon = step*nrSteps;   
-}
 
 
 //---------------------------- set Dynamic variables ----------------------
@@ -54,7 +54,7 @@ int    modeAns, mvalve, t_ini;
 
 int int_value;
 double double_value;
-double dt=1.0;
+double dt=60.0;
 int _p,_r,_v,_f;
 
 const int modes[8][3]    = {{ 1,0,0 },{ 1,1,0 },{ 2,0,0 },{ 2,1,0 },{ 3,0,1 },{ 3,1,1 },{ 2,0,1 },{ 2,1,1}};
@@ -62,9 +62,19 @@ double x[3] = {0.0 , 0.0, 0.0};
 double T,V,E,Enext,Vnext,Tnext;
 int j;
 
+void post(double &amp;x[3])
+{
+    E = x[0] + dt*_r*2;
+    V = x[1] + dt*rateVo*( 0.1*_p - x[1] );
+    T = x[2] + dt*(1/(0.1*_p))*( - factorTe*2.8811059759131854e-06*(x[2]-Te[j]) - _v*9.34673995175876e-05*(x[2]-Ti[j]) - _f*0.001005026*(0.1*_p-x[1])*(x[2]-Ti[j]) + factorI*0.7*0.7*8.403225763080125e-07*I[j] + _r*0.008801843 );// 0.00048018432931886426 - va[h]*9.34673995175876e-05*(x[0]-T_in[h])
+    x[0]=E;
+    x[1]=V;
+    x[2]=T;
+}
+
 void set_dynamic(){ 
     double_value = get_T();
-    int_value = taumin;
+    int_value = tau;
 
     T_ini=get_T();
     V_ini=get_V();
@@ -86,19 +96,9 @@ void set_dynamic(){
     _f = modes[modeAns][2];  ;
     _v = 0;//mvalve;             // v = random(0.1);va[h];
 
-    for( j = 0; j &lt; taumin; j=j+1)
+    for( j = 0; j &lt; 5; j=j+1)
     {       
-        E = x[0] + dt*_r*2;
-        V = x[1] + dt*rateVo*( 0.1*_p - x[1] );
-        T = x[2] + dt*(1/(0.1*_p))*( 
-               - factorTe*2.8811059759131854e-06*(x[2]-Te[j]) 
-               - _v*9.34673995175876e-05*(x[2]-Ti[j])
-               - _f*0.001005026*(0.1*_p-x[1])*(x[2]-Ti[j])
-               + factorI*0.7*0.7*8.403225763080125e-07*I[j]
-               + _r*0.008801843 );// 0.00048018432931886426 - va[h]*9.34673995175876e-05*(x[0]-T_in[h])
-        x[0]=E;
-        x[1]=V;
-        x[2]=T;
+        post(x);
     }
 
     Enext = x[0];
@@ -116,28 +116,20 @@ void set_dynamic(){
 		<location id="id1" x="-4573" y="-1980">
 			<label kind="exponentialrate" x="-4583" y="-1946">1</label>
 		</location>
-		<location id="id2" x="-4395" y="-1980">
-			<label kind="exponentialrate" x="-4405" y="-1946">1</label>
-		</location>
-		<location id="id3" x="-4275" y="-1980">
-			<label kind="exponentialrate" x="-4285" y="-1946">1</label>
+		<location id="id2" x="-4403" y="-1980">
+			<label kind="exponentialrate" x="-4413" y="-1946">1</label>
 		</location>
 		<init ref="id0"/>
 		<transition>
-			<source ref="id2"/>
-			<target ref="id3"/>
-			<label kind="assignment" x="-4377" y="-1972">tau=7.0</label>
-		</transition>
-		<transition>
 			<source ref="id1"/>
 			<target ref="id2"/>
-			<label kind="assignment" x="-4522" y="-1972">tau=3.0</label>
+			<label kind="guard" x="-4539" y="-2014">xc&gt;horizon</label>
 		</transition>
 		<transition>
 			<source ref="id0"/>
 			<target ref="id1"/>
-			<label kind="assignment" x="-4709" y="-1971">set_static(),
-set_dynamic()</label>
+			<label kind="assignment" x="-4709" y="-1971">set_dynamic(),
+xc=0</label>
 		</transition>
 	</template>
 	<system>// Place template instantiations here.
