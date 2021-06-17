@@ -1,9 +1,9 @@
 from pathlib import Path
 import argparse
 
-LIFE_TIME = 24*60*60  # (in sec) two days  BATCH_SIZE
-DATA_SAMPLE_TIME = 15*60  # (in sec)
-DT = 60  # data_resample_time (in sec)
+LIFE_TIME = 24*60  # (in min) two days  BATCH_SIZE
+DATA_SAMPLE_TIME = 15  # (in min)
+DT = 1  # data_resample_time (in min)
 
 # NUMBER_STEPS = 15
 # OBS: we can use pandas propeties to process data or numpy, an also create an API
@@ -14,8 +14,8 @@ DT = 60  # data_resample_time (in sec)
 class BaseDataModule():
     def __init__(self, args: argparse.Namespace = None) -> None:
         self.args = vars(args) if args is not None else {}
-        self.life_time = self.args.get(
-            "life_time", LIFE_TIME)
+        self.life_time = int(self.args.get(
+            "life_time", LIFE_TIME))
         self.data_sample_time = self.args.get(
             "data_sample_time", DATA_SAMPLE_TIME)
         self.dt = self.args.get("dt", DT)
