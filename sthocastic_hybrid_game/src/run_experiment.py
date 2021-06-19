@@ -46,7 +46,7 @@ def main():
         f"sthocastic_hybrid_game.src.controllers.{args.controller_class}")
     data = data_class(args)
     model = model_class(data_config=data.config(),
-                        disturbs=data.loader_data(), u_actions=data.uncontrollable_action_generation(), args=args)
+                        disturbs=data.loader_data(), args=args)
     controller = controller_class(
         data_config=data.config(), disturbs=data.loader_data(), model=model, args=args)
 
@@ -57,25 +57,21 @@ def main():
     state = model.get_initial_state()
     states = [state]
     control_times = []
-    # K = 3 (maximum size), D, thus send 3 steps more to uppal T,I
-    for i in range(0, life_time):  # in minutes
+    u_actions = model.get_uncontrollable_actions()
+    # in minutes k=3, d boundary over R [n + e, m + e]
+    for i in range(0, life_time):
         if i % (tau) == 0:
             if i + nrSteps*tau >= life_time:  # regresar el tamanio del ultimo patron IMPORTANTE !!!
                 break
             controllable_mode = controller.control(state, i)
             control_times.append(i)
-        # add here u_modes
-        state = model.update(controllable_mode, state, i)
+        state = model.update(controllable_mode, u_actions[i], state, i)
         state_times.append(i)
         states.append(list(state))
     print("Simulation completed!")
     print("Plotting ..")
-    # one idea is to consider an aproximation error so one strategy  would be increasy the boundary over R [n + e, m + e] in python
     c_actions = controller.get_controllable_actions()
-    u_actions = controller.get_uncontrollable_actions()
-    u_actions = u_actions[0:len(c_actions)]
-    # c_actions.pop()
-
+    u_actions = u_actions[0:len(state_times)]
     viz2(states, c_actions, u_actions,
          data.config(), data.loader_data(), control_times, state_times)
     return
