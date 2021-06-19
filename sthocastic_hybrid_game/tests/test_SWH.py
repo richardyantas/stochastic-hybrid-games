@@ -1,40 +1,30 @@
+# pytest -v sthocastic_hybrid_game/tests/test_SWH.py
 from sthocastic_hybrid_game.src.models.SWH import SWH
 from sthocastic_hybrid_game.src.data.SOLAR import SOLAR
+import matplotlib.pyplot as plt
+import numpy as np
 import argparse
 import pytest
 
-# Do a export PYTHONPATH=. && pytest sthocastic_hybrid_game/src/models/test.py
-
-
-def test_swh():
-    data = SOLAR(args=None)
-    model = SWH(
-        data_config=data.config(),
-        disturbs=data.loader_data())
-    assert model.get_initial_state() == [0.0, 0.13, 50.0]
+data = SOLAR(args=None)
+model = SWH(data_config=data.config(), disturbs=data.loader_data())
 
 
 def test_swh_post():
     assert 3 == 3
 
 
-# pytest -q sthocastic_hybrid_game/src/controllers_test.py
-# # pytest -v sthocastic_hybrid_game/src/controllers_test.py
-# import pytest
-# from interval import interval
-# import multiprocessing
-# from .dataProcessing import DataProcessing
-# from .controllers import query, initialSafeController, predict_model_state, predictiveSafeController, uppaalController
-# from .config import *
+def test_uncontrollable_actions():
+    times = np.linspace(0, model.life_time, model.life_time)
+    times_hr = [float(t/60) for t in times]
+    u_actions = model.get_uncontrollable_actions()
+    plt.axis([0, 1440/(60), 0, 10])
+    plt.plot(times_hr, u_actions, drawstyle='steps', linewidth=0.8)
+    plt.grid(True, linewidth=0.6, linestyle='--')
+    plt.show()
+    assert len(u_actions) == len(times)
+    assert len(u_actions) == model.life_time
 
-# def test_query():
-#   assert query([0.0, 0.15, 40.1]) == {"pat":[1,6],"i":0}
-#   assert query([1.1, 220.0, 0.0]) == {"pat":[-1,-1,-1],"i":-1}
-
-# def test_initialSafeController():
-
-#   assert initialSafeController([0.0, 0.15, 40.1]) == [1,6]
-#   assert initialSafeController([1.1, 220.0, 0.0]) == [-1,-1,-1]
 
 # def test_predict_model_state_is_inside_of_boundary():
 #   # [0.1, 0.15, 40.1] -> pat [1, 6] -> mode 1
@@ -54,7 +44,6 @@ def test_swh_post():
 # @pytest.mark.skip(reason="Uppal methods is not done yet")
 # def test_uppaalController():
 #   assert uppaalController()
-
 
 # if __name__ == '__main__':
 # test()
