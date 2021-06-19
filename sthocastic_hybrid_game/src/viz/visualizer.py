@@ -35,8 +35,8 @@ def viz2(states, c_actions, u_actions, data_config, disturbs, control_times, sta
         V.append(state[1])
         E.append(state[0])
     for c_action in c_actions:
-        r.append(c_action[0])
-        p.append(c_action[1]+8)
+        r.append(c_action[1])
+        p.append(c_action[0]+8)
         f.append(c_action[2]+4)
     for u_action in u_actions:
         v.append(u_action+6)
@@ -44,8 +44,6 @@ def viz2(states, c_actions, u_actions, data_config, disturbs, control_times, sta
     with plt.style.context('dark_background'):
         fig = plt.figure(figsize=(11, 11))
         fig.canvas.set_window_title('Simulation')
-        # fig.suptitle('<Simulation>', fontsize=10)
-        # plt.style.use(['dark_background'])
         grid = plt.GridSpec(4, 4, wspace=0.8, hspace=0.7)
 
         plt.subplot(grid[0, :4])
@@ -64,10 +62,6 @@ def viz2(states, c_actions, u_actions, data_config, disturbs, control_times, sta
         plt.xlabel('t(hr)')
         plt.legend()
         plt.grid(True, linewidth=0.6, linestyle='--')
-
-        # ctimes.pop()
-        #print("action times len:", len(ctimes), len(r))
-        # but have shapes (2881,) and (576,)
         plt.subplot(grid[2, :4])
         plt.plot(control_times_hr, r, 'red', linewidth=0.8,
                  label="resistance", drawstyle='steps')
@@ -75,7 +69,7 @@ def viz2(states, c_actions, u_actions, data_config, disturbs, control_times, sta
                  label="exp/comp", drawstyle='steps')
         plt.plot(control_times_hr, p, 'orange', linewidth=0.8,
                  label="piston", drawstyle='steps')
-        plt.plot(control_times_hr, v, 'yellow', linewidth=0.8,
+        plt.plot(state_times_hr, v, 'yellow', linewidth=0.8,
                  label="valve", drawstyle='steps')
         plt.ylabel('{r,f,p,v}')
         plt.xlabel('t(hr)')
