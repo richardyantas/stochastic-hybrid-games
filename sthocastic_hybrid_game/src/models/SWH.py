@@ -7,7 +7,6 @@ import random
 from sthocastic_hybrid_game.src.data.base_data_module import BaseDataModule
 # OBS: Dynamical neuroscience -> Biological neural network https://en.wikipedia.org/wiki/Dynamical_neuroscience
 # Time series and panel data econometrics, Econometrics in Theory and Practice: Analysis of Cross Section, Time Series and Panel Data with Stata 15.1
-
 # parameters.json ---> Safe c++ IBex ---> patterns, zonotopes
 #            |                                |---------------> python
 #            |------------------------------------------------>  API
@@ -16,6 +15,7 @@ DATA_DIR = BaseDataModule.data_dirname()
 SAFE_DATA = json.load(open(f"{DATA_DIR}/static_data.json"))
 # -> [E,V,T] # [0.13, 50.0, 0.0]  # pattern [0, 7]
 INITIAL_STATE = [0.0, 0.13, 50.0]
+TAU = SAFE_DATA["tau"]
 FACTOR_TE = SAFE_DATA["factorTe"]
 FACTOR_I = SAFE_DATA["factorI"]
 FACTOR_KE = SAFE_DATA["factorKe"]
@@ -37,12 +37,11 @@ C_MODES = [[1, 0, 0],
 
 
 class SWH():
-    def __init__(self, data_config: Dict[str, Any], disturbs: Dict[str, Any], u_actions: list, args: argparse.Namespace = None) -> None:
+    def __init__(self, data_config: Dict[str, Any], disturbs: Dict[str, Any], args: argparse.Namespace = None) -> None:
         self.args = vars(args) if args is not None else {}
         self.life_time = data_config["life_time"]
         self.data_sample_time = data_config["data_sample_time"]
         self.dt = data_config["dt"]
-        self.u_actions = u_actions
         self.Te = disturbs["Te"]
         self.Ti = disturbs["Ti"]
         self.I = disturbs["I"]
@@ -54,10 +53,9 @@ class SWH():
         R = R_BOUNDARY
         S = S_BOUNDARY
 
-    def post(self, mode: int, x: list, index: int) -> list:  # u_action: int
+    def post(self, mode: int, u_action: int, x: list, index: int) -> list:  # u_action: int
         c_actions = C_MODES[mode]
-        # u_action = 1   U_MODES[index]  this should be received externally
-        u_action = self.u_actions[index]
+        u_action = 0
         dt_sec = self.dt*60
         E = x[0] + dt_sec*c_actions[1]*2
         V = x[1] + dt_sec*0.01000*(0.1*c_actions[0] - x[1])
@@ -73,6 +71,21 @@ class SWH():
         x[2] = T
         return x
 
+    def get_uncontrollable_actions(self):
+        U_MODES = (np.zeros(int(self.life_time))).tolist()
+        num_actions = random.randrange(150, 180)
+        standard_deviation = 2*12
+        for i in range(0, num_actions):
+            U_MODES[int(random.gauss(7*60, standard_deviation))] = 1
+            U_MODES[int(random.gauss(13*60, standard_deviation))] = 1
+            U_MODES[int(random.gauss(19*60, standard_deviation))] = 1
+        print("umodes:", len(U_MODES))
+        return U_MODES
+
+    def update(self, mode, u_action, state, index):
+        state = self.post(mode, u_action, state, index)
+        return state
+
     def get_initial_state(self):
         return INITIAL_STATE
 
@@ -81,13 +94,6 @@ class SWH():
 
     def get_number_steps(self):
         return NUMBER_STEPS
-
-    def get_uncontrollable_actions(self):
-        return self.u_actions
-
-    def update(self, mode, state, index):
-        state = self.post(mode, state, index)
-        return state
 
     @ staticmethod
     def add_to_argparse(parser):
