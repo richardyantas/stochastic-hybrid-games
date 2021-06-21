@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
-<nta>
-	<declaration>clock GTime;
+clock GTime;
 //------------------------------- set Static values ------------------------------------------------------------
+
 
 import "../../build/lib/libconfig.so" {
   int get_tau();
+  //double get_tau();      // OK
+  //int    get_taumin();   // OK
   double get_factorTe();
   double get_factorI();
   double get_factorKe();
@@ -15,6 +15,7 @@ import "../../build/lib/libconfig.so" {
 };
 
 const int tau=get_tau();
+//const int    taumin=get_taumin();
 const double factorTe=get_factorTe();
 const double factorI=get_factorI();
 const double factorKe=get_factorKe();
@@ -24,9 +25,10 @@ const double TwaterIn=get_TwaterIn();
 // ------------------------------------------------------------------------
 
 const int nrSteps = get_number_steps(); //15  -- 6(work sometimes)
-const int step    = tau; // 5 min
+//const int step    = taumin;    //30, 5min
+const int step    = tau;
 const int horizon = step*nrSteps; // 75 steps
-const int horizon_tau = horizon + tau;
+const int total = horizon + tau;
 
 
 //---------------------------- set Dynamic variables ----------------------
@@ -37,25 +39,25 @@ import "../../build/lib/libconfig.so" {
   int    get_time();
   int    get_valve();
   int    get_mode();
-  void   get_Te(int h, double&amp; arr[horizon_tau]);
-  void   get_Ti(int h, double&amp; arr[horizon_tau]);
-  void   get_I(int h, double&amp; arr[horizon_tau]);
+  void   get_Te(int h, double& arr[total]);
+  void   get_Ti(int h, double& arr[total]);
+  void   get_I(int h, double& arr[total]);
 };
 
 double T_ini, V_ini, E_ini;
-double Te[horizon_tau], Ti[horizon_tau], I[horizon_tau];
-int    mode_ini, valve_ini, t_ini;
+double Te[total], Ti[total], I[total];
+int    modeAns, mvalve, t_ini;
 
 void set_dynamic(){ 
     T_ini=get_T();
     V_ini=get_V();
     E_ini=get_E();
     t_ini=get_time();
-    mode_ini= get_mode();
-    valve_ini= get_valve();
-    get_Te(horizon_tau,Te);
-    get_Ti(horizon_tau,Ti);                // problem!!!
-    get_I(horizon_tau,I);
+    modeAns = get_mode();
+    mvalve  = get_valve();
+    get_Te(total,Te);
+    get_Ti(total,Ti);                // problem!!!
+    get_I(total,I);
 }
 
 
@@ -71,15 +73,13 @@ typedef int[0,max_listPa]     id_pattern_t;
 typedef int[0,max_paLen]      pattern_len_t;   // 8
 typedef int[0,max_zonotopes]  zid_t;
 
-//id_list_patterns_t zonotope           = 0;
-int zonotope;
-//id_pattern_t       p_id               = 0;
-int p_id;
-double             x[3];//               = {0.0 , 0.0, 0.0};
+id_list_patterns_t zonotope           = 0;
+id_pattern_t       p_id               = 0;
+double             x[3]               = {0.0 , 0.0, 0.0};
 int                pattern_size       = 0;
 int                visitedPatterns    = 0;
 int                ppos               = 0;
-//int                mode               = 0;
+int                mode               = 0;
 
 // HERE ! mode initial
 const int modes[8][3]    = {{ 1,0,0 },{ 1,1,0 },{ 2,0,0 },{ 2,1,0 },{ 3,0,1 },{ 3,1,1 },{ 2,0,1 },{ 2,1,1}};
@@ -154,13 +154,32 @@ const zonotope_t zonotopes[id_zonotope_t] = {
 };
 
 
+
 clock xc, yc, rc;
-double Tg = 55.0, pareto = 0.0;
-double Tnext=0.0, Vnext=0.0, Enext=0.0;
-int    it = 0, flag = 0;
+double Tg   = 55.0;
+int    flag = 0;
+//const double horizont = 3*tau; // multiple of tau  p1=2*tau, p2=3*tau, p3=2*tau, p4=tau: Horizont={}
+double pareto     = 0.0;
+int    it = 0;
+
+double Tnext=0.0;
+double Vnext=0.0;
+double Enext=0.0;
+
 id_zonotope_t zi   = 0;
 int           patu = 0;
 
+id_zonotope_t getZono()
+{
+    for(i: id_zonotope_t )            //for(i: id_zonotope_t )
+    {
+        if (zonotopes[i][0]<=x[2] && x[2] < zonotopes[i][1] && zonotopes[i][2]<=x[1] && x[1] <= zonotopes[i][3]) 
+        {          
+            return i;
+        }
+    }
+    return -1; 
+}
 double paretoFunc()
 {
 	double alpha=1.0;
@@ -168,28 +187,42 @@ double paretoFunc()
 }
 
 double dt_sec=60.0;
-double E, V, T;
-int mode, valve;
-int j, index;
+double E=0.0, V=0.0, T=0.0;
+int j;
+int h;
 
-void post(int it, int mode_)
+double fer=0.0;
+
+int index1=0, index2=0, index3=0;
+
+double dvs_tm    = 1*3.0; // 1*12 
+double media_tm1 = 7*60.0/5;
+double media_tm2 = 13*60.0/5;
+double media_tm3 = 19*60.0/5;
+
+int valve[16] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}; // de momento es 16 , IMPORTANTE !!
+int a = 0, b = 0, c = 0;
+int tm = 0;
+int _p,_r,_v,_f;
+
+
+void update(int k)
 {
     int p,r,v,f;
-    mode = mode_;
     p = modes[mode][0];
     r = modes[mode][1];
     f = modes[mode][2];
-    v = 0;//v = valve;
-    index = it*tau;
-    for(j=index; j &lt; index+tau; j=j+1)
+    v = 0;
+    for(j=0; j < tau; j=j+1)
     {
+        h = k*tau+j;
         E = x[0] + dt_sec*r*2;
         V = x[1] + dt_sec*rateVo*( 0.1*p - x[1] );
         T = x[2] + dt_sec*(1/(0.1*p))*(
-                        - factorTe*2.8811059759131854e-06*(x[2]-Te[j])
-                        - v*9.34673995175876e-05*(x[2]-Ti[j])
-                        - f*factorKe*0.001005026*(0.1*p-x[1])*(x[2]-Ti[j])
-                        + factorI*0.7*0.7*8.403225763080125e-07*I[j]
+                        - factorTe*2.8811059759131854e-06*(x[2]-Te[h])
+                        - v*9.34673995175876e-05*(x[2]-Ti[h])
+                        - f*0.001005026*(0.1*p-x[1])*(x[2]-Ti[h])
+                        + factorI*0.7*0.7*8.403225763080125e-07*I[h]
                         + r*0.008801843 ); // 0.00048018432931886426 - va[h]*9.34673995175876e-05*(x[0]-T_in[h])
         x[0]=E;
         x[1]=V;
@@ -198,18 +231,64 @@ void post(int it, int mode_)
     return;
 }
 
-void predict()
+
+void initialize()
 {
     set_dynamic();
     x[0] = E_ini;
     x[1] = V_ini;
     x[2] = T_ini;
-    valve = valve_ini;
-    post(0, mode_ini);
+    // initialize valve array [] 
+    /*
+    tm = fint(t_ini/(60.0*5));
+    for(j = 0; j < 14; j=j+1)
+    {
+        a = fint( normal(media_tm1, dvs_tm) );
+        b = fint( normal(media_tm2, dvs_tm) );
+        c = fint( normal(media_tm3, dvs_tm) );
+        if(tm <= a && a <= tm+15)
+        {
+            valve[a-tm] = 1;
+        }
+        if(tm <= b && b <= tm+15)
+        {
+            valve[b-tm] = 1;
+        }
+        if(tm <= c && c <= tm+15)
+        {
+            valve[c-tm] = 1;
+        }
+    }
+    */
+    update(0);
+    /*
+    _p = modes[modeAns][0];
+    _r = modes[modeAns][1];
+    _f = modes[modeAns][2];  ;
+    _v = 0; //mvalve;             // v = random(0.1);va[h];
+
+    for( j = 0; j < tau; j=j+1)
+    {       
+        E = x[0] + dt_sec*_r*2;
+        V = x[1] + dt_sec*rateVo*( 0.1*_p - x[1] );
+        T = x[2] + dt_sec*(1/(0.1*_p))*( 
+               - factorTe*2.8811059759131854e-06*(x[2]-Te[j]) 
+               - _v*9.34673995175876e-05*(x[2]-Ti[j])
+               - _f*0.001005026*(0.1*_p-x[1])*(x[2]-Ti[j])
+               + factorI*0.7*0.7*8.403225763080125e-07*I[j]
+               + _r*0.008801843 );// 0.00048018432931886426 - va[h]*9.34673995175876e-05*(x[0]-T_in[h])
+        x[0]=E;
+        x[1]=V;
+        x[2]=T;
+    }
+    Enext = x[0];
+    Vnext = x[1];
+    Tnext = x[2];
+    */
+
     //zi = getZonotope();
     //zi = getZono();
-    //zi = tm;
-    Tnext = T;
+    zi = tm;
     return;
 }
 
@@ -284,10 +363,9 @@ const int allPatterns[id_list_patterns_t][id_pattern_t][pattern_len_t] = {
 
 
 
-</declaration>
-	<template>
-		<name x="5" y="5">Template</name>
-		<declaration>
+/////////////////////////////////////
+
+
 bool validate_patterns(id_pattern_t p,id_list_patterns_t  ind_patterns)
 {
     if (allPatterns[ind_patterns][p][1] == -2) 
@@ -301,7 +379,7 @@ int get_pattern(id_list_patterns_t ind_patterns,id_pattern_t p_id)
     int av=0;
     for (i:pattern_len_t)
     {
-        if (allPatterns[ind_patterns][p_id][i] &gt;= 0)
+        if (allPatterns[ind_patterns][p_id][i] >= 0)
             av = av + 1;
     }
     return av;
@@ -313,208 +391,44 @@ int applyMode(id_list_patterns_t zonotope, id_pattern_t pattern_id, int pattern_
     return mode_;
 }
 
+/*
+bool includes(const zonotope_t& a, double &x[3])
+{
+  return (a[0]<=x[2] && x[2] < a[1] && a[2]<=x[1] && x[1] <= a[3]);
+}
+
 
 id_zonotope_t getZonotope()
 {
+    //for(i: int[0,127])            
     for(i: id_zonotope_t )
     {
-        if (zonotopes[i][0]&lt;=x[2] &amp;&amp; x[2] &lt; zonotopes[i][1] &amp;&amp; zonotopes[i][2]&lt;=x[1] &amp;&amp; x[1] &lt;= zonotopes[i][3]) 
+        if (includes(zonotopes[i], x))
+        { // this
+            //out = allPatterns[i][0];
+            return i;
+        }
+    }
+
+    flag = 1;
+    return -1; 
+}
+*/
+
+id_zonotope_t getZonotope()
+{
+    for(i: id_zonotope_t )            //for(i: id_zonotope_t )
+    {
+        if (zonotopes[i][0]<=x[2] && x[2] < zonotopes[i][1] && zonotopes[i][2]<=x[1] && x[1] <= zonotopes[i][3]) 
         {          
             return i;
         }
     }
     return -1; 
-}</declaration>
-		<location id="id0" x="-399" y="-1547">
-			<urgent/>
-		</location>
-		<location id="id1" x="-400" y="-1437">
-			<urgent/>
-		</location>
-		<location id="id2" x="-68" y="-1437">
-			<urgent/>
-		</location>
-		<location id="id3" x="-400" y="-1292">
-			<urgent/>
-		</location>
-		<location id="id4" x="-68" y="-1292">
-			<urgent/>
-		</location>
-		<location id="id5" x="-399" y="-1020">
-			<label kind="invariant" x="-382" y="-1028">xc &lt;= step</label>
-		</location>
-		<location id="id6" x="-399" y="-884">
-			<urgent/>
-		</location>
-		<location id="id7" x="-399" y="-782">
-			<name x="-416" y="-757">DONE</name>
-			<urgent/>
-		</location>
-		<location id="id8" x="-9" y="-927">
-			<name x="-43" y="-876">__RESET__</name>
-		</location>
-		<location id="id9" x="-450" y="-1079">
-			<urgent/>
-		</location>
-		<location id="id10" x="-348" y="-1079">
-			<urgent/>
-		</location>
-		<branchpoint id="id11" x="-399" y="-1122">
-		</branchpoint>
-		<init ref="id0"/>
-		<transition controllable="false">
-			<source ref="id10"/>
-			<target ref="id5"/>
-			<label kind="assignment" x="-357" y="-1062">valve=1</label>
-		</transition>
-		<transition controllable="false">
-			<source ref="id9"/>
-			<target ref="id5"/>
-			<label kind="assignment" x="-510" y="-1054">valve=0</label>
-		</transition>
-		<transition>
-			<source ref="id11"/>
-			<target ref="id10"/>
-			<label kind="probability" x="-374" y="-1130">1</label>
-		</transition>
-		<transition>
-			<source ref="id11"/>
-			<target ref="id9"/>
-			<label kind="probability" x="-450" y="-1122">50</label>
-		</transition>
-		<transition controllable="false">
-			<source ref="id3"/>
-			<target ref="id11"/>
-			<label kind="assignment" x="-382" y="-1207">mode=applyMode(zonotope,p_id,ppos),
-ppos=ppos+1</label>
-		</transition>
-		<transition controllable="false">
-			<source ref="id8"/>
-			<target ref="id8"/>
-			<nail x="-60" y="-1029"/>
-			<nail x="59" y="-1029"/>
-		</transition>
-		<transition controllable="false">
-			<source ref="id6"/>
-			<target ref="id7"/>
-			<label kind="guard" x="-391" y="-858">yc &gt;  horizon</label>
-		</transition>
-		<transition controllable="false">
-			<source ref="id6"/>
-			<target ref="id1"/>
-			<label kind="guard" x="-595" y="-1207">yc &lt;= horizon</label>
-			<label kind="assignment" x="-570" y="-1173">it=it+1</label>
-			<nail x="-527" y="-884"/>
-			<nail x="-527" y="-1437"/>
-		</transition>
-		<transition controllable="false">
-			<source ref="id5"/>
-			<target ref="id6"/>
-			<label kind="guard" x="-382" y="-1011">xc == step</label>
-			<label kind="assignment" x="-382" y="-986">post(it, mode),
-xc = 0,
-rc = 0,
-pareto = paretoFunc()</label>
-		</transition>
-		<transition>
-			<source ref="id4"/>
-			<target ref="id3"/>
-			<label kind="select" x="-247" y="-1335">p : id_pattern_t</label>
-			<label kind="guard" x="-298" y="-1318">validate_patterns(p,zonotope)</label>
-			<label kind="assignment" x="-238" y="-1292">p_id = p,
-ppos = 0,
-pattern_size = get_pattern(zonotope,p),
-visitedPatterns=visitedPatterns+1</label>
-		</transition>
-		<transition controllable="false">
-			<source ref="id2"/>
-			<target ref="id4"/>
-			<label kind="assignment" x="-162" y="-1386">zonotope = getZonotope()</label>
-		</transition>
-		<transition controllable="false">
-			<source ref="id1"/>
-			<target ref="id3"/>
-			<label kind="guard" x="-485" y="-1369">(ppos+1) &lt;= pattern_size</label>
-		</transition>
-		<transition controllable="false">
-			<source ref="id1"/>
-			<target ref="id2"/>
-			<label kind="guard" x="-323" y="-1462">(ppos+1)&gt; pattern_size</label>
-		</transition>
-		<transition controllable="false">
-			<source ref="id0"/>
-			<target ref="id1"/>
-			<label kind="assignment" x="-382" y="-1521">predict(),
-it=1,
-xc=0,
-rc=0</label>
-		</transition>
-	</template>
-	<system>// Place template instantiations here.
-Process = Template();
-// List one or more processes to be composed into a system.
-system Process;
-                    </system>
-	<queries>
-		<query>
-			<formula></formula>
-			<comment></comment>
-		</query>
-		<query>
-			<formula></formula>
-			<comment></comment>
-		</query>
-		<query>
-			<formula></formula>
-			<comment></comment>
-		</query>
-		<query>
-			<formula></formula>
-			<comment></comment>
-		</query>
-		<query>
-			<formula>simulate 1 [&lt;=horizon] { visitedPatterns,mvalve,ppos } under Opt</formula>
-			<comment></comment>
-		</query>
-		<query>
-			<formula>simulate 1 [&lt;=horizon] { fer } under Opt</formula>
-			<comment></comment>
-		</query>
-		<query>
-			<formula>simulate 1 [&lt;=horizon] { ppos,visitedPatterns } under Opt</formula>
-			<comment></comment>
-		</query>
-		<query>
-			<formula>simulate 1 [&lt;=100] { ppos }</formula>
-			<comment></comment>
-		</query>
-		<query>
-			<formula>strategy Opt = minE (pareto) [&lt;=horizon]: &lt;&gt; GTime&gt;=horizon</formula>
-			<comment></comment>
-		</query>
-		<query>
-			<formula></formula>
-			<comment></comment>
-		</query>
-		<query>
-			<formula></formula>
-			<comment></comment>
-		</query>
-		<query>
-			<formula>simulate 1 [&lt;=horizon] { Tnext, x[2], visitedPatterns,mode  }</formula>
-			<comment></comment>
-		</query>
-		<query>
-			<formula>simulate 1 [&lt;=horizon] { mvalve, modeAns }</formula>
-			<comment></comment>
-		</query>
-		<query>
-			<formula></formula>
-			<comment></comment>
-		</query>
-		<query>
-			<formula>simulate 1 [&lt;=horizon] { ppos,visitedPatterns,mode,flag,Tnext,zi,mvalve } under Opt</formula>
-			<comment></comment>
-		</query>
-	</queries>
-</nta>
+}
+
+
+
+
+strategy Opt = minE (pareto) [<=horizon]: <> GTime>=horizon
+simulate 1 [<=horizon] { ppos,visitedPatterns,mode,flag,Tnext,zi,valve,zonotope } 
