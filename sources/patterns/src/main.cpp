@@ -4,29 +4,58 @@
 #include <queue>
 #include <cmath>
 #include <json/json.h>
-#include "common.h"
+#include "switched_system.h"
 #include "utils.h"
 #include "decompose.h"
-#include "config.h"
-#include "model.h"
+#include "read_json.h"
 
 using namespace std;
 using namespace ibex;
-using namespace config;
 
-// running from build directory
-// make && ./bin/pattern_generator ../sources/data/parameters.json ../sources/data/pattern.json
-// task: 1: does not work the full code, 2:  we also need to check the interval in the model  "Interval(0,1)"*9.34673995175876e-05*(x[0]-Ti)/(0.1*p)
-// strategies install on other computers and run 
+// make && ./bin/generator ../sthocastic_hybrid_game/datasets/static_data.json ../sthocastic_hybrid_game/datasets/pattern2.json
+// make && ./bin/generator ../sources/patterns/data/parameters.json ../sources/patterns/data/pattern2.json
+
+Json::StreamWriterBuilder jsonWriter;
+//list<IntervalVector> list_W;
+vector< vector< pair <IntervalVector, list< vector<int> > > > > result_total;
+sampledSwitchedSystem sys;
+IntervalVector R(2), W(2), B(2), S(2);
+Interval Te, Ti, I;
+int NB_K, NB_D;
+double factorTe, factorI, factorTi, factorE, factorKe, rate, TwaterIn;
 
 int main(int argc, char* argv[]){
-    readParameters(argv[1], argv[2]);
-    cout <<"R: "<<R << endl;
-    cout <<"W: "<<W << endl;
-    cout <<"B: "<<B << endl;
-    cout <<"S: "<<S << endl;
-    cout <<"Te: "<< Te << endl;
-    setModel();
+    readParameters(sys,  R, B, S, W, Te, Ti, I, NB_K, NB_D, factorTe, factorI, factorTi, factorE, factorKe, rate, TwaterIn, argv[1], argv[2]);    
+    cout << "R: " << R << endl;
+    cout << "B: " << B << endl;
+    cout << "S: " << S << endl;
+    cout << "W: " << W << endl;
+    cout << "Te: " << Te << endl;
+    cout << "Ti: " << Ti << endl;
+    cout << "I: " << I << endl;
+    cout << "NB_K: " << NB_K << endl;
+    cout << "NB_D: " << NB_D << endl;
+    cout << "factorTe: " << factorTe << endl;
+    cout << "factorTi: " << factorTe << endl;
+    cout << "factorI: " << factorTe << endl;
+    cout << "factorE: " << factorE << endl;
+    cout << "factorKe: " << factorKe << endl;
+    cout << "rate: " << rate << endl;
+    cout << "TwaterIn: " << TwaterIn << endl;
+    int modes[8][3] = {{1,0,0}, {1,1,0}, {2,0,0}, {2,1,0}, {3,0,1}, {3,1,1}, {2,0,1}, {2,1,1}};
+    const int n = 2;
+    Variable x(n);
+    double p,r,f;
+    for(int i=0;i<8;i++){
+        p = modes[i][0];r = modes[i][1];f = modes[i][2];
+        Function mode = Function(x, Return( 
+            - factorTe*2.8811059759131854e-6*(x[0]-Te)/(0.1*p) - Interval(0,1)*9.34673995175876e-05*(x[0]-Ti)/(0.1*p) - f*0.001005026*(0.1*p-x[1])*(x[0]-Ti)/(0.1*p)            //  original -> 0.00009346739
+            + factorI*0.7*0.7*8.403225763080125e-07*I/(0.1*p) + factorE*r*0.008801843/(0.1*p) , rate*( 0.1*p - x[1]) ) 
+        );
+        sys.dynamics.push_back(mode);
+    }             
+    sys.nb_dynamics = sys.dynamics.size();
+      
     list<IntervalVector> list_W;
     list_W.push_back(W);
     while(!list_W.empty()){
@@ -54,7 +83,7 @@ int main(int argc, char* argv[]){
                 result_total.push_back(result);
             }
             else                
-                cerr << "Incomplete result" << endl;        
+                cerr << "Incomplete result" << endl;
             parse_to_json(result);
         }
     }
