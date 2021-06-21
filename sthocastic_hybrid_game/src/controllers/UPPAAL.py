@@ -56,7 +56,8 @@ class UPPAAL():
         #self.controllable_mode = -1
         self.c_actions = []  # [C_MODES[self.controllable_mode]]
         self.queue = multiprocessing.Queue()
-        self.H = self.nrSteps*self.tau
+        self.H = self.nrSteps*self.tau+self.tau
+        self.list_params = []
 
     def send_save_data2uppaal(self, controllable_mode, state, index):
         dynamic_data = {}
@@ -73,25 +74,61 @@ class UPPAAL():
         file.write(json.dumps(dynamic_data, indent=4, sort_keys=True))
         return
 
-    def convert2array(self, points):  # HERE PROBLEM !!
+    def pre_convert2array(self, points):
         for i in range(0, len(points)):
             points[i] = points[i][1:-1].split(",")
             points[i][0] = float(points[i][0])
             points[i][1] = float(points[i][1])
+        return points
+
+    def convert2array_newversion():
+
+        return 0
+
+    def convert2array(self, points):  # HERE PROBLEM !!
+        #points = self.pre_convert2array(points)
         horizon_permitted = int(points[-1][0]/TAU)
         mlist = [None]*horizon_permitted
+
+        # mlist = [0]*horizon_permitted
+        # points[i][0]
+        # 11
+
         for i in range(0, len(points)-1):
             if (points[i][0] == points[i+1][0] and points[i+1][0] != points[-1][0]):
                 it = int(points[i][0]/self.tau)
                 mlist[it] = points[i+1][1]  # int
-        for i in range(0, horizon_permitted):
-            if mlist[i] == None:
-                mlist[i] = mlist[i-1]
+        # flag = False
+        if mlist[0] == None:
+            mlist[0] = 0
+
+        for i in range(0, horizon_permitted-1):
+            if mlist[i+1] == None:
+                mlist[i+1] = mlist[i]
+            print("mlist:", mlist)
         return mlist
+
+    def filter_pattern(self, mode, visitedPatterns):
+        less = min(len(visitedPatterns), len(mode))
+        patterns = []
+        subgroup = [mode[0]]
+        for i in range(0, less-1):
+            if visitedPatterns[i] == visitedPatterns[i+1]:
+                subgroup.append(mode[i+1])
+            else:
+                patterns.append(subgroup)
+                subgroup = []
+                subgroup.append(mode[i+1])
+        patterns = patterns[0:-1]
+        new_patterns = []
+        for ps in patterns:
+            for p in ps:
+                new_patterns.append(p)
+        return new_patterns
 
     def receive_strategy_from_uppaal(self):
         res = os.popen(COMMAND).readlines()
-        print(res)
+        # print(res)
         params = {}
         params["visitedPatterns"] = 0
         params["mode"] = 0
@@ -100,14 +137,24 @@ class UPPAAL():
             # if params.get(res[i][:-2]) != None:  # removing :\n with -3
             key = res[i][:-2]
             if params.get(key) != None:
-                params[key] = self.convert2array(
-                    res[i+1][:-1].split()[1:])
+                points = res[i+1][:-1].split()[1:]
+                points = self.pre_convert2array(points)
+                params[key] = {"list": self.convert2array(
+                    points), "points": points}
 
-        params["mode"] = [int(p) for p in params["mode"]]
-        print("T predicted uppaal: ", params["Tnext"])
+        # Al comienzo y al final
+        file = open(f"{DATA_DIR}/uppaal_response_data2.json",
+                    'a', encoding='utf-8')
+        file.write(json.dumps(params, indent=4, sort_keys=True)+",")
+        # ---------------------#
+        params["mode"] = [int(p) for p in params["mode"]["list"]]
+        # params["mode"] = params["mode"][1:]
+        # print("T predicted uppaal: ", params["Tnext"])
         print("pattern:", params["mode"], "size:", len(params["mode"]))
-        return params["mode"]
-
+        pattern = self.filter_pattern(
+            params["mode"], params["visitedPatterns"]["list"])
+        # return params["mode"]
+        return pattern
     #   **************** Tasks **************
     '''
         cost_function -> paretoFunc
@@ -132,7 +179,7 @@ class UPPAAL():
             predicted_state = self.model.post(
                 controllable_mode, self.u_actions[index], predicted_state, i)  # antes era index
         print("T predicted on step: ", predicted_state[2])
-        time.sleep(3)
+        # time.sleep(3)
         self.send_save_data2uppaal(controllable_mode, list(state), index)
         optimal_pattern = self.receive_strategy_from_uppaal()
         self.queue.put(optimal_pattern)
