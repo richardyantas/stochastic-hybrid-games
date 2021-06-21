@@ -82,8 +82,8 @@ conda remove --name ucsp_solar --all
 
     git remote rename origin github
     git remote add bitbucket https://richardyantas@bitbucket.org/muniz-cs/ucsp-solar.git
-    git push origin github HEAD
-    git push origin bitbucket HEAD
+    git push github HEAD
+    git push bitbucket HEAD
     git push origin github your_branch
     git push origin bitbucket your_branch
 
