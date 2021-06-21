@@ -8,7 +8,7 @@ from sthocastic_hybrid_game.src.data.base_data_module import BaseDataModule
 DATA_DIR = BaseDataModule.data_dirname()
 SAFE_DATA = json.load(open(f"{DATA_DIR}/static_data.json"))
 TAU = SAFE_DATA["tau"]  # 300 should be fixed by safe patterns
-WATER_TEMPERATURE_INPUT = 25
+WATER_TEMPERATURE_INPUT = 22.5
 
 
 class SOLAR(BaseDataModule):
