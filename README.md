@@ -1,10 +1,9 @@
 # Dependencies
 
 c++17
-
-uppaal - dependencies
-dynibex - dependencies
-jsoncpp - depencencies
+Uppaal - dependencies
+Dynibex - dependencies
+Jsoncpp - depencencies
 
 # Install
 
@@ -15,78 +14,31 @@ Install Python Package Manager "anaconda"
 
 # 1.- Create an environment with conda
 
-```
-conda env create -f environment.yml
-conda env list
-conda activate ucsp_solar
-conda list
-pip-compile requirements.in
-pip-sync requirements.txt
-```
+    conda env create -f environment.yml
+    conda activate ucsp_solar
+    pip-compile requirements.in
+    pip-sync requirements.txt
 
-Before anything modify your vscode.json to add a python formatter
+# 2.- run the project with MPC controller by default
 
-```
-{
-  "workbench.iconTheme": "vscode-icons",
-  "workbench.editorAssociations": [
-    {
-      "viewType": "jupyter.notebook.ipynb",
-      "filenamePattern": "*.ipynb"
-    }
-  ],
-  "git.confirmSync": false,
-  "editor.formatOnPaste": true,
-  "editor.formatOnSave": true,
-  "python.formatting.provider": "autopep8",
-  "explorer.confirmDelete": false,
-  "python.showStartPage": false,
-  "explorer.confirmDragAndDrop": false,
-  "python.linting.pylintArgs": ["--load-plugins=pylint_django"],
-  "javascript.updateImportsOnFileMove.enabled": "always",
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "[python]": {
-    "editor.defaultFormatter": "ms-python.python"
-  }
-}
-```
-
-if you want to verify the dependencies run `conda list | grep autopep8` for instance.
-
-# 2.- run the project with uppaal
-
-Do ` export PYTHONPATH=.` in main directory otherwise we will get error.
-
-python simulation (works! but before that we also need to make an export i think)
+Do `export PYTHONPATH=.` in the main directory otherwise it could not find the python package.
 
     python sthocastic_hybrid_game/src/simulation.py
 
-add `import argparse` arparse is already incorporated in python (standar packages in python [https://docs.python.org/3/library/]).
-
 # 3.- Uninstall python environment:
 
-```
-conda remove --name ucsp_solar --all
-```
+    conda remove --name ucsp_solar --all
 
-# 4.- run the project
+# 4.- Run the project with Uppaal Controller
 
     export PYTHONPATH=.
-    python sthocastic_hybrid_game/src/run_experiment.py
+    python sthocastic_hybrid_game/src/run_experiment.py --controller==UPPAAL
 
 # 5.- Development
 
     git rm -r --cached . && git add . && git commit -m "fixing .gitignore"
 
-# 5.- Github and Bitbucket
+# 6.- To get Pattern.json run CMakeLists.txt
 
-    git remote rename origin github
-    git remote add bitbucket https://richardyantas@bitbucket.org/muniz-cs/ucsp-solar.git
-    git push github HEAD
-    git push bitbucket HEAD
-    git push origin github your_branch
-    git push origin bitbucket your_branch
-
-# 6.- C++ safe dynbex running to find patterns
-
+    mkdir build && cd build
     cmake .. && make && make test
