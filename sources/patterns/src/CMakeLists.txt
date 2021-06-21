@@ -22,10 +22,10 @@ include_directories(
   ${CMAKE_SOURCE_DIR}/lib/dynibex/tools
 )
 
-add_executable(pattern_generator main.cpp)
+add_executable(generator main.cpp)
 
 target_link_libraries(
-  pattern_generator
+  generator
   ${CMAKE_SOURCE_DIR}/lib/dynibex/libibex.a
   prim
   ${CMAKE_SOURCE_DIR}/build/lib/libjsoncpp.so

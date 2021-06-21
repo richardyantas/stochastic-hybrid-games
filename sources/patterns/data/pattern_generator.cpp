@@ -15,22 +15,22 @@ using namespace ibex;
 
 typedef struct {
   double period;
-  //std::vector<Function*> dynamics;
-  std::vector<Function> dynamics;
+  //vector<Function*> dynamics;
+  vector<Function> dynamics;
   int nb_dynamics;
 } sampledSwitchedSystem;
 
 typedef struct {
   IntervalVector *Yinit;
   Affine2Vector *Ycurrent;
-  std::vector<int> pattern;  
+  vector<int> pattern;  
 } node;
 
 //find a pattern with new algo 
 bool findPattern2 (const sampledSwitchedSystem& sys, const IntervalVector W,
 		  const IntervalVector R, const IntervalVector B,
 		  const IntervalVector S, unsigned int k,
-		  std::list<std::vector<int> >& res_pattern_list) {
+		  list<vector<int> >& res_pattern_list) {
 
   node node_init;
   node_init.Yinit = new IntervalVector(W);
@@ -45,7 +45,7 @@ bool findPattern2 (const sampledSwitchedSystem& sys, const IntervalVector W,
   //bool res_temp = false;
   while(!list_node.empty())
   {    
-    //std::cout << "size of list : " << list_node.size() << std::endl;    
+    //cout << "size of list : " << list_node.size() << endl;    
     node node_current = list_node.front();
     list_node.pop_front();     
     for (int i=0; i < nb_pattern && node_current.pattern.size() < k; i++)
@@ -63,15 +63,15 @@ bool findPattern2 (const sampledSwitchedSystem& sys, const IntervalVector W,
             (l == 0  && i == 3)    //
         )
         {
-          std::cout << "forbidden pattern" << node_current.pattern << " + " << i << std::endl;
+          cout << "forbidden pattern" << node_current.pattern << " + " << i << endl;
           continue;
         } 
       }
       //res_temp = false;
       if (node_current.pattern.empty())
-	      std::cout << "current pattern : " << i << std::endl;
+	      cout << "current pattern : " << i << endl;
       else
-      	std::cout << "current pattern : " << node_current.pattern << " + " << i << std::endl;           
+      	cout << "current pattern : " << node_current.pattern << " + " << i << endl;           
       //ivp_ode mode = ivp_ode(*(sys.dynamics[i]), 0.0, *node_current.Ycurrent);
       ivp_ode mode = ivp_ode( (sys.dynamics[i]), 0.0, *node_current.Ycurrent);
       simulation simu = simulation(&mode, sys.period, HEUN, 1e-5);
@@ -84,7 +84,7 @@ bool findPattern2 (const sampledSwitchedSystem& sys, const IntervalVector W,
       
       if (fin_R && stay_S)// && !cross_B)
       {       
-        std::cout << "sol found !" << std::endl;
+        cout << "sol found !" << endl;
         node_current.pattern.push_back(i);        
         res_pattern_list.push_back(node_current.pattern);        
         res = true;
@@ -94,7 +94,7 @@ bool findPattern2 (const sampledSwitchedSystem& sys, const IntervalVector W,
       {
         if (out_S)// || fin_B) //not only the last may be in obstacles...
         {
-          std::cout << "Wrong direction !" << std::endl;
+          cout << "Wrong direction !" << endl;
           //nop
         }
         else
@@ -105,13 +105,13 @@ bool findPattern2 (const sampledSwitchedSystem& sys, const IntervalVector W,
             if (node_current.pattern.size() < k)
             {
               // In this part add  the filter
-              std::cout << "Increment of pattern !" << std::endl;	      
+              cout << "Increment of pattern !" << endl;	      
               node new_node;
               new_node.Yinit = new IntervalVector(*node_current.Yinit);
               new_node.Ycurrent = new Affine2Vector(simu.get_last());     
 
               // i dont understand         
-              std::vector<int> new_pattern (node_current.pattern);
+              vector<int> new_pattern (node_current.pattern);
               new_pattern.push_back(i);
               new_node.pattern = new_pattern;
               list_node.push_back(new_node);	                                             
@@ -129,13 +129,9 @@ bool findPattern2 (const sampledSwitchedSystem& sys, const IntervalVector W,
 bool decompose (const sampledSwitchedSystem& sys, const IntervalVector W,
 		const IntervalVector R, const IntervalVector B,
 		const IntervalVector S, unsigned int k, unsigned int d,
-    std::vector<std::pair<IntervalVector, std::list<std::vector<int> >   > >& result) {
-  // std::vector<int> res_pattern;
-  std::list<std::vector<int> > res_pattern_list;
-  // std::vector< std::pair<IntervalVector, std::vector<int> > > result;
-  // std::list<std::vector<int> >& res_pattern_list
-  // q is a queue of sub-state-space to explore to prove the invariance
-  std::queue<IntervalVector> q;
+    vector<pair<IntervalVector, list<vector<int> >   > >& result) { 
+  list<vector<int> > res_pattern_list;  
+  queue<IntervalVector> q;
   q.push (W);
   unsigned int nbStep = d;
   while (!q.empty() && nbStep > 0) {
@@ -145,14 +141,14 @@ bool decompose (const sampledSwitchedSystem& sys, const IntervalVector W,
     if (flag) {
       // Validated result, we keep it in the vector of results
       cout << "found it" << endl;
-      result.push_back (std::pair< IntervalVector, std::list<std::vector<int> > > (current, res_pattern_list));
+      result.push_back (pair< IntervalVector, list<vector<int> > > (current, res_pattern_list));
     }
     else {
       if (current.diam().max() > 0.5)
       {
         cout << "not found" << endl;
         LargestFirst bbb(0.1,0.5);
-        std::pair<IntervalVector,IntervalVector> p = bbb.bisect(current);
+        pair<IntervalVector,IntervalVector> p = bbb.bisect(current);
         q.push (p.first);
         q.push (p.second);
         nbStep--;
@@ -282,7 +278,7 @@ int main()
     list<IntervalVector> list_W;
     list_W.push_back(W);
     
-    std::vector< std::vector<std::pair <IntervalVector, std::list<std::vector<int> >   > > > result_total;
+    vector< vector<pair <IntervalVector, list<vector<int> >   > > > result_total;
 
     while(!list_W.empty())
     {
@@ -293,35 +289,35 @@ int main()
         {
             cout << ":)" <<current_W << endl;
             LargestFirst bbb(0.1,0.5);
-            std::pair<IntervalVector,IntervalVector> p = bbb.bisect(current_W);
+            pair<IntervalVector,IntervalVector> p = bbb.bisect(current_W);
             list_W.push_back(p.first);
             list_W.push_back(p.second);
             continue;
         }
-        std::cout << "taille list_W : " << list_W.size() << std::endl;
-        std::vector<std::pair <IntervalVector, std::list<std::vector<int> >   > > result;
+        cout << "taille list_W : " << list_W.size() << endl;
+        vector<pair <IntervalVector, list<vector<int> >   > > result;
         unsigned int k = NB_K;
         unsigned int d = NB_D;
         bool flag = decompose(sys, current_W, R, B, S, k, d, result);
         if (result.empty()) {
-            std::cerr << "No solution with k = " << k << " and d = " << d << std::endl;
-            //file << current_W << " : no sol" << std::endl;
+            cerr << "No solution with k = " << k << " and d = " << d << endl;
+            //file << current_W << " : no sol" << endl;
         }
         else{
             if (flag)
             {
-                std::cerr << "Complete result -> PROOF" << std::endl;
+                cerr << "Complete result -> PROOF" << endl;
                 result_total.push_back(result);
             }
             else
             {
-                std::cerr << "Incomplete result" << std::endl;
+                cerr << "Incomplete result" << endl;
             }                      
-            std::vector< std::pair<IntervalVector,std::list<std::vector<int> >  > >::const_iterator it = result.begin();
+            vector< pair<IntervalVector,list<vector<int> >  > >::const_iterator it = result.begin();
             for (; it != result.end(); it++)
             {              
                 event["zonotope"].append(jBox(it->first));              
-                std::list< std::vector<int> >::const_iterator it_pat = (it->second).begin();
+                list< vector<int> >::const_iterator it_pat = (it->second).begin();
                 Json::Value tmp;
                 for (; it_pat != (it->second).end(); it_pat++) {
                     tmp.append(jvec1D(*it_pat));
