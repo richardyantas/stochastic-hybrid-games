@@ -7,10 +7,15 @@ import numpy as np
 import argparse
 import multiprocessing
 from interval import interval
-from sthocastic_hybrid_game.src.data.base_data_module import BaseDataModule
-from sthocastic_hybrid_game.src.models.SWH import C_MODES
+from stochastic_hybrid_game.src.data.base_data_module import BaseDataModule
+from stochastic_hybrid_game.src.models.SWH import C_MODES
 import matplotlib.pyplot as plt
-"""MPC predictive model controller"""
+#from statsmodels.tsa.arima.model import ARIMA
+from statsmodels.tsa.arima.model import ARIMA
+# import statsmodels as sm
+# https://www.statsmodels.org/stable/generated/statsmodels.tsa.arima.model.ARIMA.html
+# import statsmodels.tsa.arima_model
+# import statsmodels
 
 # export PYTHONPATH=.
 # export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./build/lib/   # desde el main - parece que no es necesario
@@ -60,6 +65,8 @@ class UPPAAL():
         self.list_params = []
 
     def send_save_data2uppaal(self, controllable_mode, state, index):
+
+        # disturb predicted HERE!!
         dynamic_data = {}
         dynamic_data["E"] = state[0]
         dynamic_data["V"] = state[1]
@@ -81,31 +88,18 @@ class UPPAAL():
             points[i][1] = float(points[i][1])
         return points
 
-    def convert2array_newversion():
-
-        return 0
-
     def convert2array(self, points):  # HERE PROBLEM !!
-        #points = self.pre_convert2array(points)
         horizon_permitted = int(points[-1][0]/TAU)
         mlist = [None]*horizon_permitted
-
-        # mlist = [0]*horizon_permitted
-        # points[i][0]
-        # 11
-
         for i in range(0, len(points)-1):
             if (points[i][0] == points[i+1][0] and points[i+1][0] != points[-1][0]):
                 it = int(points[i][0]/self.tau)
                 mlist[it] = points[i+1][1]  # int
-        # flag = False
         if mlist[0] == None:
             mlist[0] = 0
-
         for i in range(0, horizon_permitted-1):
             if mlist[i+1] == None:
                 mlist[i+1] = mlist[i]
-            print("mlist:", mlist)
         return mlist
 
     def filter_pattern(self, mode, visitedPatterns):
@@ -128,48 +122,28 @@ class UPPAAL():
 
     def receive_strategy_from_uppaal(self):
         res = os.popen(COMMAND).readlines()
-        # print(res)
         params = {}
         params["visitedPatterns"] = 0
         params["mode"] = 0
         params["Tnext"] = 0
         for i in range(0, len(res)-1):
-            # if params.get(res[i][:-2]) != None:  # removing :\n with -3
             key = res[i][:-2]
             if params.get(key) != None:
                 points = res[i+1][:-1].split()[1:]
                 points = self.pre_convert2array(points)
                 params[key] = {"list": self.convert2array(
                     points), "points": points}
-
-        # Al comienzo y al final
         file = open(f"{DATA_DIR}/uppaal_response_data2.json",
                     'a', encoding='utf-8')
         file.write(json.dumps(params, indent=4, sort_keys=True)+",")
         # ---------------------#
         params["mode"] = [int(p) for p in params["mode"]["list"]]
-        # params["mode"] = params["mode"][1:]
-        # print("T predicted uppaal: ", params["Tnext"])
-        print("pattern:", params["mode"], "size:", len(params["mode"]))
         pattern = self.filter_pattern(
             params["mode"], params["visitedPatterns"]["list"])
-        # return params["mode"]
+        print("pattern: ", pattern, "size: ", len(pattern))
         return pattern
-    #   **************** Tasks **************
-    '''
-        cost_function -> paretoFunc
-        cost -> pareto
-        forecasting of T, Te, Ti
-        add sthocasticity on uppaal template for valve 0.5 and 0.5
-        intrerval??
-        dynamic_data["Te"] = list(self.Te[index:index+self.H])
-        extras:
-        ******
-        move  send_save_parameters on SWH model
-    '''
 
     def predict(self, controllable_mode, state, index):
-        # hay un error en el index 765 previo a 695,  luego en otra iteracion error en index 480 previo a 405
         print("index: ", index)
         print("time(hr): ", index/60)
         print("mode to predict: ", controllable_mode)
@@ -177,9 +151,8 @@ class UPPAAL():
         predicted_state = list(state)
         for i in range(index, index + self.tau):
             predicted_state = self.model.post(
-                controllable_mode, self.u_actions[index], predicted_state, i)  # antes era index
+                controllable_mode, self.u_actions[index], predicted_state, i)
         print("T predicted on step: ", predicted_state[2])
-        # time.sleep(3)
         self.send_save_data2uppaal(controllable_mode, list(state), index)
         optimal_pattern = self.receive_strategy_from_uppaal()
         self.queue.put(optimal_pattern)

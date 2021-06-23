@@ -1,4 +1,4 @@
-from sthocastic_hybrid_game.src.models.SWH import SWH, R_BOUNDARY, S_BOUNDARY
+from stochastic_hybrid_game.src.models.SWH import SWH, R_BOUNDARY, S_BOUNDARY
 import matplotlib.pyplot as plt
 from matplotlib import style
 # https://pyimgui.readthedocs.io/en/latest/guide/first-steps.html (pyImgui)

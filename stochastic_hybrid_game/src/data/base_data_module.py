@@ -1,7 +1,7 @@
 from pathlib import Path
 import argparse
 
-LIFE_TIME = 24*60  # (in min) two days  BATCH_SIZE
+LIFE_TIME = 3*24*60  # (in min) two days  BATCH_SIZE
 DATA_SAMPLE_TIME = 15  # (in min)
 DT = 1  # data_resample_time (in min)
 

@@ -2,10 +2,10 @@
 # To also see the output ass -s
 # pytest -v sthocastic_hybrid_game/tests/test_UPPAAL.py -s
 from types import DynamicClassAttribute
-from sthocastic_hybrid_game.src.controllers.UPPAAL import UPPAAL
-from sthocastic_hybrid_game.src.models.SWH import SWH
-from sthocastic_hybrid_game.src.data.SOLAR import SOLAR
-from sthocastic_hybrid_game.src.data.base_data_module import BaseDataModule
+from stochastic_hybrid_game.src.controllers.UPPAAL import UPPAAL
+from stochastic_hybrid_game.src.models.SWH import SWH
+from stochastic_hybrid_game.src.data.SOLAR import SOLAR
+from stochastic_hybrid_game.src.data.base_data_module import BaseDataModule
 import matplotlib.pyplot as plt
 import numpy as np
 import argparse
@@ -29,6 +29,7 @@ R = STATIC_DATA["R"]
 PATTERNS = SAFE_RES["patterns"]
 ZONOTOPES = SAFE_RES["zonotopes"]
 TAU = STATIC_DATA["tau"]
+disturbs = data.loader_data()
 
 
 def plot_points(points1, points2):
@@ -36,7 +37,7 @@ def plot_points(points1, points2):
     p1y = []
     p2x = []
     p2y = []
-    #yy = []
+    # yy = []
     for v in points1:
         p1x.append(v[0])
         p1y.append(v[1])
@@ -52,23 +53,32 @@ def plot_points(points1, points2):
     plt.show()
 
 
+def test_forecasting():
+    Te = disturbs["Te"]
+    index = 3*60
+    predicted = controller.forecast_disturbances(
+        list(Te[index-1*60:index]), 5*60, 60)
+    print(predicted)
+    # #pTe = self.forecast(list(self.Te[t_min-60*24:t_min]), 5*60, 59)
+    assert 1 == 1
+
+
 def test_points_recevied():
     print("")
-    for response in POINTS_DATA:
-        print("visitedPatterns: ", response["visitedPatterns"]["list"])
-        print("mode: ", response["mode"]["list"])
-        new_pattern = controller.filter_pattern(
-            response["mode"]["list"], response["visitedPatterns"]["list"])
+    # for response in POINTS_DATA:
+    #     print("visitedPatterns: ", response["visitedPatterns"]["list"])
+    #     print("mode: ", response["mode"]["list"])
+    #     new_pattern = controller.filter_pattern(
+    #         response["mode"]["list"], response["visitedPatterns"]["list"])
 
-        print("new pattern: ", new_pattern)
-        plot_points(response["visitedPatterns"]["points"],
-                    response["mode"]["points"])
+    #     print("new pattern: ", new_pattern)
+    # plot_points(response["visitedPatterns"]["points"],
+    #            response["mode"]["points"])
 
     assert 1 == 1
 
 
 def test_disturbances():
-    disturbs = data.loader_data()
     Te = disturbs["Te"]
     Ti = disturbs["Ti"]
     I = disturbs["I"]

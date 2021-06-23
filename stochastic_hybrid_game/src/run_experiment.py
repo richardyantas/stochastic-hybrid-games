@@ -2,8 +2,8 @@
 import multiprocessing
 import argparse
 import importlib
-from sthocastic_hybrid_game.src.controllers import UPPAAL, MPC
-from sthocastic_hybrid_game.src.viz import viz2
+from stochastic_hybrid_game.src.controllers import UPPAAL, MPC
+from stochastic_hybrid_game.src.viz import viz2
 
 
 def _import_class(module_and_clas_name: str) -> type:
@@ -21,11 +21,11 @@ def _setup_parser():
     parser.add_argument("--controller_class", type=str, default="MPC")
     temp_args, _ = parser.parse_known_args()
     data_class = _import_class(
-        f"sthocastic_hybrid_game.src.data.{temp_args.data_class}")
+        f"stochastic_hybrid_game.src.data.{temp_args.data_class}")
     model_class = _import_class(
-        f"sthocastic_hybrid_game.src.models.{temp_args.model_class}")
+        f"stochastic_hybrid_game.src.models.{temp_args.model_class}")
     controller_class = _import_class(
-        f"sthocastic_hybrid_game.src.controllers.{temp_args.controller_class}")
+        f"stochastic_hybrid_game.src.controllers.{temp_args.controller_class}")
     data_group = parser.add_argument_group("Data Args")
     data_class.add_to_argparse(data_group)
     model_group = parser.add_argument_group("Model Args")
@@ -39,11 +39,11 @@ def main():
     parser = _setup_parser()
     args = parser.parse_args()
     data_class = _import_class(
-        f"sthocastic_hybrid_game.src.data.{args.data_class}")
+        f"stochastic_hybrid_game.src.data.{args.data_class}")
     model_class = _import_class(
-        f"sthocastic_hybrid_game.src.models.{args.model_class}")
+        f"stochastic_hybrid_game.src.models.{args.model_class}")
     controller_class = _import_class(
-        f"sthocastic_hybrid_game.src.controllers.{args.controller_class}")
+        f"stochastic_hybrid_game.src.controllers.{args.controller_class}")
     data = data_class(args)
     model = model_class(data_config=data.config(),
                         disturbs=data.loader_data(), args=args)

@@ -138,10 +138,11 @@ class automaton:
     def forecast(self,X,pivotWindow,predictionSize):
         days_in_year = pivotWindow
         differenced = list()
-        #print(X)   
+        #print(X)
         for i in range(days_in_year, len(X)):
             value = X[i] - X[i - days_in_year]
             differenced.append(value)
+            
         # fit model
         model = ARIMA(differenced, order=(7,0,1))
         model_fit = model.fit(disp=0)

@@ -1,6 +1,6 @@
 # pytest -v sthocastic_hybrid_game/tests/test_SWH.py
-from sthocastic_hybrid_game.src.models.SWH import SWH
-from sthocastic_hybrid_game.src.data.SOLAR import SOLAR
+from stochastic_hybrid_game.src.models.SWH import SWH
+from stochastic_hybrid_game.src.data.SOLAR import SOLAR
 import matplotlib.pyplot as plt
 import numpy as np
 import argparse
