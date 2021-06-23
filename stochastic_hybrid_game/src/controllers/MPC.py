@@ -5,8 +5,8 @@ import argparse
 import random
 import multiprocessing
 from interval import interval
-from sthocastic_hybrid_game.src.data.base_data_module import BaseDataModule
-from sthocastic_hybrid_game.src.models.SWH import C_MODES
+from stochastic_hybrid_game.src.data.base_data_module import BaseDataModule
+from stochastic_hybrid_game.src.models.SWH import C_MODES
 """MPC predictive model controller"""
 
 DATA_DIR = BaseDataModule.data_dirname()

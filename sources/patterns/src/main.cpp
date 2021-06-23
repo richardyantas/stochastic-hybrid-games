@@ -12,7 +12,7 @@
 using namespace std;
 using namespace ibex;
 
-// make && ./bin/generator ../sthocastic_hybrid_game/datasets/static_data.json ../sthocastic_hybrid_game/datasets/pattern2.json
+// make && ./bin/generator ../stochastic_hybrid_game/datasets/static_data.json ../stochastic_hybrid_game/datasets/pattern2.json
 // make && ./bin/generator ../sources/patterns/data/parameters.json ../sources/patterns/data/pattern2.json
 
 Json::StreamWriterBuilder jsonWriter;

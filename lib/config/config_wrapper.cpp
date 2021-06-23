@@ -15,8 +15,8 @@ void load(){
     if(loaded){return;}
     //static_config.load_from_file("/home/serendipita/Documents/tesis/ucsp-solar/lib/config/static_json.json");    
     //dynamic_config.load_from_file("/home/serendipita/Documents/tesis/ucsp-solar/lib/config/dynamic_json.json");
-    dynamic_config.load_from_file("/home/serendipita/Documents/tesis/ucsp-solar/sthocastic_hybrid_game/datasets/dynamic_data.json");
-    static_config.load_from_file("/home/serendipita/Documents/tesis/ucsp-solar/sthocastic_hybrid_game/datasets/static_data.json");
+    dynamic_config.load_from_file("/home/serendipita/Documents/tesis/ucsp-solar/stochastic_hybrid_game/datasets/dynamic_data.json");
+    static_config.load_from_file("/home/serendipita/Documents/tesis/ucsp-solar/stochastic_hybrid_game/datasets/static_data.json");
     loaded = true;
 }
 
