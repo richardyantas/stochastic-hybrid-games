@@ -1,3 +1,4 @@
+from stochastic_hybrid_game.src.data.SOLAR import predict_solar_data
 from typing import Any, Dict
 import time
 import os
@@ -48,6 +49,8 @@ def query_safe_patterns(state):
 class UPPAAL():
     def __init__(self, model: Any, data_config: Dict[str, Any], disturbs: Dict[str, Any], args: argparse.Namespace = None):
         # self.tau = self.args.get("tau", TAU)
+        self.start_time = data_config["start_time"]
+        self.disturbs = disturbs
         self.Te = disturbs["Te"]
         self.Ti = disturbs["Ti"]
         self.I = disturbs["I"]
@@ -61,12 +64,22 @@ class UPPAAL():
         #self.controllable_mode = -1
         self.c_actions = []  # [C_MODES[self.controllable_mode]]
         self.queue = multiprocessing.Queue()
+        self.prediction_size = 1*60  # prediction_size
         self.H = self.nrSteps*self.tau+self.tau
         self.list_params = []
 
     def send_save_data2uppaal(self, controllable_mode, state, index):
+        pivot = 24*60
+        Te = predict_solar_data(
+            self.disturbs["Te"][0:index], pivot, self.prediction_size)
+        Ti = predict_solar_data(
+            self.disturbs["Ti"][0:index], pivot, self.prediction_size)
+        I = predict_solar_data(
+            self.disturbs["I"][0:index], pivot, self.prediction_size)
 
-        # disturb predicted HERE!!
+        # print("predicted: ", Te)
+        # print("real: ", self.disturbs["Te"]
+        #       [index:index+self.prediction_size])
         dynamic_data = {}
         dynamic_data["E"] = state[0]
         dynamic_data["V"] = state[1]
@@ -74,9 +87,10 @@ class UPPAAL():
         dynamic_data["mode"] = controllable_mode
         dynamic_data["valve"] = 0  # int(self.u_actions[index])  # OJO
         dynamic_data["t"] = index
-        dynamic_data["Te"] = list(self.Te[index:index+self.H])
-        dynamic_data["Ti"] = list(self.Ti[index:index+self.H])
-        dynamic_data["I"] = list(self.I[index:index+self.H])
+        # list(self.Te[index:index+self.H])
+        dynamic_data["Te"] = Te  # list(self.Te[index:index+self.H])
+        dynamic_data["Ti"] = Ti  # list(self.Ti[index:index+self.H])
+        dynamic_data["I"] = I  # list(self.I[index:index+self.H])
         file = open(f"{DATA_DIR}/dynamic_data.json", 'w', encoding='utf-8')
         file.write(json.dumps(dynamic_data, indent=4, sort_keys=True))
         return
@@ -176,10 +190,10 @@ class UPPAAL():
     def get_nrSteps(self):
         return self.nrSteps
 
-    def get_tau(self):
+    def get_tau(self):              # remove ?
         return self.tau
 
-    def get_pat(self):
+    def get_pat(self):               # remove ??
         return self.pat
 
     def get_controllable_actions(self):
