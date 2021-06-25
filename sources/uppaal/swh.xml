@@ -163,7 +163,7 @@ int           patu = 0;
 
 double paretoFunc()
 {
-	double alpha=1.0;
+	double alpha=0.5;
 	return pareto+( alpha*x[0] + (1.0-alpha)*fabs(Tg-x[2]) );
 }
 
@@ -179,7 +179,7 @@ void post(int it, int mode_)
     p = modes[mode][0];
     r = modes[mode][1];
     f = modes[mode][2];
-    v = 0;//v = valve;
+    v = valve; // v = 0
     index = it*tau;
     for(j=index; j &lt; index+tau; j=j+1)
     {
@@ -317,13 +317,15 @@ int applyMode(id_list_patterns_t zonotope, id_pattern_t pattern_id, int pattern_
 id_zonotope_t getZonotope()
 {
     for(i: id_zonotope_t )
-    {
+    {        
         if (zonotopes[i][0]&lt;=x[2] &amp;&amp; x[2] &lt; zonotopes[i][1] &amp;&amp; zonotopes[i][2]&lt;=x[1] &amp;&amp; x[1] &lt;= zonotopes[i][3]) 
         {          
             return i;
-        }
+        }       
     }
-    return -1; 
+    if(x[1] &lt; zonotopes[0][0])return 0;
+//    return -1; 
+    return 63;
 }</declaration>
 		<location id="id0" x="-399" y="-1547">
 			<urgent/>
