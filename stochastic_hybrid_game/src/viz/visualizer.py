@@ -4,6 +4,13 @@ from matplotlib import style
 # https://pyimgui.readthedocs.io/en/latest/guide/first-steps.html (pyImgui)
 # https://pyimgui.readthedocs.io/en/latest/reference/imgui.core.html?highlight=plot#imgui.core.plot_histogram
 
+
+# If we want to draw dynamically
+# Generally seems like create another thread an draw in parallel to send the data.
+# Tinker https://stackoverflow.com/questions/5618620/create-dynamic-updated-graph-with-python
+# https://stackoverflow.com/questions/10944621/dynamically-updating-plot-in-matplotlib
+
+
 # SWH.get_boundaries = classmethod(SWH.get_boundaries())
 # Bound = SWH.get_boundaries()
 # R = Bound["R"]
