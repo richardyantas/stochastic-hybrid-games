@@ -35,30 +35,56 @@ class signal:
         color = _color
 
 
-def predict_solar_data():
-    data = SOLAR(args=None)
-    disturbs = data.loader_data()
-    Te = disturbs["Te"]
-    Te_taken = list(Te[0: (13+2*24)*60])
-    pivot = 2*24*60
-    dif = []
-    for i in range(pivot, len(Te_taken)):
-        dif.append(Te_taken[i]-Te_taken[i-pivot])
+def predict_solar_data2(disturb, index=(13+1*24)*60, pivot=1*24*60, prediction_size=6*60):
+    pred = []
+    #data = SOLAR(args=None)
+    #disturbs = data.loader_data()
+    #Te = disturbs["Te"]
+    #Te_taken = list(Te[0: index])
+    # dif = []
+    # for i in range(pivot, len(Te_taken)):
+    #     dif.append(Te_taken[i]-Te_taken[i-pivot])
+    # model = ARIMA(dif, order=(7, 1, 0))
+    # model_fit = model.fit()
+    # forecast = model_fit.predict(
+    #     start=len(dif), end=(len(dif)+prediction_size))
+    # history = list(Te_taken)
+    # pred = []
+    # for yhat in forecast:
+    #     inverted = yhat + history[-pivot]
+    #     pred.append(inverted)
+    #     history.append(inverted)
+    #Te = select_interval_list(Te[0:2*24*60], 0*60, 2*24*60)
+    #Te_taken = select_interval_list(Te_taken, 0*60, 2*24*60)
+    #history = select_interval_list(history, 0*60, len(Te_taken))
+    #plot_disturb(history, Te, Te_taken)
+    return pred
+
+
+def predict_solar_data(data, pivot=1*24*60, prediction_size=6*60):
+    dif = []  # index=(13+1*24)*60
+    for i in range(pivot, len(data)):
+        dif.append(data[i]-data[i-pivot])
     model = ARIMA(dif, order=(7, 1, 0))
     model_fit = model.fit()
-    prediction_size = 6*60
     forecast = model_fit.predict(
         start=len(dif), end=(len(dif)+prediction_size))
-    history = list(Te_taken)
+    history = list(data)
     pred = []
     for yhat in forecast:
         inverted = yhat + history[-pivot]
         pred.append(inverted)
         history.append(inverted)
-    Te = select_interval_list(Te[0:3*24*60], 0*60, 3*24*60)
-    Te_taken = select_interval_list(Te_taken, 0*60, 3*24*60)
-    history = select_interval_list(history, 0*60, len(Te_taken))
-    plot_disturb(history, Te, Te_taken)
+    return pred
+
+
+def test_predict():
+    data = SOLAR(args=None)
+    disturbs = data.loader_data()
+    index = (24+8)*60
+    Te = disturbs["Te"]
+    Te_taken = list(Te[0: index])
+    print("pre:", predict_solar_data(Te_taken, 24*60, 6*60))
     return
 
 
@@ -91,5 +117,5 @@ class SOLAR(BaseDataModule):
 
 
 if __name__ == "__main__":
-    # load_and_print_info(SOLAR)
-    predict_solar_data()
+    test_predict()
+    # predict_solar_data()
