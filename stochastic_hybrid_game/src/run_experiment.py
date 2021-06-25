@@ -50,16 +50,17 @@ def main():
     controller = controller_class(
         data_config=data.config(), disturbs=data.loader_data(), model=model, args=args)
 
-    state_times = [0]
     tau = controller.get_tau()
     nrSteps = controller.get_nrSteps()
     life_time = data.config()["life_time"]
+    start_time = data.config()["start_time"]
     state = model.get_initial_state()
     states = [state]
+    state_times = [start_time]
     control_times = []
     u_actions = model.get_uncontrollable_actions()
     # in minutes k=3, d boundary over R [n + e, m + e]
-    for i in range(0, life_time):
+    for i in range(start_time, life_time):
         if i % (tau) == 0:
             if i + nrSteps*tau >= life_time:  # regresar el tamanio del ultimo patron IMPORTANTE !!!
                 break
@@ -71,7 +72,7 @@ def main():
     print("Simulation completed!")
     print("Plotting ..")
     c_actions = controller.get_controllable_actions()
-    u_actions = u_actions[0:len(state_times)]
+    u_actions = u_actions[start_time:start_time+len(state_times)]
     viz2(states, c_actions, u_actions,
          data.config(), data.loader_data(), control_times, state_times)
     return
