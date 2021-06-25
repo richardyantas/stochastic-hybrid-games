@@ -41,6 +41,7 @@ class SWH():
         self.args = vars(args) if args is not None else {}
         self.life_time = data_config["life_time"]
         self.data_sample_time = data_config["data_sample_time"]
+        self.start_time = data_config["start_time"]
         self.dt = data_config["dt"]
         self.Te = disturbs["Te"]
         self.Ti = disturbs["Ti"]
@@ -55,7 +56,7 @@ class SWH():
 
     def post(self, mode: int, u_action: int, x: list, index: int) -> list:  # u_action: int
         c_actions = C_MODES[mode]
-        u_action = 0
+        #u_action = 0
         dt_sec = self.dt*60
         E = x[0] + dt_sec*c_actions[1]*2
         V = x[1] + dt_sec*0.01000*(0.1*c_actions[0] - x[1])
@@ -76,9 +77,12 @@ class SWH():
         num_actions = random.randrange(150, 180)
         standard_deviation = 2*12
         for i in range(0, num_actions):
-            U_MODES[int(random.gauss(7*60, standard_deviation))] = 1
-            U_MODES[int(random.gauss(13*60, standard_deviation))] = 1
-            U_MODES[int(random.gauss(19*60, standard_deviation))] = 1
+            U_MODES[int(random.gauss(self.start_time +
+                        7*60, standard_deviation))] = 1
+            U_MODES[int(random.gauss(self.start_time +
+                        13*60, standard_deviation))] = 1
+            U_MODES[int(random.gauss(self.start_time +
+                        19*60, standard_deviation))] = 1
         print("umodes:", len(U_MODES))
         return U_MODES
 
