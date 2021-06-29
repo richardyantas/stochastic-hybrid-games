@@ -3,19 +3,27 @@ import json
 import numpy as np
 import argparse
 import random
+import time
 import multiprocessing
 from interval import interval
 from stochastic_hybrid_game.src.data.base_data_module import BaseDataModule
 from stochastic_hybrid_game.src.models.SWH import C_MODES
-"""MPC predictive model controller"""
+
+"""  
+    Title: MPC predictive model controller
+    Author: Richard Yantas A.
+    References: https://locuslab.github.io/mpc.pytorch/
+"""
+
 
 DATA_DIR = BaseDataModule.data_dirname()
 SAFE_RES = json.load(open(f"{DATA_DIR}/pattern.json"))
 PATTERNS = SAFE_RES["patterns"]
 ZONOTOPES = SAFE_RES["zonotopes"]
-# TAU = SAFE_RES["tau"]  # 300 should be fixed by safe patterns
 SAFE_DATA = json.load(open(f"{DATA_DIR}/static_data.json"))
-TAU = SAFE_DATA["tau"]  # 300 should be fixed by safe patterns
+TAU = SAFE_DATA["tau"]
+TG = SAFE_DATA["Tg"]
+ALPHA = SAFE_DATA["alpha"]
 
 
 def query_safe_patterns(state):
@@ -27,7 +35,11 @@ def query_safe_patterns(state):
         if (state[1] in z1_volume and state[2] in z0_temperature):
             return PATTERNS[i]
     print("Not found patterns for this state: ", state)
-    return [[-1, -1, -1]]
+    if state[2] < ZONOTOPES[0][0]:
+        return PATTERNS[0]
+    else:
+        return PATTERNS[-1]
+    # return [[-1, -1, -1]]
 
 
 class MPC():
@@ -42,28 +54,58 @@ class MPC():
         self.initial_state = self.model.get_initial_state()
         self.nrSteps = self.model.get_number_steps()
         self.pat = list(query_safe_patterns(list(self.initial_state))[0])
-        #self.controllable_mode = -1
+        # self.controllable_mode = -1
         self.c_actions = []  # [C_MODES[self.controllable_mode]]
         self.queue = multiprocessing.Queue()
         self.H = self.nrSteps*self.tau
 
-    def optimal_pattern_search(self, patterns):
+    def optimal_pattern_search(self, state, index, candidate_patterns):
         # ANN controller
-        #print("pattern choosen: ", patterns[1])
-        pattern_size = len(patterns)
-        pos = random.randrange(0, pattern_size)
-        return patterns[0]  # for the moment
+        meta_pattern = []
+        alpha = ALPHA
+        Tg = TG
+        Horizon = 9
+        next_state = list(state)
+        while len(meta_pattern) < Horizon:
+            optimal_pattern = []
+            min_costFunction = 100000.0
+            for candidate_pattern in candidate_patterns:
+                m_index = index+len(meta_pattern)*self.tau
+                temporal_state = list(next_state)    # ?
+                for mode in candidate_pattern:
+                    for i in range(m_index, m_index+self.tau):
+                        temporal_state = self.model.post(
+                            mode, self.u_actions[i], temporal_state, i)
+                    m_index = m_index + self.tau
+                costFunction = alpha * \
+                    temporal_state[0]+(1-alpha)*abs(Tg-temporal_state[2])
+                if(costFunction < min_costFunction):
+                    min_costFunction = float(costFunction)
+                    optimal_pattern = list(candidate_pattern)
+                    optimal_pattern_state = list(temporal_state)
+            meta_pattern += optimal_pattern
+            candidate_patterns = query_safe_patterns(optimal_pattern_state)
+            next_state = list(optimal_pattern_state)
+        print("pattern: ", meta_pattern)
+        return meta_pattern
 
 #  ############################# CAMBIAR TAU sec -> min ###################
 
     def predict(self, controllable_mode, state, index):
+        print("index: ", index)
+        print("time(hr): ", index/60)
+        print("mode to predict: ", controllable_mode)
+        print("T: ", state[2])
         predicted_state = state
         for i in range(index, index + self.tau):
             predicted_state = self.model.post(
-                controllable_mode, self.u_actions[index], predicted_state, i)  # antes era index
+                controllable_mode, self.u_actions[i], predicted_state, i)  # antes era index creo que en u_actions[i] deberia de ser i ne vez de index
         patterns = query_safe_patterns(predicted_state)
-        optimal_pattern = self.optimal_pattern_search(patterns)
-        self.queue.put(optimal_pattern)
+        # optimal_pattern = self.optimal_pattern_search(patterns)
+        # time.sleep(10)
+        optimal_meta_pattern = self.optimal_pattern_search(
+            predicted_state, index+self.tau, patterns)
+        self.queue.put(optimal_meta_pattern)
         return
 
     def control(self, state, index):

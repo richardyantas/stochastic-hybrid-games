@@ -53,10 +53,11 @@ class SWH():
         self.x = INITIAL_STATE
         R = R_BOUNDARY
         S = S_BOUNDARY
+        self.U_MODES = (np.zeros(int(self.life_time))).tolist()
 
     def post(self, mode: int, u_action: int, x: list, index: int) -> list:  # u_action: int
         c_actions = C_MODES[mode]
-        #u_action = 0
+        # u_action = 0
         dt_sec = self.dt*60
         E = x[0] + dt_sec*c_actions[1]*2
         V = x[1] + dt_sec*0.01000*(0.1*c_actions[0] - x[1])
@@ -72,19 +73,70 @@ class SWH():
         x[2] = T
         return x
 
-    def get_uncontrollable_actions(self):
-        U_MODES = (np.zeros(int(self.life_time))).tolist()
+    def get_uncontrollable_actions2(self):
         num_actions = random.randrange(150, 180)
-        standard_deviation = 2*12
+        standard_deviation = 2*12  # 2
         for i in range(0, num_actions):
-            U_MODES[int(random.gauss(self.start_time +
-                        7*60, standard_deviation))] = 1
-            U_MODES[int(random.gauss(self.start_time +
-                        13*60, standard_deviation))] = 1
-            U_MODES[int(random.gauss(self.start_time +
-                        19*60, standard_deviation))] = 1
-        print("umodes:", len(U_MODES))
-        return U_MODES
+            self.U_MODES[int(random.gauss(self.start_time +
+                                          7*60, standard_deviation))] = 1
+            self.U_MODES[int(random.gauss(self.start_time +
+                                          13*60, standard_deviation))] = 1
+            self.U_MODES[int(random.gauss(self.start_time +
+                                          19*60, standard_deviation))] = 1
+        return list(self.U_MODES)
+
+    def get_uncontrollable_actions(self):
+        # num_actions = random.randrange(150, 180)
+
+        num_actions = random.randrange(5, 10)
+        standard_deviation = 1*12  # 2
+        for i in range(0, num_actions):
+            self.U_MODES[int(random.gauss(self.start_time +
+                                          7*60, standard_deviation))] += 1
+            self.U_MODES[int(random.gauss(self.start_time +
+                                          13*60, standard_deviation))] += 1
+            self.U_MODES[int(random.gauss(self.start_time +
+                                          19*60, standard_deviation))] += 1
+
+        num_actions = random.randrange(10, 20)
+        for i in range(0, num_actions):
+            self.U_MODES[int(random.uniform(
+                self.start_time, self.life_time))] += 1
+
+        # print("umodes:", len(U_MODES))
+        return list(self.U_MODES)
+
+    # def large_random_pulse(self, p):
+    #     num_actions = random.randrange(10, 20)
+    #     standard_deviation = 5*12  # 2
+    #     for i in range(0, num_actions):
+    #         # p = int(random.gauss(self.start_time +
+    #         #                     7*60, standard_deviation))
+    #         U_MODES[p] = 1
+    #         U_MODES[p+1] = 1
+    #         U_MODES[p+2] = 1
+    #     return
+
+    # def short_random_pulse(self):
+    #     num_actions = random.randrange(10, 20)
+    #     standard_deviation = 5*12  # 2
+    #     for i in range(0, num_actions):
+    #         U_MODES[int(random.gauss(self.start_time +
+    #                     7*60, standard_deviation))] = 1
+    #         U_MODES[int(random.gauss(self.start_time +
+    #                     13*60, standard_deviation))] = 1
+    #         U_MODES[int(random.gauss(self.start_time +
+    #                     19*60, standard_deviation))] = 1
+    #     return
+
+    # def kitchen_effect(self):
+    #     # valve ON 1 min
+    #     return
+
+    # def bathroom_effect(self):
+    #     # A  valve ON (3min) 4 times in [30-45] get a shower [1-2] a day
+    #     # Toilet 1min []
+    #     return
 
     def update(self, mode, u_action, state, index):
         state = self.post(mode, u_action, state, index)

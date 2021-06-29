@@ -1,6 +1,6 @@
 %\documentclass[a4paper,12pt,twoside,openright]{book} 
 \documentclass[a4paper,12pt]{book}
-
+\usepackage[utf8]{inputenc}
 \usepackage{src/fancyhdr}
 \usepackage{src/geometry}
 \usepackage{src/graphicx}
@@ -27,7 +27,7 @@
 
 \pagenumbering{Roman} 
 
-\title{Safe ad near optimal controller synthesis for \\Switched Systems}
+\title{Safe and near optimal controller synthesis for \\Stochastic Hybrid Games}
 \author{Richard Valentín Yantas Alcantara}
 \orientador{PhD. Marco Muñiz}
 \jurado
@@ -45,6 +45,7 @@ To my parents, Mario and Maria, who never stop giving of themselves
 To my brothers and sister, who encourage and support me.
 }
 
+
 \begin{document}
     \maketitle 
     \input{content/preview/abbreviations}
@@ -60,16 +61,13 @@ To my brothers and sister, who encourage and support me.
     \clearpage 
     \pagenumbering{arabic} 
     \input{content/preview/figures}	% contain all images
-
     \input{content/ch01/ch01.tex}
     \input{content/ch02/ch02.tex}
-    \input{content/ch03/ch03.tex}
-    \input{content/ch04/ch04.tex}
-
+    % \input{content/ch03/ch03.tex}
+    % \input{content/ch04/ch04.tex}
     \newpage
-
-
     \bibliographystyle{src/apabrahand}
     \bibliography{thesis-doc}
-    \end{document}
-    \addcontentsline{toc}{chapter}{Bibliography}
+\end{document}
+
+\addcontentsline{toc}{chapter}{Bibliography}
