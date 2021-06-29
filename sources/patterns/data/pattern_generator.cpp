@@ -3,8 +3,8 @@
 #include <vector>
 #include <queue>
 #include <cmath>
-#include <json/json.h>
-#include "jsonUtils.h"
+//#include <json/json.h>
+//#include "jsonUtils.h"
 using namespace std;
 using namespace ibex;
 // Macro variables to set the values of the maximal length of a
@@ -13,6 +13,7 @@ using namespace ibex;
 // #define NB_K 3
 // #define NB_D 20
 
+// g++ -frounding-math -ffloat-store -I/usr/local/include -I/usr/local/include/ibex  -O3 -DNDEBUG -Wno-deprecated -frounding-math  pattern_generator.cpp -o pattern_generator -L/usr/local/lib -libex -lprim -lClp -lCoinUtils
 typedef struct {
   double period;
   //vector<Function*> dynamics;
@@ -196,17 +197,17 @@ int main()
     double TwaterIn = (Ti.ub()+Ti.lb())/2;//22.5; 
   
     ofstream file("./patterns_test.json");
-    Json::StyledWriter styledWriter;
-    Json::Value event;   
+    // Json::StyledWriter styledWriter;
+    // Json::Value event;   
 
-    event["R"] = jBox(R);
-    event["S"] = jBox(S);
-    event["tau"] = sys.period;
-    event["factorTe"] = factorTe;
-    event["factorI"] = factorI;
-    event["factorKe"] = factorKe;
-    event["rate"] = rate;
-    event["TwaterIn"] = TwaterIn;
+    // event["R"] = jBox(R);
+    // event["S"] = jBox(S);
+    // event["tau"] = sys.period;
+    // event["factorTe"] = factorTe;
+    // event["factorI"] = factorI;
+    // event["factorKe"] = factorKe;
+    // event["rate"] = rate;
+    // event["TwaterIn"] = TwaterIn;
     
     const int n = 2;
 	  Variable x(n);
@@ -314,19 +315,19 @@ int main()
                 cerr << "Incomplete result" << endl;
             }                      
             vector< pair<IntervalVector,list<vector<int> >  > >::const_iterator it = result.begin();
-            for (; it != result.end(); it++)
-            {              
-                event["zonotope"].append(jBox(it->first));              
-                list< vector<int> >::const_iterator it_pat = (it->second).begin();
-                Json::Value tmp;
-                for (; it_pat != (it->second).end(); it_pat++) {
-                    tmp.append(jvec1D(*it_pat));
-                }
-                event["patterns"].append(tmp);            
-            }            
+            // for (; it != result.end(); it++)
+            // {              
+            //     event["zonotope"].append(jBox(it->first));              
+            //     list< vector<int> >::const_iterator it_pat = (it->second).begin();
+            //     Json::Value tmp;
+            //     for (; it_pat != (it->second).end(); it_pat++) {
+            //         tmp.append(jvec1D(*it_pat));
+            //     }
+            //     event["patterns"].append(tmp);            
+            // }            
         }        
     }
-    file << styledWriter.write(event);
-    file.close();
+    // file << styledWriter.write(event);
+    // file.close();
     return 0;
 }
