@@ -128,11 +128,12 @@ class UPPAAL():
                 subgroup = []
                 subgroup.append(mode[i+1])
         patterns = patterns[0:-1]
-        new_patterns = []
-        for ps in patterns:
-            for p in ps:
-                new_patterns.append(p)
-        return new_patterns
+        # new_patterns = []
+        # for ps in patterns:
+        #     for p in ps:
+        #         new_patterns.append(p)
+        # return new_patterns
+        return patterns[0]
 
     def receive_strategy_from_uppaal(self):
         res = os.popen(COMMAND).readlines()

@@ -1,5 +1,5 @@
 
-\chapter{Case of Study and Results}
+\chapter{Safe and near optimal controller synthesis}
 
 \label{ch:proposal}
 In this part, we choose as a case of study an \emph{Hybrid Solar Water
@@ -12,13 +12,17 @@ The first part is about mathematical modelling using heat transfer
 theory and fluids dynamics to get temperature dinamics and then 
 to define the parameters that determine the system with some
 assumptions to facilate the analysis.
-\section{System Setup}
 
-%\input{diag1.tex}
-\subsection{General Equation}
+\section{Case study}
+In this section, I test the proposed methodology for solving safe and near optimal controller synthesis 
+for stochastic hybrid games.
+
+\input{content/ch04/diag1.tex}
+
+\subsection{Setup system}
 
 \begin{equation}
-\factorheat\mcont\frac{d}{dt}\tcont =  Q_{input,1} + Q_{input,2} - Q_{loss,1} -  Q_{loss,2}
+    \factorheat\mcont\frac{d}{dt}\tcont =  Q_{input,1} + Q_{input,2} - Q_{loss,1} -  Q_{loss,2}
 \end{equation}
 
 \begin{equation}
@@ -140,14 +144,19 @@ $v \in \mathbb{B} $ and a time delay $\tau$.
 %  \constthree\taux+\constfour(\tcont-\tin)
 %\end{equation}
 
-
 \begin{equation}
-\frac{d}{dt}\tcont =   \frac{1}{V(t)}  \constone(\tenv-\tcont)+ \frac{1}{V(t)} \consttwo\irradiance+  \frac{r}{V(t)} \constthree +  \frac{v}{V()} \constfour(\tin-\tcont)
-\label{temperature-equation}
+    \begin{aligned}
+\frac{d}{dt}\tcont = \frac{1}{V(t)} [ -\constone(\tcont-\tenv)
+- p \consttwo(\tcont-\tin) \\
+- f \constthree(pV_{min} - \vcont)(\tcont-\tin)
++ \constfour\irradiance+ 
+r \constfive ]
+    \end{aligned}
+\label{temperature-equation}    
 \end{equation}
 
 \begin{equation}
-\frac{d}{dt}\vcont = sgn(100p - \vcont); \quad
+\frac{d}{dt}\vcont = pV_{min} - \vcont; \quad
 \label{volume-equation}
 \end{equation}
 
@@ -165,46 +174,24 @@ are equal to $\left\lbrace 2.44e^{-5},  4.77e^{-6}
 
 \section{Simulations}
 
+near optimal controller
+near optimal controller
+near optimal controller
+near optimal controller
+near optimal controller
 
-\begin{figure}
-    \includegraphics[width=\linewidth]{1}
-    \caption{State Space.}
-    \label{fig:1}
-\end{figure}
+\begin{minipage}{\linewidth}
+\begin{center}
+\includegraphics[width=1.0\linewidth]{content/ch04/1}
+\captionof{figure}{An example image not including a Wombat}
+\end{center}
+\end{minipage}
 
-\begin{figure}
-    \includegraphics[width=\linewidth]{2}
-    \caption{State Space 2.}
-    \label{fig:2}
-\end{figure}
-
-
-\begin{figure}
-    \includegraphics[width=\linewidth]{3}
-    \caption{State Space 3.}
-    \label{fig:3}
-\end{figure}
+The Figure environment "floats" to find an optimal position on the page. When you begin a figure, you can use the options [htbp!] to specify whether the figure should go "here", the "top" of this page, the "bottom" of this page, or a special "page" reserved for floats. LaTeX, in its infinite wisdom, will sometimes prevent you from putting a figure in an "ugly" place, but you can (sort of) override its decision using the "!" option. When you haven't used any option, the environment assumes that you provided [tbp], and it's choosing to put the figure at the top of the page, above where your section goes. So using
 
 
-\begin{figure}
-    \includegraphics[width=\linewidth]{8}
-    \caption{Running test for safety with Ibex}
-    \label{fig:4}
-\end{figure}
-
-\begin{figure}
-    \includegraphics[width=\linewidth]{9}
-    \caption{System behaviour with discrete inputs}
-    \label{fig:5}
-\end{figure}
-
-
-\begin{figure}
-    \includegraphics[width=\linewidth]{11}
-    \caption{Running test for safety with Ibex}
-    \label{fig:6}
-\end{figure}
-
+\section{Results}
+this is 
 %\subsection{Experimental Results}
 %\begin{figure}[h]
 %  \centering
@@ -213,4 +200,5 @@ are equal to $\left\lbrace 2.44e^{-5},  4.77e^{-6}
 %\label{fig:systemSetup}
 %\end{figure}
 % \bibliography{../../thesis-doc}{} % m02 Error! -> mO2 (Ok)
-\bibliographystyle{../src/apabrahand}
+
+%\bibliographystyle{../src/apabrahand}

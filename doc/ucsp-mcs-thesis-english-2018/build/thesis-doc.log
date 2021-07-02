@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2021.6.25)  29 JUN 2021 05:54
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2021.6.25)  1 JUL 2021 19:01
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -337,7 +337,9 @@ Now handling font encoding U ...
    defining Unicode char U+2026 (decimal 8230)
    defining Unicode char U+2122 (decimal 8482)
    defining Unicode char U+2423 (decimal 9251)
-)) (./src/fancyhdr.sty
+)) (/usr/share/texlive/texmf-dist/tex/latex/placeins/placeins.sty
+Package: placeins 2005/04/18  v 2.2
+) (./src/fancyhdr.sty
 \headwidth=\dimen103
 ) (./src/geometry.sty
 
@@ -1384,20 +1386,20 @@ File: upsy.fd 2001/06/04 font definitions for U/psy.
 ))) (./src/colors.tex) (build/thesis-doc.aux)
 \openout1 = `thesis-doc.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 49.
-LaTeX Font Info:    ... okay on input line 49.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 49.
-LaTeX Font Info:    ... okay on input line 49.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 49.
-LaTeX Font Info:    ... okay on input line 49.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 49.
-LaTeX Font Info:    ... okay on input line 49.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 49.
-LaTeX Font Info:    ... okay on input line 49.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 49.
-LaTeX Font Info:    ... okay on input line 49.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 49.
-LaTeX Font Info:    ... okay on input line 49.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
 -------------------- Geometry parameters
 paper: a4paper
 landscape: --
@@ -1568,7 +1570,7 @@ LaTeX Info: Redefining \selectfont on input line 126.
 \JustifyingParindent=\skip82
 )
 \AtBeginShipoutBox=\box69
-Package hyperref Info: Link coloring ON on input line 49.
+Package hyperref Info: Link coloring ON on input line 51.
  (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
  (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
@@ -1576,31 +1578,31 @@ Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
 \c@section@level=\count357
 )
-LaTeX Info: Redefining \ref on input line 49.
-LaTeX Info: Redefining \pageref on input line 49.
-LaTeX Info: Redefining \nameref on input line 49.
+LaTeX Info: Redefining \ref on input line 51.
+LaTeX Info: Redefining \pageref on input line 51.
+LaTeX Info: Redefining \nameref on input line 51.
  (build/thesis-doc.out) (build/thesis-doc.out)
 \@outlinefile=\write6
 \openout6 = `thesis-doc.out'.
 
 \c__siunitx_mathsf_int=\count358
-LaTeX Font Info:    Try loading font information for U+rsfs on input line 49.
+LaTeX Font Info:    Try loading font information for U+rsfs on input line 51.
  (/usr/share/texlive/texmf-dist/tex/latex/jknapltx/ursfs.fd
 File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 )
-LaTeX Font Info:    Try loading font information for U+msa on input line 49.
+LaTeX Font Info:    Try loading font information for U+msa on input line 51.
  (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 49.
+LaTeX Font Info:    Try loading font information for U+msb on input line 51.
  (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 \c__siunitx_mathtt_int=\count359
-<ucsp.png, id=83, 669.50125pt x 280.04625pt>
+<ucsp.png, id=71, 669.50125pt x 280.04625pt>
 File: ucsp.png Graphic file (type png)
 <use ucsp.png>
-Package pdftex.def Info: ucsp.png  used on input line 51.
+Package pdftex.def Info: ucsp.png  used on input line 69.
 (pdftex.def)             Requested size: 167.3749pt x 70.01138pt.
  [1
 
@@ -1610,130 +1612,101 @@ Overfull \vbox (2.49998pt too high) has occurred while \output is active []
  [2
 
 ]
-Underfull \hbox (badness 1852) in paragraph at lines 51--51
+Underfull \hbox (badness 1852) in paragraph at lines 69--69
 []|\T1/aer/m/it/12 To my par-ents, Mario and Maria,
  []
 
-(./content/preview/abbreviations.tex [3]
+(./content/ch04.tex [3]
 Overfull \vbox (2.49998pt too high) has occurred while \output is active []
 
  [4
 
-]) (./content/preview/acknowledgments.tex [5]
-Overfull \vbox (2.49998pt too high) has occurred while \output is active []
-
- [6
-
 ]
-Overfull \hbox (18.20277pt too wide) in paragraph at lines 7--8
-\T1/aer/m/n/12 for Sci-en-tific De-vel-op-ment, Tech-no-log-i-cal and Tech-no-log-i-cal In-no-va-tion (FONDECYT-
- []
-
-
-Overfull \hbox (18.0514pt too wide) in paragraph at lines 7--8
-\T1/aer/m/n/12 CIENCIACTIVA), which through the Man-age-ment Agree-ment 234-2015-FONDECYT
- []
-
-[7]) (./content/preview/abstract_en.tex
-Overfull \vbox (2.49998pt too high) has occurred while \output is active []
-
- [8
-
-
-] [9]) (./content/preview/abstract_es.tex
-Overfull \vbox (2.49998pt too high) has occurred while \output is active []
-
- [10
-
-
-] [11])
-Overfull \vbox (2.49998pt too high) has occurred while \output is active []
-
- [12
-
-
-] (build/thesis-doc.toc)
-\tf@toc=\write7
-\openout7 = `thesis-doc.toc'.
-
- [13]
-Overfull \vbox (2.49998pt too high) has occurred while \output is active []
-
- [14
-
-] (build/thesis-doc.lot)
-\tf@lot=\write8
-\openout8 = `thesis-doc.lot'.
-
- [15]
-Overfull \vbox (2.49998pt too high) has occurred while \output is active []
-
- [16
-
-] (build/thesis-doc.lof)
-\tf@lof=\write9
-\openout9 = `thesis-doc.lof'.
-
- [17] (./content/preview/figures.tex) (./content/ch01/ch01.tex
 Chapter 1.
+(./content/ch04/diag1.tex
+<content/ch04/5.png, id=95, 609.27625pt x 352.31625pt>
+File: content/ch04/5.png Graphic file (type png)
+<use content/ch04/5.png>
+Package pdftex.def Info: content/ch04/5.png  used on input line 14.
+(pdftex.def)             Requested size: 391.14404pt x 232.49718pt.
 
+Overfull \hbox (9.1742pt too wide) in paragraph at lines 53--54
+[][] 
+ []
+
+)
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [1
-
-
-]
-LaTeX Font Info:    Try loading font information for OMS+aer on input line 31.
+ [5]
+LaTeX Font Info:    Try loading font information for OMS+aer on input line 48.
  (/usr/share/texlive/texmf-dist/tex/latex/ae/omsaer.fd
 File: omsaer.fd 1999/12/27
 )
 LaTeX Font Info:    Font shape `OMS/aer/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 31.
-) (./content/ch02/ch02.tex
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 48.
+
 Overfull \vbox (2.49998pt too high) has occurred while \output is active []
 
- [2]
+ [6 <./content/ch04/5.png>]
 Overfull \vbox (2.49998pt too high) has occurred while \output is active []
 
- [3]
+ [7]
 Overfull \vbox (2.49998pt too high) has occurred while \output is active []
 
- [4
+ [8]
+<content/ch04/1.png, id=131, 803.0pt x 602.25pt>
+File: content/ch04/1.png Graphic file (type png)
+<use content/ch04/1.png>
+Package pdftex.def Info: content/ch04/1.png  used on input line 185.
+(pdftex.def)             Requested size: 418.25368pt x 313.6956pt.
 
-]
-Chapter 2.
-[5]
-Overfull \hbox (41.85648pt too wide) in paragraph at lines 33--33
-[]\T1/aer/bx/n/17.28 Distributed Syn-the-sis of State-Dependent Switch-
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 186.
+See the caption package documentation for explanation.
+
+
+Overfull \hbox (28.45274pt too wide) in paragraph at lines 183--189
+[]$[]$ 
  []
 
 )
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
 Overfull \vbox (2.49998pt too high) has occurred while \output is active []
 
- [6] (build/thesis-doc.bbl) [7
+ [9 <./content/ch04/1.png>]
+Overfull \vbox (2.49998pt too high) has occurred while \output is active []
+
+ [10] (build/thesis-doc.bbl
+
+Package natbib Warning: Empty `thebibliography' environment on input line 3.
+
+) [11
 
 ]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 71.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 71.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 74.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 74.
  (build/thesis-doc.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 71.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 71.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 74.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 74.
 Package rerunfilecheck Info: File `thesis-doc.out' has not changed.
-(rerunfilecheck)             Checksum: 0B361B83926C2075CDC568FDA85E2B5B;928.
+(rerunfilecheck)             Checksum: C75E85FB3B3C25AF9E94F2B75DD2B836;681.
  ) 
 Here is how much of TeX's memory you used:
- 44364 strings out of 492982
- 1021515 string characters out of 6134896
- 1205923 words of memory out of 5000000
- 47090 multiletter control sequences out of 15000+600000
- 559538 words of font info for 85 fonts, out of 8000000 for 9000
+ 44349 strings out of 492982
+ 1021889 string characters out of 6134896
+ 1209839 words of memory out of 5000000
+ 47107 multiletter control sequences out of 15000+600000
+ 563804 words of font info for 93 fonts, out of 8000000 for 9000
  1149 hyphenation exceptions out of 8191
- 64i,11n,103p,10505b,816s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on build/thesis-doc.pdf (24 pages, 177649 bytes).
+ 64i,19n,103p,10505b,997s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on build/thesis-doc.pdf (11 pages, 306853 bytes).
 PDF statistics:
- 262 PDF objects out of 1000 (max. 8388607)
- 210 compressed objects within 3 object streams
- 51 named destinations out of 1000 (max. 500000)
- 218 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 187 PDF objects out of 1000 (max. 8388607)
+ 141 compressed objects within 2 object streams
+ 34 named destinations out of 1000 (max. 500000)
+ 204 words of extra memory for PDF output out of 10000 (max. 10000000)
 

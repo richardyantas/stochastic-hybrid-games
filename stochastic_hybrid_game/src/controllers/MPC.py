@@ -60,34 +60,27 @@ class MPC():
         self.H = self.nrSteps*self.tau
 
     def optimal_pattern_search(self, state, index, candidate_patterns):
-        # ANN controller
-        meta_pattern = []
         alpha = ALPHA
         Tg = TG
         Horizon = 9
         next_state = list(state)
-        while len(meta_pattern) < Horizon:
-            optimal_pattern = []
-            min_costFunction = 100000.0
-            for candidate_pattern in candidate_patterns:
-                m_index = index+len(meta_pattern)*self.tau
-                temporal_state = list(next_state)    # ?
-                for mode in candidate_pattern:
-                    for i in range(m_index, m_index+self.tau):
-                        temporal_state = self.model.post(
-                            mode, self.u_actions[i], temporal_state, i)
-                    m_index = m_index + self.tau
-                costFunction = alpha * \
-                    temporal_state[0]+(1-alpha)*abs(Tg-temporal_state[2])
-                if(costFunction < min_costFunction):
-                    min_costFunction = float(costFunction)
-                    optimal_pattern = list(candidate_pattern)
-                    optimal_pattern_state = list(temporal_state)
-            meta_pattern += optimal_pattern
-            candidate_patterns = query_safe_patterns(optimal_pattern_state)
-            next_state = list(optimal_pattern_state)
-        print("pattern: ", meta_pattern)
-        return meta_pattern
+        optimal_pattern = []
+        min_costFunction = 100000.0
+        for candidate_pattern in candidate_patterns:
+            m_index = index
+            temporal_state = list(next_state)
+            for mode in candidate_pattern:
+                for i in range(m_index, m_index+self.tau):
+                    temporal_state = self.model.post(
+                        mode, self.u_actions[i], temporal_state, i)
+                m_index = m_index + self.tau
+            costFunction = alpha * \
+                temporal_state[0]+(1-alpha)*abs(Tg-temporal_state[2])
+            if(costFunction < min_costFunction):
+                min_costFunction = float(costFunction)
+                optimal_pattern = list(candidate_pattern)
+        print("optimal pattern: ", optimal_pattern)
+        return optimal_pattern
 
 #  ############################# CAMBIAR TAU sec -> min ###################
 
