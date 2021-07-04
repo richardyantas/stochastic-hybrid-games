@@ -104,7 +104,6 @@ class SWH():
         with open(f"{DATA_DIR}/uncontrollable_data.txt", 'r', newline='') as file:
             lines = file.readlines()
         lines = [float(line[0:-1]) for line in lines]
-        print(lines)
         return list(lines)
 
     # def kitchen_effect(self):

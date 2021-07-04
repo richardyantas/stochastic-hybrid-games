@@ -12,6 +12,8 @@ import "../../build/lib/libconfig.so" {
   double get_rate_water_input(); // OK
   double get_TwaterIn();
   int    get_number_steps();
+  double get_Tg();
+  double get_alpha();
 };
 
 const int tau=get_tau();
@@ -20,6 +22,8 @@ const double factorI=get_factorI();
 const double factorKe=get_factorKe();
 const double rateVo=get_rate_water_input();
 const double TwaterIn=get_TwaterIn();
+const double Tg=get_Tg();
+const double alpha=get_alpha();
 
 // ------------------------------------------------------------------------
 
@@ -155,7 +159,8 @@ const zonotope_t zonotopes[id_zonotope_t] = {
 
 
 clock xc, yc, rc;
-double Tg = 55.0, pareto = 0.0;
+//double Tg = 55.0, pareto = 0.0;
+double pareto = 0.0;
 double Tnext=0.0, Vnext=0.0, Enext=0.0;
 int    it = 0, flag = 0;
 id_zonotope_t zi   = 0;
@@ -163,7 +168,7 @@ int           patu = 0;
 
 double paretoFunc()
 {
-	double alpha=0.5;
+//	double alpha=0.5;
 	return pareto+( alpha*x[0] + (1.0-alpha)*fabs(Tg-x[2]) );
 }
 

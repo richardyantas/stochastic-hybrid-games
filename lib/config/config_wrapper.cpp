@@ -6,7 +6,7 @@
 #include "config.h"
 #include "log.h"
 
-Log log{"libconfig.log"};
+//Log log{"libconfig.log"};
 config::Config static_config;
 config::Config dynamic_config;
 bool loaded = false;
@@ -29,6 +29,9 @@ CONFIG_GETTER(double, static_config, rate_water_input, get_rate_water_input)  //
 CONFIG_GETTER(double, static_config, TwaterIn, get_TwaterIn)
 CONFIG_GETTER(int, static_config, number_of_array, get_number_of_array)
 CONFIG_GETTER(int, static_config, nrSteps, get_number_steps)
+
+CONFIG_GETTER(double, static_config, Tg,get_Tg)
+CONFIG_GETTER(double, static_config, alpha,get_alpha)
 // dynamic variables
 CONFIG_GETTER(double, dynamic_config, T, get_T)      // OK
 CONFIG_GETTER(double, dynamic_config, V, get_V)      // OK
@@ -46,7 +49,7 @@ void get_Te(int32_t horizon, double *arr){
         }
     }
     catch (const std::exception &e) {
-        log << e.what();
+        //log << e.what();        
     }
 }
 
@@ -59,7 +62,7 @@ void get_Ti(int32_t horizon, double *arr){
         }
     }
     catch (const std::exception &e) {
-        log << e.what();
+        //log << e.what();
     }
 }
 
@@ -72,6 +75,6 @@ void get_I(int32_t horizon, double *arr){
         }
     }
     catch (const std::exception &e) {
-        log << e.what();
+        //log << e.what();
     }
 }
