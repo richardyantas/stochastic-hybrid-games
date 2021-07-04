@@ -159,8 +159,12 @@ const zonotope_t zonotopes[id_zonotope_t] = {
 
 
 clock xc, yc, rc;
+<<<<<<< HEAD
 //double Tg = 55.0, pareto = 0.0;
 double pareto = 0.0;
+=======
+double Tg = 55.0, pareto = 0.0;
+>>>>>>> 41e7d3da9e19f511ef6e75f5618eab835fc102c7
 double Tnext=0.0, Vnext=0.0, Enext=0.0;
 int    it = 0, flag = 0;
 id_zonotope_t zi   = 0;

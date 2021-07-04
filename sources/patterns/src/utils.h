@@ -1,7 +1,6 @@
 #pragma once
 #include <json/json.h>
 #include <ibex.h>
-
 using namespace std;
 using namespace ibex;
 using namespace Json;
