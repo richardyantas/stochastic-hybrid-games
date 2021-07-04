@@ -23,9 +23,12 @@
   "factorTe": 2.5,
   "factorI": 0.8,
   "factorKe": 1,
+  "factorE": 1,
   "rate_water_input": 0.01,
   "TwaterIn": 22.5,
   "Te": [0.0, 16.5],
   "Ti": [20.0, 25.0],
-  "I": [0.0, 920.0]
+  "I": [0.0, 920.0],
+  "Tg": 55,
+  "alpha": 0.5
 }

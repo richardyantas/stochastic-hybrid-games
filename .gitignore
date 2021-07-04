@@ -1,6 +1,8 @@
 __pycache__/
 *.py[cod]
-/literature/BOOKS
+/doc/literature/BOOKS/
+/doc/literature
+/doc/literature/references/
 /build
 .vscode/
 .pytest_cache

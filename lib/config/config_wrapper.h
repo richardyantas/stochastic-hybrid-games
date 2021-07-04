@@ -16,6 +16,8 @@ extern "C" {
     double get_rate_water_input();
     double get_TwaterIn();    
     int get_number_steps();
+    double get_Tg();
+    double get_alpha();
 
     // dynamic file
     double get_T();

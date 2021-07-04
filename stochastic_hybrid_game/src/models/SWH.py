@@ -1,4 +1,3 @@
-
 from typing import Any, Dict
 import argparse
 import numpy as np
@@ -12,6 +11,7 @@ from stochastic_hybrid_game.src.data.base_data_module import BaseDataModule
 #            |------------------------------------------------>  API
 
 DATA_DIR = BaseDataModule.data_dirname()
+
 SAFE_DATA = json.load(open(f"{DATA_DIR}/static_data.json"))
 # -> [E,V,T] # [0.13, 50.0, 0.0]  # pattern [0, 7]
 INITIAL_STATE = [0.0, 0.13, 50.0]
@@ -25,6 +25,7 @@ R_BOUNDARY = SAFE_DATA["R"]
 S_BOUNDARY = SAFE_DATA["S"]
 NUMBER_STEPS = SAFE_DATA["nrSteps"]
 
+
 #           p, r, f    -> this c_mode order is copied from c++ code model.cpp
 C_MODES = [[1, 0, 0],
            [1, 1, 0],
@@ -36,11 +37,38 @@ C_MODES = [[1, 0, 0],
            [2, 1, 1]]
 
 
+def generate_uncontrollable_data():
+    data = BaseDataModule()
+    data_config = data.config()
+    life_time = data_config["life_time"]
+    start_time = data_config["start_time"]
+    u_modes = (np.zeros(int(life_time))).tolist()
+    num_actions = random.randrange(5, 10)
+    standard_deviation = 1*12  # 2
+    for i in range(0, num_actions):
+        u_modes[int(random.gauss(start_time +
+                                 7*60, standard_deviation))] += 1
+        u_modes[int(random.gauss(start_time +
+                                 13*60, standard_deviation))] += 1
+        u_modes[int(random.gauss(start_time +
+                                 19*60, standard_deviation))] += 1
+    num_actions = random.randrange(10, 20)
+    for i in range(0, num_actions):
+        u_modes[int(random.uniform(
+            start_time, life_time))] += 1
+    # write on file
+    with open(f"{DATA_DIR}/uncontrollable_data.txt", 'w', newline='') as file:
+        for e in u_modes:
+            file.write(str(e)+"\n")
+    return
+
+
 class SWH():
     def __init__(self, data_config: Dict[str, Any], disturbs: Dict[str, Any], args: argparse.Namespace = None) -> None:
         self.args = vars(args) if args is not None else {}
         self.life_time = data_config["life_time"]
         self.data_sample_time = data_config["data_sample_time"]
+        self.start_time = data_config["start_time"]
         self.dt = data_config["dt"]
         self.Te = disturbs["Te"]
         self.Ti = disturbs["Ti"]
@@ -52,10 +80,11 @@ class SWH():
         self.x = INITIAL_STATE
         R = R_BOUNDARY
         S = S_BOUNDARY
+        #self.u_modes = (np.zeros(int(self.life_time))).tolist()
 
     def post(self, mode: int, u_action: int, x: list, index: int) -> list:  # u_action: int
         c_actions = C_MODES[mode]
-        u_action = 0
+        # u_action = 0
         dt_sec = self.dt*60
         E = x[0] + dt_sec*c_actions[1]*2
         V = x[1] + dt_sec*0.01000*(0.1*c_actions[0] - x[1])
@@ -72,15 +101,19 @@ class SWH():
         return x
 
     def get_uncontrollable_actions(self):
-        U_MODES = (np.zeros(int(self.life_time))).tolist()
-        num_actions = random.randrange(150, 180)
-        standard_deviation = 2*12
-        for i in range(0, num_actions):
-            U_MODES[int(random.gauss(7*60, standard_deviation))] = 1
-            U_MODES[int(random.gauss(13*60, standard_deviation))] = 1
-            U_MODES[int(random.gauss(19*60, standard_deviation))] = 1
-        print("umodes:", len(U_MODES))
-        return U_MODES
+        with open(f"{DATA_DIR}/uncontrollable_data.txt", 'r', newline='') as file:
+            lines = file.readlines()
+        lines = [float(line[0:-1]) for line in lines]
+        return list(lines)
+
+    # def kitchen_effect(self):
+    #     # valve ON 1 min
+    #     return
+
+    # def bathroom_effect(self):
+    #     # A  valve ON (3min) 4 times in [30-45] get a shower [1-2] a day
+    #     # Toilet 1min []
+    #     return
 
     def update(self, mode, u_action, state, index):
         state = self.post(mode, u_action, state, index)
@@ -100,3 +133,7 @@ class SWH():
         parser.add_argument("--fc1", type=int, default=1024)
         parser.add_argument("--fc2", type=int, default=128)
         return parser
+
+
+if __name__ == '__main__':
+    generate_uncontrollable_data()
