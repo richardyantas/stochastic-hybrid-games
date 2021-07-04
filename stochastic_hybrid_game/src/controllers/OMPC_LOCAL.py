@@ -42,7 +42,7 @@ def query_safe_patterns(state):
     # return [[-1, -1, -1]]
 
 
-class MPC():
+class OMPC_LOCAL():
     def __init__(self, model: Any, data_config: Dict[str, Any], disturbs: Dict[str, Any], args: argparse.Namespace = None):
         self.Te = disturbs["Te"]
         self.Ti = disturbs["Ti"]
@@ -53,7 +53,7 @@ class MPC():
         self.u_actions = self.model.get_uncontrollable_actions()
         self.initial_state = self.model.get_initial_state()
         self.nrSteps = self.model.get_number_steps()
-        self.pat = list(query_safe_patterns(list(self.initial_state))[0])
+        #self.pat = list(query_safe_patterns(list(self.initial_state))[0])
         # self.controllable_mode = -1
         self.c_actions = []  # [C_MODES[self.controllable_mode]]
         self.queue = multiprocessing.Queue()

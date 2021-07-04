@@ -1,4 +1,3 @@
-
 from typing import Any, Dict
 import argparse
 import numpy as np
@@ -12,6 +11,7 @@ from stochastic_hybrid_game.src.data.base_data_module import BaseDataModule
 #            |------------------------------------------------>  API
 
 DATA_DIR = BaseDataModule.data_dirname()
+
 SAFE_DATA = json.load(open(f"{DATA_DIR}/static_data.json"))
 # -> [E,V,T] # [0.13, 50.0, 0.0]  # pattern [0, 7]
 INITIAL_STATE = [0.0, 0.13, 50.0]
@@ -25,6 +25,7 @@ R_BOUNDARY = SAFE_DATA["R"]
 S_BOUNDARY = SAFE_DATA["S"]
 NUMBER_STEPS = SAFE_DATA["nrSteps"]
 
+
 #           p, r, f    -> this c_mode order is copied from c++ code model.cpp
 C_MODES = [[1, 0, 0],
            [1, 1, 0],
@@ -34,6 +35,32 @@ C_MODES = [[1, 0, 0],
            [3, 1, 1],
            [2, 0, 1],
            [2, 1, 1]]
+
+
+def generate_uncontrollable_data():
+    data = BaseDataModule()
+    data_config = data.config()
+    life_time = data_config["life_time"]
+    start_time = data_config["start_time"]
+    u_modes = (np.zeros(int(life_time))).tolist()
+    num_actions = random.randrange(5, 10)
+    standard_deviation = 1*12  # 2
+    for i in range(0, num_actions):
+        u_modes[int(random.gauss(start_time +
+                                 7*60, standard_deviation))] += 1
+        u_modes[int(random.gauss(start_time +
+                                 13*60, standard_deviation))] += 1
+        u_modes[int(random.gauss(start_time +
+                                 19*60, standard_deviation))] += 1
+    num_actions = random.randrange(10, 20)
+    for i in range(0, num_actions):
+        u_modes[int(random.uniform(
+            start_time, life_time))] += 1
+    # write on file
+    with open(f"{DATA_DIR}/uncontrollable_data.txt", 'w', newline='') as file:
+        for e in u_modes:
+            file.write(str(e)+"\n")
+    return
 
 
 class SWH():
@@ -53,7 +80,7 @@ class SWH():
         self.x = INITIAL_STATE
         R = R_BOUNDARY
         S = S_BOUNDARY
-        self.U_MODES = (np.zeros(int(self.life_time))).tolist()
+        #self.u_modes = (np.zeros(int(self.life_time))).tolist()
 
     def post(self, mode: int, u_action: int, x: list, index: int) -> list:  # u_action: int
         c_actions = C_MODES[mode]
@@ -73,61 +100,12 @@ class SWH():
         x[2] = T
         return x
 
-    def get_uncontrollable_actions2(self):
-        num_actions = random.randrange(150, 180)
-        standard_deviation = 2*12  # 2
-        for i in range(0, num_actions):
-            self.U_MODES[int(random.gauss(self.start_time +
-                                          7*60, standard_deviation))] = 1
-            self.U_MODES[int(random.gauss(self.start_time +
-                                          13*60, standard_deviation))] = 1
-            self.U_MODES[int(random.gauss(self.start_time +
-                                          19*60, standard_deviation))] = 1
-        return list(self.U_MODES)
-
     def get_uncontrollable_actions(self):
-        # num_actions = random.randrange(150, 180)
-
-        num_actions = random.randrange(5, 10)
-        standard_deviation = 1*12  # 2
-        for i in range(0, num_actions):
-            self.U_MODES[int(random.gauss(self.start_time +
-                                          7*60, standard_deviation))] += 1
-            self.U_MODES[int(random.gauss(self.start_time +
-                                          13*60, standard_deviation))] += 1
-            self.U_MODES[int(random.gauss(self.start_time +
-                                          19*60, standard_deviation))] += 1
-
-        num_actions = random.randrange(10, 20)
-        for i in range(0, num_actions):
-            self.U_MODES[int(random.uniform(
-                self.start_time, self.life_time))] += 1
-
-        # print("umodes:", len(U_MODES))
-        return list(self.U_MODES)
-
-    # def large_random_pulse(self, p):
-    #     num_actions = random.randrange(10, 20)
-    #     standard_deviation = 5*12  # 2
-    #     for i in range(0, num_actions):
-    #         # p = int(random.gauss(self.start_time +
-    #         #                     7*60, standard_deviation))
-    #         U_MODES[p] = 1
-    #         U_MODES[p+1] = 1
-    #         U_MODES[p+2] = 1
-    #     return
-
-    # def short_random_pulse(self):
-    #     num_actions = random.randrange(10, 20)
-    #     standard_deviation = 5*12  # 2
-    #     for i in range(0, num_actions):
-    #         U_MODES[int(random.gauss(self.start_time +
-    #                     7*60, standard_deviation))] = 1
-    #         U_MODES[int(random.gauss(self.start_time +
-    #                     13*60, standard_deviation))] = 1
-    #         U_MODES[int(random.gauss(self.start_time +
-    #                     19*60, standard_deviation))] = 1
-    #     return
+        with open(f"{DATA_DIR}/uncontrollable_data.txt", 'r', newline='') as file:
+            lines = file.readlines()
+        lines = [float(line[0:-1]) for line in lines]
+        print(lines)
+        return list(lines)
 
     # def kitchen_effect(self):
     #     # valve ON 1 min
@@ -156,3 +134,7 @@ class SWH():
         parser.add_argument("--fc1", type=int, default=1024)
         parser.add_argument("--fc2", type=int, default=128)
         return parser
+
+
+if __name__ == '__main__':
+    generate_uncontrollable_data()

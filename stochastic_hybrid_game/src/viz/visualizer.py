@@ -1,6 +1,11 @@
+import csv
+import pandas as pd
 from stochastic_hybrid_game.src.models.SWH import SWH, R_BOUNDARY, S_BOUNDARY
 import matplotlib.pyplot as plt
 from matplotlib import style
+from stochastic_hybrid_game.src.data.base_data_module import BaseDataModule
+
+DATA_DIR = BaseDataModule.data_dirname()
 # https://pyimgui.readthedocs.io/en/latest/guide/first-steps.html (pyImgui)
 # https://pyimgui.readthedocs.io/en/latest/reference/imgui.core.html?highlight=plot#imgui.core.plot_histogram
 
@@ -16,10 +21,69 @@ from matplotlib import style
 # R = Bound["R"]
 # S = Bound["S"]
 
-#data = s.loader_data()
-#time = data["t"]
+# data = s.loader_data()
+# time = data["t"]
 R = R_BOUNDARY
 S = S_BOUNDARY
+
+
+def plot_controllers_results():
+    data = BaseDataModule()
+    data_config = data.config()
+    life_time = data_config["life_time"]
+    start_time = data_config["start_time"]
+    smpc_local = pd.read_csv(f"{DATA_DIR}/results_SMPC_LOCAL_data.csv")
+    sompc_uppaal = pd.read_csv(f"{DATA_DIR}/results_SOMPC_UPPAAL_data.csv")
+    with open(f"{DATA_DIR}/uncontrollable_data.txt", 'r', newline='') as file:
+        lines = file.readlines()
+    u_actions = [float(line[0:-1]) for line in lines]
+    u_actions = u_actions[start_time:start_time+len(smpc_local["t"])]
+    with plt.style.context('dark_background'):
+        fig = plt.figure(num='Simulation', figsize=(11, 11))
+        grid = plt.GridSpec(4, 4, wspace=0.8, hspace=0.7)
+
+        plt.subplot(grid[0:2, :4])
+        plt.axis([start_time, life_time, 0, 80])
+        plt.plot(smpc_local["t"], smpc_local["T"], 'gold',
+                 linewidth=0.8, label='smpc local')
+        plt.plot(sompc_uppaal["t"], sompc_uppaal["T"], 'red',
+                 linewidth=0.8, label='sompc uppaal')
+        plt.ylabel('T(C)')
+        plt.xlabel('t(hr)')
+        plt.legend()
+        plt.grid(True, linewidth=0.6, linestyle='--')
+
+        plt.subplot(grid[2, :4])
+        plt.plot(smpc_local["t"], smpc_local["E"], 'gold',
+                 linewidth=0.8, label="smpc local")
+        plt.plot(sompc_uppaal["t"], sompc_uppaal["E"], 'red',
+                 linewidth=0.8, label="sompc uppaal")
+        plt.ylabel('E(Kj)')
+        plt.xlabel('t(hr)')
+        plt.legend()
+        plt.grid(True, linewidth=0.6, linestyle='--')
+
+        # plt.subplot(grid[2, :4])
+        # plt.plot(smpc_local["t"], smpc_local["r"], 'red', linewidth=0.8,
+        #          label="resistance", drawstyle='steps')
+        # plt.plot(smpc_local["t"], smpc_local["f"], 'cyan', linewidth=0.8,
+        #          label="exp/comp", drawstyle='steps')
+        # plt.plot(smpc_local["t"], smpc_local["p"], 'orange', linewidth=0.8,
+        #          label="piston", drawstyle='steps')
+        # plt.ylabel('{r,f,p,v}')
+        # plt.xlabel('t(hr)')
+        # plt.legend()
+        # plt.grid(True, linewidth=0.6, linestyle='--')
+
+        # load other file
+        plt.subplot(grid[3, :4])
+        plt.plot(smpc_local["t"], u_actions, 'yellow', linewidth=0.8,
+                 label="valve", drawstyle='steps')
+
+        plt.grid(True, linewidth=0.6, linestyle='--')
+        plt.show()
+
+    return
 
 
 def viz2(states, c_actions, u_actions, data_config, disturbs, control_times, state_times):
@@ -49,8 +113,7 @@ def viz2(states, c_actions, u_actions, data_config, disturbs, control_times, sta
         v.append(u_action)
 
     with plt.style.context('dark_background'):
-        fig = plt.figure(figsize=(11, 11))
-        fig.canvas.set_window_title('Simulation')
+        fig = plt.figure(num='Simulation', figsize=(11, 11))
         grid = plt.GridSpec(4, 4, wspace=0.8, hspace=0.7)
 
         plt.subplot(grid[0, :4])
@@ -89,3 +152,7 @@ def viz2(states, c_actions, u_actions, data_config, disturbs, control_times, sta
         plt.grid(True, linewidth=0.6, linestyle='--')
         plt.show()
     return
+
+
+if __name__ == '__main__':
+    plot_controllers_results()

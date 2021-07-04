@@ -46,7 +46,7 @@ def query_safe_patterns(state):
     return [[-1, -1, -1]]
 
 
-class UPPAAL():
+class SOMPC_UPPAAL():
     def __init__(self, model: Any, data_config: Dict[str, Any], disturbs: Dict[str, Any], args: argparse.Namespace = None):
         # self.tau = self.args.get("tau", TAU)
         self.start_time = data_config["start_time"]
@@ -57,7 +57,7 @@ class UPPAAL():
         self.t = disturbs["t"]
         self.tau = TAU
         self.model = model
-        self.u_actions = self.model.get_uncontrollable_actions()
+        self.u_actions = self.model.get_uncontrollable_actions()  # or load?
         self.initial_state = self.model.get_initial_state()
         self.nrSteps = self.model.get_number_steps()
         self.pat = list(query_safe_patterns(list(self.initial_state))[0])
@@ -148,9 +148,9 @@ class UPPAAL():
                 points = self.pre_convert2array(points)
                 params[key] = {"list": self.convert2array(
                     points), "points": points}
-        file = open(f"{DATA_DIR}/uppaal_response_data2.json",
-                    'a', encoding='utf-8')
-        file.write(json.dumps(params, indent=4, sort_keys=True)+",")
+        # file = open(f"{DATA_DIR}/uppaal_response_data2.json",
+        #             'a', encoding='utf-8')
+        # file.write(json.dumps(params, indent=4, sort_keys=True)+",")
         # ---------------------#
         params["mode"] = [int(p) for p in params["mode"]["list"]]
         pattern = self.filter_pattern(

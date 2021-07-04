@@ -1,9 +1,14 @@
 
+
+import csv
 import multiprocessing
 import argparse
 import importlib
-from stochastic_hybrid_game.src.controllers import UPPAAL, MPC
+from stochastic_hybrid_game.src.controllers import SOMPC_UPPAAL, SMPC_LOCAL
 from stochastic_hybrid_game.src.viz import viz2
+from stochastic_hybrid_game.src.data.base_data_module import BaseDataModule
+
+DATA_DIR = BaseDataModule.data_dirname()
 
 
 def _import_class(module_and_clas_name: str) -> type:
@@ -18,7 +23,7 @@ def _setup_parser():
     parser = argparse.ArgumentParser(add_help=False)
     parser.add_argument("--data_class", type=str, default="SOLAR")
     parser.add_argument("--model_class", type=str, default="SWH")
-    parser.add_argument("--controller_class", type=str, default="MPC")
+    parser.add_argument("--controller_class", type=str, default="SMPC_LOCAL")
     temp_args, _ = parser.parse_known_args()
     data_class = _import_class(
         f"stochastic_hybrid_game.src.data.{temp_args.data_class}")
@@ -73,6 +78,15 @@ def main():
     print("Plotting ..")
     c_actions = controller.get_controllable_actions()
     u_actions = u_actions[start_time:start_time+len(state_times)]
+    name_file = f'{DATA_DIR}/results_{args.controller_class}_data.csv'
+    rows = [[state_times[i]]+states[i]+[u_actions[i]]
+            for i in range(0, len(states))]
+
+    with open(name_file, 'w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(["t", "E", "V", "T", "v"])
+        writer.writerows(rows)
+
     viz2(states, c_actions, u_actions,
          data.config(), data.loader_data(), control_times, state_times)
     return

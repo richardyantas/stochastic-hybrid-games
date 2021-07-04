@@ -390,66 +390,66 @@ id_zonotope_t getZonotope()
     flag = 1;
     return -1; 
 }</declaration>
-		<location id="id0" x="-399" y="-1547">
+		<location id="id0" x="0" y="-1496">
 			<urgent/>
 		</location>
-		<location id="id1" x="-400" y="-1437">
+		<location id="id1" x="0" y="-1436">
 			<urgent/>
 		</location>
-		<location id="id2" x="-68" y="-1437">
+		<location id="id2" x="332" y="-1436">
 			<urgent/>
 		</location>
-		<location id="id3" x="-400" y="-1292">
+		<location id="id3" x="0" y="-1291">
 			<urgent/>
 		</location>
-		<location id="id4" x="-68" y="-1292">
+		<location id="id4" x="332" y="-1291">
 			<urgent/>
 		</location>
-		<location id="id5" x="-399" y="-1054">
-			<label kind="invariant" x="-382" y="-1062">xc &lt;= step</label>
+		<location id="id5" x="1" y="-1053">
+			<label kind="invariant" x="18" y="-1061">xc &lt;= step</label>
 		</location>
-		<location id="id6" x="-400" y="-952">
+		<location id="id6" x="0" y="-951">
 			<urgent/>
 		</location>
-		<location id="id7" x="-400" y="-833">
-			<name x="-417" y="-808">DONE</name>
+		<location id="id7" x="0" y="-832">
+			<name x="-17" y="-807">DONE</name>
 			<urgent/>
 		</location>
-		<location id="id8" x="-9" y="-927">
-			<name x="-43" y="-876">__RESET__</name>
+		<location id="id8" x="391" y="-926">
+			<name x="357" y="-875">__RESET__</name>
 		</location>
 		<init ref="id0"/>
 		<transition controllable="false">
 			<source ref="id3"/>
 			<target ref="id5"/>
-			<label kind="assignment" x="-382" y="-1181">applyMode(ind_l_patterns,p_id,ppos),
+			<label kind="assignment" x="18" y="-1180">applyMode(zonotope,p_id,ppos),
 ppos=ppos+1,
 mvalve = valve[it]</label>
 		</transition>
 		<transition controllable="false">
 			<source ref="id8"/>
 			<target ref="id8"/>
-			<nail x="-60" y="-1029"/>
-			<nail x="59" y="-1029"/>
+			<nail x="340" y="-1028"/>
+			<nail x="459" y="-1028"/>
 		</transition>
 		<transition controllable="false">
 			<source ref="id6"/>
 			<target ref="id7"/>
-			<label kind="guard" x="-391" y="-910">yc &gt;  horizon</label>
+			<label kind="guard" x="9" y="-909">yc &gt;  horizon</label>
 		</transition>
 		<transition controllable="false">
 			<source ref="id6"/>
 			<target ref="id1"/>
-			<label kind="guard" x="-595" y="-1207">yc &lt;= horizon</label>
-			<label kind="assignment" x="-570" y="-1173">it=it+1</label>
-			<nail x="-527" y="-952"/>
-			<nail x="-527" y="-1437"/>
+			<label kind="guard" x="-195" y="-1206">yc &lt;= horizon</label>
+			<label kind="assignment" x="-170" y="-1172">it=it+1</label>
+			<nail x="-127" y="-951"/>
+			<nail x="-127" y="-1436"/>
 		</transition>
 		<transition controllable="false">
 			<source ref="id5"/>
 			<target ref="id6"/>
-			<label kind="guard" x="-374" y="-1037">xc == step</label>
-			<label kind="assignment" x="-374" y="-1020">update(it),
+			<label kind="guard" x="26" y="-1036">xc == step</label>
+			<label kind="assignment" x="26" y="-1019">update(it),
 xc = 0,
 rc = 0,
 pareto = paretoFunc()</label>
@@ -457,32 +457,32 @@ pareto = paretoFunc()</label>
 		<transition>
 			<source ref="id4"/>
 			<target ref="id3"/>
-			<label kind="select" x="-247" y="-1335">p : id_pattern_t</label>
-			<label kind="guard" x="-298" y="-1318">validPatternId(p,ind_l_patterns)</label>
-			<label kind="assignment" x="-238" y="-1292">p_id = p,
+			<label kind="select" x="153" y="-1334">p : id_pattern_t</label>
+			<label kind="guard" x="102" y="-1317">validPatternId(p,zonotope)</label>
+			<label kind="assignment" x="162" y="-1291">p_id = p,
 ppos = 0,
-availableInPattern = getAvailable(ind_l_patterns,p),
+availableInPattern = getAvailable(zonotope,p),
 visitedPatterns=visitedPatterns+1</label>
 		</transition>
 		<transition controllable="false">
 			<source ref="id2"/>
 			<target ref="id4"/>
-			<label kind="assignment" x="-162" y="-1386">ind_l_patterns = getZonotope()</label>
+			<label kind="assignment" x="238" y="-1385">zonotope = getZonotope()</label>
 		</transition>
 		<transition controllable="false">
 			<source ref="id1"/>
 			<target ref="id3"/>
-			<label kind="guard" x="-485" y="-1369">(ppos+1) &lt;= availableInPattern</label>
+			<label kind="guard" x="-85" y="-1368">(ppos+1) &lt;= availableInPattern</label>
 		</transition>
 		<transition controllable="false">
 			<source ref="id1"/>
 			<target ref="id2"/>
-			<label kind="guard" x="-323" y="-1462">(ppos+1)&gt; availableInPattern</label>
+			<label kind="guard" x="77" y="-1461">(ppos+1)&gt; availableInPattern</label>
 		</transition>
 		<transition controllable="false">
 			<source ref="id0"/>
 			<target ref="id1"/>
-			<label kind="assignment" x="-382" y="-1521">initialize(),
+			<label kind="assignment" x="18" y="-1520">initialize(),
 it=0,
 xc=0,
 rc=0</label>

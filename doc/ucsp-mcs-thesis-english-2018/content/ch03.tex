@@ -53,7 +53,6 @@ In this part is presented a method based on correction by design of
  a stability control that is keep inside of R, whole states start in
   \emph{R}. \cite{le2016distributed}
 
-
  \textbf{Problem 1} \emph{((R,S) - Stability Problem)}. Given a 
  switched system as shown in figure before, a set of recurrence 
  ${\mathbb{R}^n}$ and a safe set \emph{S}
@@ -87,12 +86,21 @@ In this part is presented a method based on correction by design of
  \begin{itemize}
     \item  \emph{Reachability from ${R_1}$ to ${R_2}$: there exists 
     an integer ${k \in \mathbb{N} }$ such that we have ${ \phi( k_l\tau
-    ;t_0,x^0,\sigma,w) \in R_2 }$.}
-    
+    ;t_0,x^0,\sigma,w) \in R_2 }$.}    
     \item \emph{ Stability in S: for all ${ t \in \mathbb{R}^+, 
     \phi(t;t_0,x^0,\sigma,w) \in S}$ .}
 \end{itemize}
  
+
+\subsection{Zonotopes and linear systems}
+  Let us first introduce \emph{zonotopes}, a type of symmetrical 
+  polytopes, allowing to represent efficiently boxes of ${\mathbb{R}^n}$, 
+  and thus very useful for performing tilings of the state-space. 
+  Furthermore, there exist multiple ways to compute images of zonotopes
+  by linear or nonlinear transformation.
+
+  \textbf{ definition here! }
+
 \section{Near optimal Switched Controller synthesis}
 
 \textbf{Definition 1}\emph{(Sthocastic Hybrid Game)}. A stochastic
@@ -108,7 +116,4 @@ rule ${\sigma(.)}$ such that, for any ${x(0) \in R }$.
     infinitely often, at some multiples of sampling time ${\tau}$}.
     \item \emph{ safety: ${x(t)}$ always stays in ${S/B}$.}
 \end{itemize}
-
-
-
 
