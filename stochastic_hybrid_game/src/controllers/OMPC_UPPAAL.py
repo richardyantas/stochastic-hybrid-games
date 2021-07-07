@@ -13,30 +13,14 @@ from stochastic_hybrid_game.src.models.SWH import C_MODES
 import matplotlib.pyplot as plt
 from statsmodels.tsa.arima.model import ARIMA
 
-COMMAND = "lib/uppaal/bin-Linux/verifyta sources/uppaal/swh.xml sources/uppaal/swh.q"
+COMMAND = "lib/uppaal/bin-Linux/verifyta sources/uppaal/optimal.xml sources/uppaal/optimal.q"
 DATA_DIR = BaseDataModule.data_dirname()
-SAFE_RES = json.load(open(f"{DATA_DIR}/pattern.json"))
-PATTERNS = SAFE_RES["patterns"]
-ZONOTOPES = SAFE_RES["zonotopes"]
 SAFE_DATA = json.load(open(f"{DATA_DIR}/static_data.json"))
 TAU = SAFE_DATA["tau"]  # 300 should be fixed by safe patterns
 
 
-def query_safe_patterns(state):
-    for i in range(0, len(ZONOTOPES)):
-        z0_temperature = interval[ZONOTOPES[i][0],
-                                  ZONOTOPES[i][1]]  # z0 = T interval
-        z1_volume = interval[ZONOTOPES[i][2],
-                             ZONOTOPES[i][3]]  # z1 = V interval
-        if (state[1] in z1_volume and state[2] in z0_temperature):
-            return PATTERNS[i]
-    print("Not found patterns for this state: ", state)
-    return [[-1, -1, -1]]
-
-
-class SOMPC_UPPAAL():
+class OMPC_UPPAAL():
     def __init__(self, model: Any, data_config: Dict[str, Any], disturbs: Dict[str, Any], args: argparse.Namespace = None):
-        # self.tau = self.args.get("tau", TAU)
         self.start_time = data_config["start_time"]
         self.disturbs = disturbs
         self.Te = disturbs["Te"]
@@ -48,7 +32,9 @@ class SOMPC_UPPAAL():
         self.u_actions = self.model.get_uncontrollable_actions()
         self.initial_state = self.model.get_initial_state()
         self.nrSteps = self.model.get_number_steps()
-        self.pat = list(query_safe_patterns(list(self.initial_state))[0])
+        # todavia no entiendo por que el problema siempre estuvo aqui !
+        self.pat = [0, 2]
+        #self.pat = list(query_safe_patterns(list(self.initial_state))[0])
         #self.controllable_mode = -1
         self.c_actions = []  # [C_MODES[self.controllable_mode]]
         self.queue = multiprocessing.Queue()
@@ -59,15 +45,11 @@ class SOMPC_UPPAAL():
     def send_save_data2uppaal(self, controllable_mode, state, index):
         pivot = 24*60
         Te = predict_solar_data(
-            self.disturbs["Te"][0:index], pivot, self.prediction_size)
+            self.disturbs["Te"][0:index], pivot, self.prediction_size)  # [0:index ] good!
         Ti = predict_solar_data(
             self.disturbs["Ti"][0:index], pivot, self.prediction_size)
         I = predict_solar_data(
             self.disturbs["I"][0:index], pivot, self.prediction_size)
-
-        # print("predicted: ", Te)
-        # print("real: ", self.disturbs["Te"]
-        #       [index:index+self.prediction_size])
         dynamic_data = {}
         dynamic_data["E"] = state[0]
         dynamic_data["V"] = state[1]
@@ -75,10 +57,9 @@ class SOMPC_UPPAAL():
         dynamic_data["mode"] = controllable_mode
         dynamic_data["valve"] = 0  # int(self.u_actions[index])  # OJO
         dynamic_data["t"] = index
-        # list(self.Te[index:index+self.H])
-        dynamic_data["Te"] = Te  # list(self.Te[index:index+self.H])
-        dynamic_data["Ti"] = Ti  # list(self.Ti[index:index+self.H])
-        dynamic_data["I"] = I  # list(self.I[index:index+self.H])
+        dynamic_data["Te"] = Te
+        dynamic_data["Ti"] = Ti
+        dynamic_data["I"] = I
         file = open(f"{DATA_DIR}/dynamic_data.json", 'w', encoding='utf-8')
         file.write(json.dumps(dynamic_data, indent=4, sort_keys=True))
         return
@@ -104,31 +85,10 @@ class SOMPC_UPPAAL():
                 mlist[i+1] = mlist[i]
         return mlist
 
-    def filter_pattern(self, mode, visitedPatterns):
-        less = min(len(visitedPatterns), len(mode))
-        patterns = []
-        subgroup = [mode[0]]
-        for i in range(0, less-1):
-            if visitedPatterns[i] == visitedPatterns[i+1]:
-                subgroup.append(mode[i+1])
-            else:
-                patterns.append(subgroup)
-                subgroup = []
-                subgroup.append(mode[i+1])
-        patterns = patterns[0:-1]
-        # new_patterns = []
-        # for ps in patterns:
-        #     for p in ps:
-        #         new_patterns.append(p)
-        # return new_patterns
-        return patterns[0]
-
     def receive_strategy_from_uppaal(self):
         res = os.popen(COMMAND).readlines()
         params = {}
-        params["visitedPatterns"] = 0
         params["mode"] = 0
-        params["Tnext"] = 0
         for i in range(0, len(res)-1):
             key = res[i][:-2]
             if params.get(key) != None:
@@ -137,14 +97,12 @@ class SOMPC_UPPAAL():
                 params[key] = {"list": self.convert2array(
                     points), "points": points}
         file = open(f"{DATA_DIR}/uppaal_response_data2.json",
-                    'a', encoding='utf-8')
+                    'w', encoding='utf-8')
         file.write(json.dumps(params, indent=4, sort_keys=True)+",")
-        # ---------------------#
+        # ---------------------
         params["mode"] = [int(p) for p in params["mode"]["list"]]
-        pattern = self.filter_pattern(
-            params["mode"], params["visitedPatterns"]["list"])
-        print("pattern: ", pattern, "size: ", len(pattern))
-        return pattern
+        print("bug: ", params["mode"])
+        return params["mode"][0:3]
 
     def predict(self, controllable_mode, state, index):
         print("index: ", index)
@@ -156,6 +114,7 @@ class SOMPC_UPPAAL():
             predicted_state = self.model.post(
                 controllable_mode, self.u_actions[index], predicted_state, i)
         print("T predicted on step: ", predicted_state[2])
+        print("bbug", controllable_mode, state, index)
         self.send_save_data2uppaal(controllable_mode, list(state), index)
         optimal_pattern = self.receive_strategy_from_uppaal()
         self.queue.put(optimal_pattern)

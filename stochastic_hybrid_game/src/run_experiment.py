@@ -1,10 +1,9 @@
 
-
 import csv
 import multiprocessing
 import argparse
 import importlib
-from stochastic_hybrid_game.src.controllers import SOMPC_UPPAAL, SMPC_LOCAL
+from stochastic_hybrid_game.src.controllers import SOMPC_UPPAAL, SMPC_LOCAL, OMPC_UPPAAL
 from stochastic_hybrid_game.src.viz import viz2
 from stochastic_hybrid_game.src.data.base_data_module import BaseDataModule
 

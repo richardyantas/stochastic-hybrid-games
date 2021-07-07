@@ -13,13 +13,13 @@ theory and fluids dynamics to get temperature dinamics and then
 to define the parameters that determine the system with some
 assumptions to facilate the analysis.
 
-\section{Case study}
+\section{Solar Water Heating Case study}
 In this section, I test the proposed methodology for solving safe and near optimal controller synthesis 
 for stochastic hybrid games.
 
-\input{content/sources/diag1.tex}
-
 \subsection{Setup system}
+
+\input{content/sources/diag1.tex}
 
 \begin{equation}
     \factorheat\mcont\frac{d}{dt}\tcont =  Q_{input,1} + Q_{input,2} - Q_{loss,1} -  Q_{loss,2}
@@ -41,77 +41,137 @@ for stochastic hybrid games.
     Q_{loss,2} =  k_c A_t (\tcont-\tenv)
 \end{equation}
 
-\subsection{State Variables}
+% \subsection{Input Variables}
+% \begin{itemize}
+% \item
+% Valve for output water state = $\left\lbrace on,off \right\rbrace $
+% \item
+% Volume states = $\left\lbrace1,2,3\right\rbrace $
+% \item
+% Auxiliary heat state = $\left\lbrace on,off \right\rbrace $
+% \end{itemize}
 
-\begin{itemize}
-\item
-$\tcont$ the temperature of the container in \si{\degreeCelsius}
-\item
-$\vcont$ the volume of the container in \si{\metre^3}
-
-\end{itemize}
-
-\subsection{Constants}
-\begin{itemize}
-\item 
-$\factorheat$ The factor heat of the water in \si{\joule\per\degreeCelsius\per\kilogram}
-\item
-$\flowin$ Mass flow rate input/output  \si{\kilogram\per\second}
-\item
-$\mcont$ the mass of the container in \si{\kilogram}
-\item
-$A_c$ Area of colector in \si{\metre^2}
-\item
-$A_t$ Area of total of surface in \si{\metre^2}
-\item
-$k_c$ Conduction coeficient \si{\watt\per\metre\per\degreeCelsius}
-\item
-$\haux$ Auxiliary heat power in \si{\watt}
-
-\end{itemize}
-
-\subsection{Input Variables}
-\begin{itemize}
-\item
-Valve for output water state = $\left\lbrace on,off \right\rbrace $
-\item
-Volume states = $\left\lbrace1,2,3\right\rbrace $
-\item
-Auxiliary heat state = $\left\lbrace on,off \right\rbrace $
-
-
-\end{itemize}
-
-\subsection{Disturbance Variables}
-\begin{itemize}
-\item 
-$\tin$ the temperature of water input/output in \si{\degreeCelsius}
-\item
-$\irradiance$ the irradiance in \si{\watt\per\square\metre}
-\item
-$\tenv$ the outside temperature in \si{\degreeCelsius}
-\end{itemize}
-
-\begin{table}[ht]
-\centering
-\caption{Parameter values.}
-\begin{tabular}[t]{lcc}
-\hline
-Parameter && Values\\
-\hline
-$C_e$&&4186\si{\joule\per\degreeCelsius\per\kilogram}\\
-$\flowin$&&0.1\si{\kilogram\per\second}\\
-$\mcont$&&100\si{\kilogram}\\
-$A_c$&&1\si{\metre^2}\\
-$A_t$&&5.5557\si{\metre^2}\\
-$k_c$&&16\si{\watt\per\metre\per\degreeCelsius}\\
-$\haux$&&1000\si{\joule\per\second}\\
-%$A_{pist}$&&1\si{\metre^2}\\
-%$v_{pist}$&&0.1\si{\metre\per\second}\\
-\hline
+\begin{table}
+\begin{tabular}{ |p{2cm}||p{6cm}|p{2cm}|p{2cm}|  }
+    \hline
+    \multicolumn{4}{|c|}{States} \\
+    \hline
+    Variable& Description &Initial Value&Units\\    
+    \hline    
+    E & Energy consumption  & 0.0 & \si{\joule} \\
+    V & Container Volumen  & 0.13 &\si{\metre^3}\\
+    T & Container Temperature & 50.0 & \si{\degreeCelsius}  \\            
+    \hline
+    \multicolumn{4}{|c|}{Constants} \\
+    \hline    
+    Variable& Description & Value & Units\\        
+    \hline
+    \factorheat & The factor heat of the water in   & 4186&\si{\joule\per\degreeCelsius\per\kilogram}\\
+    \flowin & Mass flow rate input/output  & 0.1  &\si{\kilogram\per\second}\\
+    \mcont & the mass of the container in & 100 & \si{\kilogram} \\    
+    $A_c$ & Area of colector in & 1 & \si{\metre^2} \\
+    $A_t$ & Area of total of surface in & 5.56 & \si{\metre^2} \\
+    $k_c$ & Conduction coeficient & 16 & \si{\watt\per\metre\per\degreeCelsius} \\
+    $\haux$ & Auxiliary heat power in & 1000 & \si{\watt} \\    
+    \hline
+    \multicolumn{4}{|c|}{Input values} \\
+    \hline    
+    Variable& Description &  \multicolumn{2}{|c|}{Space values}\\
+    \hline
+    $v$ & Controllable action to release water & \multicolumn{2}{|c|}{$\left\lbrace 0,1 \right\rbrace$} \\
+    \hline
+    $r$ & Controllable action to heat & \multicolumn{2}{|c|}{$\left\lbrace 0,1 \right\rbrace$}\\
+    \hline
+    $p$ & Uncontrollable action to change capacity water & \multicolumn{2}{|c|}{$\left\lbrace 1,2,3 \right\rbrace$}\\
+    \hline         
+    \multicolumn{4}{|c|}{Disturbances} \\
+    \hline
+    Variable& Description & Range&Units\\        
+    \hline
+    $\tin$ & the temperature of water input/output in & $[20-25]$ & \si{\degreeCelsius} \\
+    $\irradiance$ & the irradiance in & $[0-920]$ & \si{\watt\per\square\metre}    \\
+    $\tenv$ & the outside temperature in & $[0-16.5]$ & \si{\degreeCelsius} \\
+    \hline
 \end{tabular}
-\label{table} 
-\end{table}%
+\caption{Parameter values.}
+\end{table}
+
+
+% \subsection{State Variables}
+
+% \begin{itemize}
+% \item
+% $\tcont$ the temperature of the container in \si{\degreeCelsius}
+% \item
+% $\vcont$ the volume of the container in \si{\metre^3}
+
+% \end{itemize}
+
+% \subsection{Constants}
+% \begin{itemize}
+% \item 
+% $\factorheat$ The factor heat of the water in \si{\joule\per\degreeCelsius\per\kilogram}
+% \item
+% $\flowin$ Mass flow rate input/output  \si{\kilogram\per\second}
+% \item
+% $\mcont$ the mass of the container in \si{\kilogram}
+% \item
+% $A_c$ Area of colector in \si{\metre^2}
+% \item
+% $A_t$ Area of total of surface in \si{\metre^2}
+% \item
+% $k_c$ Conduction coeficient \si{\watt\per\metre\per\degreeCelsius}
+% \item
+% $\haux$ Auxiliary heat power in \si{\watt}
+
+% \end{itemize}
+
+% \subsection{Input Variables}
+% \begin{itemize}
+% \item
+% Valve for output water state = $\left\lbrace on,off \right\rbrace $
+% \item
+% Volume states = $\left\lbrace1,2,3\right\rbrace $
+% \item
+% Auxiliary heat state = $\left\lbrace on,off \right\rbrace $
+% \end{itemize}
+
+% \subsection{Disturbance Variables}
+% \begin{itemize}
+% \item 
+% $\tin$ the temperature of water input/output in \si{\degreeCelsius}
+% \item
+% $\irradiance$ the irradiance in \si{\watt\per\square\metre}
+% \item
+% $\tenv$ the outside temperature in \si{\degreeCelsius}
+% \end{itemize}
+
+
+
+
+
+% \begin{table}[ht]
+% \centering
+% % \caption{Parameter values.}
+% \begin{tabular}[t]{lcc}
+% \hline
+% Parameter && Values\\
+% \hline
+% $C_e$&&4186\si{\joule\per\degreeCelsius\per\kilogram}\\
+% $\flowin$&&0.1\si{\kilogram\per\second}\\
+% $\mcont$&&100\si{\kilogram}\\
+% $A_c$&&1\si{\metre^2}\\
+% $A_t$&&5.5557\si{\metre^2}\\
+% $k_c$&&16\si{\watt\per\metre\per\degreeCelsius}\\
+% $\haux$&&1000\si{\joule\per\second}\\
+% %$A_{pist}$&&1\si{\metre^2}\\
+% %$v_{pist}$&&0.1\si{\metre\per\second}\\
+% \hline
+% \end{tabular}
+% \label{table} 
+% \caption{Parameter values.}
+% \end{table}%
+
 
 %\begin{figure}[h]
 %  \centering
@@ -122,7 +182,7 @@ $\haux$&&1000\si{\joule\per\second}\\
 
 \newpage
 
-\section{Hybrid solar water heating as a Sthocastic Hybrid Game}
+\textbf{Hybrid Solar Water Heating as a Sthocastic Hybrid Game}.
 The hybrid solar water heating scenario with 12 modes of operations is
 defined  like this: $\mathcal{G}_{n,m} = (\mathcal{C,U,X,F},\delta)$, 
 where the controller $\mathcal{C}$ has a finite set of controllable modes,
@@ -174,26 +234,88 @@ are equal to $\left\lbrace 2.44e^{-5},  4.77e^{-6}
 
 \section{Simulations and Results}
 
-near optimal controller
-near optimal controller
-near optimal controller
-near optimal controller
-near optimal controller
+\subsection{Solaris Data and prediction data}
+The Figure environment "floats" to find an optimal position on the page. When you begin a figure, you can use the options [htbp!] to specify whether the figure should go "here", the "top" of this page, the "bottom" of this page, or a special "page" reserved for floats. LaTeX, in its infinite wisdom, will sometimes prevent you from putting a figure in an "ugly" place, but you can (sort of) override its decision using the "!" option. When you haven't used any option, the environment assumes that you provided [tbp], and it's choosing to put the figure at the top of the page, above where your section goes.
 
 \begin{minipage}{\linewidth}
-    \begin{center}
-        \includegraphics[width=1.0\linewidth]{content/sources/1}
+    \begin{center}  
+        \includegraphics[width=1.2\linewidth]{images/solaris2}
         \captionof{figure}{An example image not including a Wombat}
     \end{center}
 \end{minipage}
 
-The Figure environment "floats" to find an optimal position on the page. When you begin a figure, you can use the options [htbp!] to specify whether the figure should go "here", the "top" of this page, the "bottom" of this page, or a special "page" reserved for floats. LaTeX, in its infinite wisdom, will sometimes prevent you from putting a figure in an "ugly" place, but you can (sort of) override its decision using the "!" option. When you haven't used any option, the environment assumes that you provided [tbp], and it's choosing to put the figure at the top of the page, above where your section goes. So using
+\textbf{Data preparation}.
+The Figure environment "floats" to find an optimal position on the page. When you begin a figure, you can use the options [htbp!] to specify whether the figure should go "here", the "top" of this page, the "bottom" of this page, or a special "page" reserved for floats. LaTeX, in its infinite wisdom, will sometimes prevent you from putting a figure in an "ugly" place, but you can (sort of) override its decision using the "!" option. When you haven't used any option, the environment assumes that you provided [tbp], and it's choosing to put the figure at the top of the page, above where your section goes.
 
 \begin{minipage}{\linewidth}
     \begin{center}
-        \includegraphics[width=1.0\linewidth]{content/sources/2}
+        \includegraphics[width=0.8\linewidth]{images/prediction}
+        \captionof{figure}{An example of prediction using \textsc{arima} forecaster}
+    \end{center}
+\end{minipage}
+
+\subsection{Experiments}
+[floor heating]
+Regarding our experiments, we have two major components: a simulator 
+written in  \textsc{Python} and a number of controllers, including 
+the ones produced by \textsc{uppaal stratego}. The simulator implements
+the solar water heating hybrid game $\mathcal{G}_{n,m}$. For our 
+experiments, in the simulator we fix a time horizon \emph{H} of 75 minutes
+with a period \emph{P} of 5 minutes. As in the real house, every 
+15 minutes, the simulator outputs the current room temperatures \emph{T}
+which are read by the controller. Subsequently, the controller inputs
+the control valves \emph{V} which are used by the simulator for the
+next 5 minutes. The house has a desired temperature $T^g$ and alpha
+parameters which denotes the importance to optimize either target or 
+energy consumption. Our goal is to optimize the comfort in the water 
+consumption and also energy consumption as a cost function. To define 
+this cost function subject to controller (strategy) $\sigma$ and 
+$\mathcal{G}_{n,m}$ of the form $\pi = \gamma_0 \xrightarrow{t_{1}} 
+\gamma_1 \xrightarrow{t_{2}} ... \xrightarrow{t_{k-1}} 
+\gamma_{k-1} \xrightarrow{t_{k}} \gamma_{k}$ where $k = H/P$ is the 
+number of control steps in the run $\pi$. Let $T_{i}(\gamma_j)$ denote
+the container temperature $T_i$ at configuration $\gamma_j$. Then the 
+const function is defined by
+
+\begin{equation}
+    \begin{aligned}
+        dist(\pi) = \alpha(E) + (1-\alpha)(T-T_g)
+    \end{aligned}
+\end{equation}
+
+In our experiments, we evaluate a number of different controllers. The 
+simulator uses the distance function dist to compare the different
+controllers.
+
+\textbf{Controllers}. In the following we introduce a number of controllers
+which we use in out experiments. We present the current controller operating
+in the house, two controllers proposed by engineers and the controllers 
+synthetized using online synthesis and \textsc{uppaal-stratego}.
+
+\emph{Bang-Bang Controller}. The bang-bang controller is currently running
+in the physical house and after each reading of container temperature $T$,
+it simply switch the resistor $ON$ of container where $T < T^g$ and leaves 
+the reaiming switch $OFF$.
+
+\emph{Greedy controller}
+
+
+\emph{Safe Controller with Patterns}. 
+The Figure environment "floats" to find an optimal position on the page. When you begin a figure, you can use the options [htbp!] to specify whether the figure should go "here", the "top" of this page, the "bottom" of this page, or a special "page" reserved for floats. LaTeX, in its infinite wisdom, will sometimes prevent you from putting a figure in an "ugly" place, but you can (sort of) override its decision using the "!" option. When you haven't used any option, the environment assumes that you provided [tbp], and it's choosing to put the figure at the top of the page, above where your section goes.
+
+\emph{Statego Online Controller}.
+The Figure environment "floats" to find an optimal position on the page. When you begin a figure, you can use the options [htbp!] to specify whether the figure should go "here", the "top" of this page, the "bottom" of this page, or a special "page" reserved for floats. LaTeX, in its infinite wisdom, will sometimes prevent you from putting a figure in an "ugly" place, but you can (sort of) override its decision using the "!" option. When you haven't used any option, the environment assumes that you provided [tbp], and it's choosing to put the figure at the top of the page, above where your section goes.
+\begin{minipage}{\linewidth}
+    \begin{center}
+        \includegraphics[width=1.0\linewidth]{images/Simulation}
         \captionof{figure}{An example image not including a Wombat}
     \end{center}
 \end{minipage}
 
-the last part 
+\emph{Safe and Near Optimal Controller}.
+
+
+\textbf{Evaluation Scenarios}
+
+\textbf{Controller Evaluation}
+

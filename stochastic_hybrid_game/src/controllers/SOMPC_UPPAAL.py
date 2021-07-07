@@ -167,6 +167,7 @@ class SOMPC_UPPAAL():
         for i in range(index, index + self.tau):
             predicted_state = self.model.post(
                 controllable_mode, self.u_actions[index], predicted_state, i)
+        print("bbug", controllable_mode, state, index)
         print("T predicted on step: ", predicted_state[2])
         self.send_save_data2uppaal(controllable_mode, list(state), index)
         optimal_pattern = self.receive_strategy_from_uppaal()
