@@ -1,6 +1,7 @@
 
 \chapter{Safe and near optimal controller synthesis}
 
+% proposal
 \label{ch:proposal}
 In this part, we choose as a case of study an \emph{Hybrid Solar Water
 Heating}, because this system link up important condition to implement the
@@ -23,41 +24,23 @@ assumptions to facilate the analysis.
 \caption{Solar Water Heating diagram}
 \end{figure}
 
-\begin{equation}
-    \factorheat\mcont\frac{d}{dt}\tcont =  A_c\cdot\irradiance + \haux - \factorheat \flowin (\tcont-\tin) -   k_c A_t (\tcont-\tenv)
+% equation description
+The energy inside of the container is calculated as a control volumen, an abstract
+region which experiment power input and output, doing a energy balance is obtained
+the dynamical either volumen or temperature as described in \ref{energy-balance}
+and \ref{volume-balance}.
+
+\begin{equation} 
+    \factorheat\mcont(t)\frac{d}{dt}\tcont =  A_c\irradiance + \haux - v\factorheat \flowin (\tcont-\tin) -   k_c A_t (\tcont-\tenv) + rQ
+    \label{energy-balance}
 \end{equation}
 
+\begin{equation}
+    \frac{d}{dt}\mcont(t) =  \rho \frac{d}{dt}\vcont = \rho (pV_{min} - \vcont); \quad
+    \label{volume-balance}
+\end{equation}
 
-% \begin{equation}
-%     \factorheat\mcont\frac{d}{dt}\tcont =  Q_{input,1} + Q_{input,2} - Q_{loss,1} -  Q_{loss,2}
-% \end{equation}
-
-% \begin{equation}
-%     Q_{input,1} =   A_c\cdot\irradiance
-% \end{equation}
-
-% \begin{equation}
-%     Q_{input,2} =   \haux
-% \end{equation}
-
-% \begin{equation}
-%     Q_{loss,1} =  \factorheat \flowin (\tcont-\tin)
-% \end{equation}
-
-% \begin{equation}
-%     Q_{loss,2} =  k_c A_t (\tcont-\tenv)
-% \end{equation}
-
-% \subsection{Input Variables}
-% \begin{itemize}
-% \item
-% Valve for output water state = $\left\lbrace on,off \right\rbrace $
-% \item
-% Volume states = $\left\lbrace1,2,3\right\rbrace $
-% \item
-% Auxiliary heat state = $\left\lbrace on,off \right\rbrace $
-% \end{itemize}
-
+% table 
 \begin{table}[hbt!]
 \begin{tabular}{ |p{2cm}||p{6cm}|p{2cm}|p{2cm}|  }
     \hline
@@ -101,9 +84,10 @@ assumptions to facilate the analysis.
     \hline
 \end{tabular}
 \caption{Parameter values.}
+\label{data-table}
 \end{table}
 
-\newpage
+\clearpage
 
 \textbf{Hybrid Solar Water Heating as a Sthocastic Hybrid Game}.
 The hybrid solar water heating scenario with 12 modes of operations is
@@ -130,7 +114,7 @@ $v \in \mathbb{B} $ and a time delay $\tau$.
 + \constfour\irradiance+ 
 r \constfive ]
     \end{aligned}
-\label{temperature-equation}    
+\label{temperature-equation}
 \end{equation}
 
 \begin{equation}
@@ -145,25 +129,39 @@ r \constfive ]
 
 The equation \ref{temperature-equation} has some constants $\left\lbrace 
 \constone, \consttwo, \constthree, \constfour \right\rbrace $ this
-parameters are computed with the parameteres defines in table \ref{table} for specific Hybrid Solar Water Heating
+parameters are computed with the parameteres defines in table \ref{data-table} for specific Hybrid Solar Water Heating
 are equal to $\left\lbrace 2.44e^{-5},  4.77e^{-6}
 , 0.0024, 0.01  \right\rbrace$ respectively.
 
+\clearpage
 
 \section{Simulations and Results}
+%\subsection{Solaris Data and prediction data}
+\textbf{Solaris Data and prediction data}
+The Figure environment "floats" to find an optimal position on the page. When you begin a figure, you can use the options [htbp!] to specify whether the figure should go "here", the "top" of this page, the "bottom" of this page, or a special "page" reserved for floats. LaTeX, in its infinite wisdom, will sometimes prevent you from putting a figure in an "ugly" place, but.
 
-\subsection{Solaris Data and prediction data}
-The Figure environment "floats" to find an optimal position on the page. When you begin a figure, you can use the options [htbp!] to specify whether the figure should go "here", the "top" of this page, the "bottom" of this page, or a special "page" reserved for floats. LaTeX, in its infinite wisdom, will sometimes prevent you from putting a figure in an "ugly" place, but you can (sort of) override its decision using the "!" option. When you haven't used any option, the environment assumes that you provided [tbp], and it's choosing to put the figure at the top of the page, above where your section goes.
 
-\begin{minipage}{\linewidth}
-    \begin{center}  
-        \includegraphics[width=1.2\linewidth]{images/solaris2}
-        \captionof{figure}{An example image not including a Wombat}
-    \end{center}
-\end{minipage}
+\begin{figure}[!hbt]
+    \includegraphics[width=1.2\linewidth]{images/solaris2}
+    \captionof{figure}{An example image not including a Wombat}
+\end{figure}
+
+% \begin{minipage}{\linewidth}[!hbt]
+%     \begin{center}  
+%         \includegraphics[width=1.2\linewidth]{images/solaris2}
+%         \captionof{figure}{An example image not including a Wombat}
+%     \end{center}
+% \end{minipage}
 
 \textbf{Data preparation}.
-The Figure environment "floats" to find an optimal position on the page. When you begin a figure, you can use the options [htbp!] to specify whether the figure should go "here", the "top" of this page, the "bottom" of this page, or a special "page" reserved for floats. LaTeX, in its infinite wisdom, will sometimes prevent you from putting a figure in an "ugly" place, but you can (sort of) override its decision using the "!" option. When you haven't used any option, the environment assumes that you provided [tbp], and it's choosing to put the figure at the top of the page, above where your section goes.
+The Figure environment "floats" to find an optimal position on the page. When you begin a figure, you can use the options .
+
+% \begin{figure}[!hbt]
+%     \begin{center}
+%     \includegraphics[width=0.8\linewidth]{images/prediction}
+%     \captionof{figure}{An example of prediction using \textsc{arima} forecaster}
+%     \end{center}
+% \end{figure}
 
 \begin{minipage}{\linewidth}
     \begin{center}
@@ -172,7 +170,8 @@ The Figure environment "floats" to find an optimal position on the page. When yo
     \end{center}
 \end{minipage}
 
-\subsection{Experiments}
+%\subsection{Experiments}
+\textbf{Experiments}
 [floor heating]
 Regarding our experiments, we have two major components: a simulator 
 written in  \textsc{Python} and a number of controllers, including 
