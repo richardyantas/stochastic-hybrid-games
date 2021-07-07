@@ -13,33 +13,40 @@ theory and fluids dynamics to get temperature dinamics and then
 to define the parameters that determine the system with some
 assumptions to facilate the analysis.
 
+\clearpage
 \section{Solar Water Heating Case study}
-In this section, I test the proposed methodology for solving safe and near optimal controller synthesis 
-for stochastic hybrid games.
 
-\subsection{Setup system}
+\textbf{Setup system}:
 
+\begin{figure}[!hbt]
 \input{content/sources/diag1.tex}
+\caption{Solar Water Heating diagram}
+\end{figure}
 
 \begin{equation}
-    \factorheat\mcont\frac{d}{dt}\tcont =  Q_{input,1} + Q_{input,2} - Q_{loss,1} -  Q_{loss,2}
+    \factorheat\mcont\frac{d}{dt}\tcont =  A_c\cdot\irradiance + \haux - \factorheat \flowin (\tcont-\tin) -   k_c A_t (\tcont-\tenv)
 \end{equation}
 
-\begin{equation}
-    Q_{input,1} =   A_c\cdot\irradiance
-\end{equation}
 
-\begin{equation}
-    Q_{input,2} =   \haux
-\end{equation}
+% \begin{equation}
+%     \factorheat\mcont\frac{d}{dt}\tcont =  Q_{input,1} + Q_{input,2} - Q_{loss,1} -  Q_{loss,2}
+% \end{equation}
 
-\begin{equation}
-    Q_{loss,1} =  \factorheat \flowin (\tcont-\tin)
-\end{equation}
+% \begin{equation}
+%     Q_{input,1} =   A_c\cdot\irradiance
+% \end{equation}
 
-\begin{equation}
-    Q_{loss,2} =  k_c A_t (\tcont-\tenv)
-\end{equation}
+% \begin{equation}
+%     Q_{input,2} =   \haux
+% \end{equation}
+
+% \begin{equation}
+%     Q_{loss,1} =  \factorheat \flowin (\tcont-\tin)
+% \end{equation}
+
+% \begin{equation}
+%     Q_{loss,2} =  k_c A_t (\tcont-\tenv)
+% \end{equation}
 
 % \subsection{Input Variables}
 % \begin{itemize}
@@ -51,7 +58,7 @@ for stochastic hybrid games.
 % Auxiliary heat state = $\left\lbrace on,off \right\rbrace $
 % \end{itemize}
 
-\begin{table}
+\begin{table}[hbt!]
 \begin{tabular}{ |p{2cm}||p{6cm}|p{2cm}|p{2cm}|  }
     \hline
     \multicolumn{4}{|c|}{States} \\
@@ -96,90 +103,6 @@ for stochastic hybrid games.
 \caption{Parameter values.}
 \end{table}
 
-
-% \subsection{State Variables}
-
-% \begin{itemize}
-% \item
-% $\tcont$ the temperature of the container in \si{\degreeCelsius}
-% \item
-% $\vcont$ the volume of the container in \si{\metre^3}
-
-% \end{itemize}
-
-% \subsection{Constants}
-% \begin{itemize}
-% \item 
-% $\factorheat$ The factor heat of the water in \si{\joule\per\degreeCelsius\per\kilogram}
-% \item
-% $\flowin$ Mass flow rate input/output  \si{\kilogram\per\second}
-% \item
-% $\mcont$ the mass of the container in \si{\kilogram}
-% \item
-% $A_c$ Area of colector in \si{\metre^2}
-% \item
-% $A_t$ Area of total of surface in \si{\metre^2}
-% \item
-% $k_c$ Conduction coeficient \si{\watt\per\metre\per\degreeCelsius}
-% \item
-% $\haux$ Auxiliary heat power in \si{\watt}
-
-% \end{itemize}
-
-% \subsection{Input Variables}
-% \begin{itemize}
-% \item
-% Valve for output water state = $\left\lbrace on,off \right\rbrace $
-% \item
-% Volume states = $\left\lbrace1,2,3\right\rbrace $
-% \item
-% Auxiliary heat state = $\left\lbrace on,off \right\rbrace $
-% \end{itemize}
-
-% \subsection{Disturbance Variables}
-% \begin{itemize}
-% \item 
-% $\tin$ the temperature of water input/output in \si{\degreeCelsius}
-% \item
-% $\irradiance$ the irradiance in \si{\watt\per\square\metre}
-% \item
-% $\tenv$ the outside temperature in \si{\degreeCelsius}
-% \end{itemize}
-
-
-
-
-
-% \begin{table}[ht]
-% \centering
-% % \caption{Parameter values.}
-% \begin{tabular}[t]{lcc}
-% \hline
-% Parameter && Values\\
-% \hline
-% $C_e$&&4186\si{\joule\per\degreeCelsius\per\kilogram}\\
-% $\flowin$&&0.1\si{\kilogram\per\second}\\
-% $\mcont$&&100\si{\kilogram}\\
-% $A_c$&&1\si{\metre^2}\\
-% $A_t$&&5.5557\si{\metre^2}\\
-% $k_c$&&16\si{\watt\per\metre\per\degreeCelsius}\\
-% $\haux$&&1000\si{\joule\per\second}\\
-% %$A_{pist}$&&1\si{\metre^2}\\
-% %$v_{pist}$&&0.1\si{\metre\per\second}\\
-% \hline
-% \end{tabular}
-% \label{table} 
-% \caption{Parameter values.}
-% \end{table}%
-
-
-%\begin{figure}[h]
-%  \centering
-%\includegraphics[scale=0.6]{images/SWH.png}
-%  \caption{Hybrid Solar Water Heating Diagram}  
-%  \label{fig:systemSetup}
-%\end{figure}
-
 \newpage
 
 \textbf{Hybrid Solar Water Heating as a Sthocastic Hybrid Game}.
@@ -198,11 +121,6 @@ respectively.
 Given the container temparature and volume, a controllable modes $r \in \mathbb{B}$
 and $p \in \left\lbrace1,2,3\right\rbrace $ and uncontrollable mode
 $v \in \mathbb{B} $ and a time delay $\tau$.
-
-%\begin{equation}
-%  \frac{d}{dt}\tcont(t) = \constone(\tenv-\tcont)+\consttwo\tirrad+
-%  \constthree\taux+\constfour(\tcont-\tin)
-%\end{equation}
 
 \begin{equation}
     \begin{aligned}
