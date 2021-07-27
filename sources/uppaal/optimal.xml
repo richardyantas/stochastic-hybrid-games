@@ -80,9 +80,12 @@ double pareto = 0.0;
 double Tnext=0.0, Vnext=0.0, Enext=0.0;
 int    it = 0, flag = 0;
 
+double alpha_;
+double Tg_;
 double paretoFunc()
 {
-	return pareto+( alpha*x[0] + (1.0-alpha)*fabs(Tg-x[2]) );
+    alpha_ = 0.0;
+	return pareto+( alpha_*x[0] + (1.0-alpha_)*fabs(Tg-x[2]) ); // d
 }
 
 double dt_sec=60.0;
@@ -163,8 +166,7 @@ void predict()
 			<source ref="id1"/>
 			<target ref="id7"/>
 			<label kind="select" x="-145" y="-1165">m : mode_t</label>
-			<label kind="assignment" x="-145" y="-1148">mode=m,
-ppos=ppos+1</label>
+			<label kind="assignment" x="-145" y="-1148">mode=m</label>
 		</transition>
 		<transition controllable="false">
 			<source ref="id6"/>

@@ -9,9 +9,11 @@ import argparse
 import multiprocessing
 from interval import interval
 from stochastic_hybrid_game.src.data.base_data_module import BaseDataModule
+from stochastic_hybrid_game.src.data.SOLAR import SOLAR
+from stochastic_hybrid_game.src.models.SWH import SWH
 from stochastic_hybrid_game.src.models.SWH import C_MODES
 import matplotlib.pyplot as plt
-#from statsmodels.tsa.arima.model import ARIMA
+# from statsmodels.tsa.arima.model import ARIMA
 from statsmodels.tsa.arima.model import ARIMA
 # import statsmodels as sm
 # https://www.statsmodels.org/stable/generated/statsmodels.tsa.arima.model.ARIMA.html
@@ -31,6 +33,8 @@ PATTERNS = SAFE_RES["patterns"]
 ZONOTOPES = SAFE_RES["zonotopes"]
 
 SAFE_DATA = json.load(open(f"{DATA_DIR}/static_data.json"))
+R = SAFE_DATA["R"]
+S = SAFE_DATA["S"]
 TAU = SAFE_DATA["tau"]  # 300 should be fixed by safe patterns
 
 
@@ -44,6 +48,57 @@ def query_safe_patterns(state):
             return PATTERNS[i]
     print("Not found patterns for this state: ", state)
     return [[-1, -1, -1]]
+
+
+def plot_safe_behaviour():
+    data = SOLAR(args=None)
+    start_time = data.config()["start_time"]
+    print(start_time)
+    model = SWH(data_config=data.config(), disturbs=data.loader_data())
+    safe_res = json.load(open(f"{DATA_DIR}/pattern.json"))
+    static_data = json.load(open(f"{DATA_DIR}/static_data.json"))
+    tau = static_data["tau"]
+    state = [0.0, 0.13, 50.0]
+    states = [list(state)]
+    index = start_time
+    set_pattern = []
+    for i in range(0, 3):
+        patterns = query_safe_patterns(state)
+        pattern = patterns[int(len(patterns)/2)]
+        plt.plot(state[1], state[2], "ro")
+        for mode in pattern:
+            for i in range(index, index+tau):
+                state = model.post(mode, 0, state, i)
+                states.append(list(state))
+            index = index + tau
+        print(pattern)
+        print(state)
+        set_pattern.append(list(pattern))
+    colors = ["olive", "deepskyblue", "goldenrod", "cyan"]
+    ind = 0
+    for pat in set_pattern:
+        print(pat)
+        l = len(pat)*tau
+        V = [float(states[i][1])
+             for i in range(ind, ind + l+1)]  # para que cierre los puntos
+        T = [float(states[i][2]) for i in range(ind, ind + l+1)]
+        ind += l
+        plt.plot(V, T, linewidth=1.0, color=colors.pop(0))
+    # plt.axis([0.0, 0.4, 20.0, 90.0])
+    plt.plot([R[1][0], R[1][0], R[1][1], R[1][1], R[1][0]], [
+             R[0][0], R[0][1], R[0][1], R[0][0], R[0][0]], "gray", linewidth=1.2, linestyle='--', label="R")
+    plt.plot([S[1][0], S[1][0], S[1][1], S[1][1], S[1][0]], [
+             S[0][0], S[0][1], S[0][1], S[0][0], S[0][0]], "teal", linewidth=0.9, linestyle='--', label="S")
+    plt.xlabel("Volume")
+    plt.ylabel("Temperature")
+    plt.grid(True, linewidth=0.6, linestyle='--')
+    plt.savefig(
+        './doc/ucsp-mcs-thesis-english-2018/images/safe_post_pattern.png')
+    plt.show()
+
+    # plot states with R, S
+
+    return
 
 
 class SOMPC_UPPAAL():
@@ -61,7 +116,7 @@ class SOMPC_UPPAAL():
         self.initial_state = self.model.get_initial_state()
         self.nrSteps = self.model.get_number_steps()
         self.pat = list(query_safe_patterns(list(self.initial_state))[0])
-        #self.controllable_mode = -1
+        # self.controllable_mode = -1
         self.c_actions = []  # [C_MODES[self.controllable_mode]]
         self.queue = multiprocessing.Queue()
         self.prediction_size = 1*60  # prediction_size
@@ -205,3 +260,7 @@ class SOMPC_UPPAAL():
     def add_to_argparse(parser):
         parser.add_argument("--tau", type=int, default=TAU)
         return parser
+
+
+if __name__ == '__main__':
+    plot_safe_behaviour()

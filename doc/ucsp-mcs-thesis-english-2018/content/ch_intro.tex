@@ -1,0 +1,91 @@
+    \chapter{Introduction}
+    
+    \label{ch:intro}
+    In \autoref{sec:motivation} we describe the motivation and 
+    context of our work, \autoref{sec:problem} presents our 
+    problem statement. \autoref{sec:objectives} shows the 
+    objectives of this work. Finally, \autoref{sec:contributions}
+    describes the structure of this thesis document.
+
+    \section{Motivation and Context}
+    \label{sec:motivation}
+    %%%TODO: FALTA MAS TEXTO EN LA MOTIVATION
+
+    Hybrid systems are widely used in engineering applications and its 
+    importance has grown up considerably these last years, because of their 
+    ease of implementation for controlling cyber-physical systems.
+    A switched systems is a set of dynamical systems, each with its own 
+    dynamical behaviour controlled by a parameter mode $u$ whose values 
+    are in a finite set $U$(See ~\cite{liberzon2003switching}). However, due to the composition of many switched systems together, the global switched systems has a number of modes and dynamics which increases exponentially. 
+    Switched systems have numerous applications in control of mechanical systems, the automotive industry, and many other fields. 
+
+    \section{Problem Statement}
+    \label{sec:problem}
+    Nowadays, there is a large number of methods to solve switched systems;
+    however, it does not have guarantee in safety. For that reason, we 
+    propose a new approach to solve switched systems. 
+    
+    \section{Objectives}
+    \label{sec:objectives}
+
+        \subsection*{General Objective}
+        Our main objective is to propose a pipeline to solve switched systems guarantee safety and near optimal synthesis controllers. 
+
+        \subsection*{Specific Objectives}
+        To achieve our main objective, we have the following specific objectives:
+        \begin{itemize}
+            \item Define a case of study as a stochastic hybrid game and get its mathematical model.
+            \item Implement and explore safe patterns for the model.
+            \item Implement an \textsc{api} between the simulator and \textsc{uppaal} to Optimize the model.
+            \item Compare results with traditional methods with our methodology.
+        \end{itemize}
+
+
+    \section{Contributions}
+    \label{sec:contributions}
+        This thesis proposes a novel approach to solve 
+        switched systems guaranteeing safety and optimal
+        controller synthesis. 
+
+        %\usepackage[spanish, es-ucroman]{babel}}
+        %\usepackage[spanish, es-ucroman]{babel}e}
+        %\usepackage[spanish, es-ucroman]{babel}a synthesis controller with the next:.
+        
+        \begin{itemize}
+            \item Find safe patterns for our case study using
+            decomposition algorithm (\cite{le2017improved}).
+                \begin{itemize}
+                    \item We propose a method to guarantee safe controller. This methods consider three regions to have reachability and safety in the system.
+                    \item We also demonstrate the utility of the proposed method comparing with traditional methods.
+                \end{itemize}
+            \item Find a near optimal patterns to online control(\cite{larsen2016online}).
+            \begin{itemize}
+                \item Implement an \textsc{api} between simulator and \textsc{uppaal}.
+                \item Build a timed automata MDP in \textsc{uppaal} for a real time \textsc{MPC}.
+            \end{itemize}
+        \end{itemize}
+
+    \section{Outline}
+    %\label{sec:outline}
+    This thesis document is divided into five chapters. After this 
+    introduction and problem formulation, in \autoref{ch:relatedWorks}
+     we survey the literature about the recent research in safety
+      controllers and near optimal online controller synthesis. 
+    \autoref{ch:background} presents some basic concepts about the
+    hybrid systems, traditional controllers,
+    stability criteria and optimal controller technique. Next, in
+    Chapter x we describe in detail the corpus, techniques used 
+    by our pipeline and their evaluation results. Finally, the 
+    limitations, future works, and conclusions of this work are 
+    presented in Chapter.
+
+
+
+
+
+
+
+
+
+
+

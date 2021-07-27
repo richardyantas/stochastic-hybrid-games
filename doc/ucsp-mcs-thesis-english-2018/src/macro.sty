@@ -25,14 +25,12 @@
 \newcommand{\taux}{\ensuremath{T_{aux}}}
 \newcommand{\tin}{\ensuremath{T_{in}(t)}}
 
-% constans
+% constants
 \newcommand{\constone}{\ensuremath{c_1}}
 \newcommand{\consttwo}{\ensuremath{c_{2}}}
 \newcommand{\constthree}{\ensuremath{c_{3}}}
 \newcommand{\constfour}{\ensuremath{c_{4}}}
 \newcommand{\constfive}{\ensuremath{c_{5}}}
-
-
 
 \newcommand{\tset}{\ensuremath{{T_{set}}}}
 \newcommand{\tsetdelta}{\ensuremath{{T_{\Delta}}}}
@@ -40,4 +38,29 @@
 \newcommand{\statevec}{\mathbf{x}}
 \newcommand{\inputvec}{\mathbf{u}}
 \newcommand{\disturbvec}{\mathbf{w}}
+
+% units
+% celsius \usepackage{gensymb}  21C\degree
+
+% highlight configuration
+
+% \newcommand{\hlc}[2][yellow]{{%    
+%     \colorlet{foo}{#1}%    
+%     % \settextcolor{foo}{#2}
+%     \sethlcolor{foo}\hl{#2}}%
+% }
+
+\newcommand{\hlc}[1]{{%    }
+    \sethlcolor{cyan}\hl{#1}}%
+}
+
+
+\newlength\myindent
+\setlength\myindent{2em}
+\newcommand\bindent{%
+  \begingroup
+  \setlength{\itemindent}{\myindent}
+  \addtolength{\algorithmicindent}{\myindent}
+}
+\newcommand\eindent{\endgroup}
 

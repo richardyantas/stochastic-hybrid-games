@@ -1,10 +1,14 @@
 from pathlib import Path
 import argparse
+import json
 
-LIFE_TIME = 2*24*60  # 3*24*60 # (in min) two days  BATCH_SIZE
-START_TIME = 1*24*60
-DATA_SAMPLE_TIME = 15  # (in min)
-DT = 1  # data_resample_time (in min)
+DATA_DIR = Path(__file__).resolve().parents[2]/"datasets"
+STATIC_DATA = json.load(open(f"{DATA_DIR}/static_data.json"))
+# 2*24*60  # 3*24*60 # (in min) two days  BATCH_SIZE
+LIFE_TIME = STATIC_DATA["life_time"]
+START_TIME = STATIC_DATA["start_time"]  # 1*24*60
+DATA_SAMPLE_TIME = STATIC_DATA["data_sample_time"]  # (in min)
+DT = STATIC_DATA["dt"]  # 1  # data_resample_time (in min)
 
 # NUMBER_STEPS = 15
 # OBS: we can use pandas propeties to process data or numpy, an also create an API

@@ -44,12 +44,12 @@ class OMPC_UPPAAL():
 
     def send_save_data2uppaal(self, controllable_mode, state, index):
         pivot = 24*60
-        Te = predict_solar_data(
-            self.disturbs["Te"][0:index], pivot, self.prediction_size)  # [0:index ] good!
-        Ti = predict_solar_data(
-            self.disturbs["Ti"][0:index], pivot, self.prediction_size)
-        I = predict_solar_data(
-            self.disturbs["I"][0:index], pivot, self.prediction_size)
+        # Te = predict_solar_data(
+        #     self.disturbs["Te"][0:index], pivot, self.prediction_size)  # [0:index ] good!
+        # Ti = predict_solar_data(
+        #     self.disturbs["Ti"][0:index], pivot, self.prediction_size)
+        # I = predict_solar_data(
+        #     self.disturbs["I"][0:index], pivot, self.prediction_size)
         dynamic_data = {}
         dynamic_data["E"] = state[0]
         dynamic_data["V"] = state[1]
@@ -57,9 +57,11 @@ class OMPC_UPPAAL():
         dynamic_data["mode"] = controllable_mode
         dynamic_data["valve"] = 0  # int(self.u_actions[index])  # OJO
         dynamic_data["t"] = index
-        dynamic_data["Te"] = Te
-        dynamic_data["Ti"] = Ti
-        dynamic_data["I"] = I
+        dynamic_data["Te"] = list(
+            self.disturbs["Te"][index:index+self.H])  # Te
+        dynamic_data["Ti"] = list(
+            self.disturbs["Ti"][index:index+self.H])  # Ti
+        dynamic_data["I"] = list(self.disturbs["I"][index:index+self.H])  # I
         file = open(f"{DATA_DIR}/dynamic_data.json", 'w', encoding='utf-8')
         file.write(json.dumps(dynamic_data, indent=4, sort_keys=True))
         return
@@ -78,7 +80,7 @@ class OMPC_UPPAAL():
             if (points[i][0] == points[i+1][0] and points[i+1][0] != points[-1][0]):
                 it = int(points[i][0]/self.tau)
                 mlist[it] = points[i+1][1]  # int
-        if mlist[0] == None:
+        if mlist[0] == None:  # en el caso se tengo una linea recta de 0 - 5 time
             mlist[0] = 0
         for i in range(0, horizon_permitted-1):
             if mlist[i+1] == None:
@@ -101,8 +103,8 @@ class OMPC_UPPAAL():
         file.write(json.dumps(params, indent=4, sort_keys=True)+",")
         # ---------------------
         params["mode"] = [int(p) for p in params["mode"]["list"]]
-        print("bug: ", params["mode"])
-        return params["mode"][0:3]
+        print("controle modes: ", params["mode"][0:1])
+        return params["mode"][0:2]
 
     def predict(self, controllable_mode, state, index):
         print("index: ", index)
@@ -124,11 +126,14 @@ class OMPC_UPPAAL():
         if(len(self.pat) == 0):
             self.pat = self.queue.get()
             self.controllable_mode = self.pat.pop(0)
+            print("lpat = 0")
         elif(len(self.pat) == 1):
+            print("lpat = 1")
             self.controllable_mode = self.pat.pop(0)
             process = multiprocessing.Process(target=self.predict, args=(
                 int(self.controllable_mode), state, index))
             process.start()
+
         elif(len(self.pat) > 1):
             self.controllable_mode = self.pat.pop(0)
         print("W")

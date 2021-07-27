@@ -50,7 +50,35 @@ def plot_controllers_results():
     life_time = float(life_time-24*60)/60
     ################################################
 
-        
+    ############### figure 1 #############################
+    plt.axis([start_time, life_time, 0, 80])
+    plt.plot(time_plot, smpc_local["T"], 'cyan',
+             linewidth=0.8, label='smpc local')
+    plt.plot(time_plot, sompc_uppaal["T"], 'red',
+             linewidth=0.8, label='sompc uppaal')
+    # plt.plot([start_time, life_time], [set_point, set_point], 'cyan',
+    #          linewidth=0.4)
+    plt.ylabel('Temperature(C)')
+    plt.xlabel('time[hrs]')
+    plt.legend()
+    plt.grid(True, linewidth=0.6, linestyle='--')
+    plt.savefig(
+        './doc/ucsp-mcs-thesis-english-2018/images/controllers.png')
+    plt.show()
+    ############### figure 2 #############################
+    plt.figure(figsize=(10, 2))
+    plt.axis([start_time, life_time, 0, 5])
+    plt.plot(time_plot, u_actions, 'cyan', linewidth=0.8,
+             label="valve", drawstyle='steps')
+    plt.ylabel('Valve event')
+    plt.xlabel('time[hrs]')
+    plt.legend()
+    plt.grid(True, linewidth=0.6, linestyle='--')
+    plt.savefig(
+        './doc/ucsp-mcs-thesis-english-2018/images/uncontrollable.png')
+    plt.show()
+    ############### figure 3 #############################
+    with plt.style.context('dark_background'):  # ggplot
         fig = plt.figure(num='Simulation', figsize=(11, 11))
         grid = plt.GridSpec(4, 4, wspace=0.8, hspace=0.7)
         plt.subplot(grid[0:2, :4])
@@ -61,8 +89,8 @@ def plot_controllers_results():
                  linewidth=0.8, label='sompc uppaal')
         # plt.plot([start_time, life_time], [set_point, set_point], 'cyan',
         #          linewidth=0.4)
-        plt.ylabel('T(C)')
-        plt.xlabel('t[hrs]')
+        plt.ylabel('Temperature(C)')
+        plt.xlabel('time[hrs]')
         plt.legend()
         plt.grid(True, linewidth=0.6, linestyle='--')
 
@@ -72,7 +100,7 @@ def plot_controllers_results():
         plt.plot(time_plot, sompc_uppaal["E"], 'red',
                  linewidth=0.8, label="sompc uppaal")
         plt.ylabel('Energy[KJ]')
-        plt.xlabel('t[hrs]')
+        plt.xlabel('time[hrs]')
         plt.legend()
         plt.grid(True, linewidth=0.6, linestyle='--')
         # plt.subplot(grid[2, :4])
@@ -92,7 +120,7 @@ def plot_controllers_results():
         plt.plot(time_plot, u_actions, 'cyan', linewidth=0.8,
                  label="valve", drawstyle='steps')
         plt.ylabel('Valve event')
-        plt.xlabel('t[hrs]')
+        plt.xlabel('time[hrs]')
         plt.legend()
         plt.grid(True, linewidth=0.6, linestyle='--')
         plt.show()

@@ -1,0 +1,17 @@
+\babel@toc {english}{}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces atched System Schematic\relax }}{10}{figure.caption.11}
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Trajectory of a hybrid system. The switching signal ${\sigma (t)}$ takes on integer values that change at discrete-time instances.\citep {liberzon2003switching}\relax }}{11}{figure.caption.12}
+\contentsline {figure}{\numberline {3.3}{\ignorespaces One-room 24h trajectories of various control strategies\relax }}{19}{figure.caption.13}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Solar Water Heating diagram\relax }}{24}{figure.caption.15}
+\contentsline {figure}{\numberline {4.2}{\ignorespaces State changes of valves along the day.\relax }}{25}{figure.caption.16}
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Weather time series, irradiance and temperature \relax }}{26}{figure.caption.17}
+\contentsline {figure}{\numberline {4.4}{\ignorespaces An example of prediction using \textsc {arima} forecaster\relax }}{26}{figure.4.4}
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Automaton with forbidden transitions because of the addition of a discrete variable \emph {f} which facilate the system modelling in cases such as piston expansion and compression.\relax }}{29}{figure.caption.19}
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Simulation for the firsts three patterns\relax }}{32}{figure.caption.20}
+\contentsline {figure}{\numberline {4.7}{\ignorespaces Container temparature comparison between greedy controller with uppaal stratego controller, both approaches are safe.\relax }}{35}{figure.4.7}
+\contentsline {figure}{\numberline {4.8}{\ignorespaces Template of the safe an near optimal algorithm\relax }}{36}{figure.4.8}
+\addvspace {10\p@ }

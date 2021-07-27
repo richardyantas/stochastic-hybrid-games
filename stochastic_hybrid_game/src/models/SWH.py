@@ -4,6 +4,7 @@ import numpy as np
 import json
 import random
 from stochastic_hybrid_game.src.data.base_data_module import BaseDataModule
+from stochastic_hybrid_game.src.data.SOLAR import SOLAR
 # OBS: Dynamical neuroscience -> Biological neural network https://en.wikipedia.org/wiki/Dynamical_neuroscience
 # Time series and panel data econometrics, Econometrics in Theory and Practice: Analysis of Cross Section, Time Series and Panel Data with Stata 15.1
 # parameters.json ---> Safe c++ IBex ---> patterns, zonotopes
