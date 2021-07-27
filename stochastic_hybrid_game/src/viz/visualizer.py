@@ -1,20 +1,151 @@
+<<<<<<< HEAD
 from stochastic_hybrid_game.src.models.SWH import SWH, R_BOUNDARY, S_BOUNDARY
 import matplotlib.pyplot as plt
 from matplotlib import style
 # https://pyimgui.readthedocs.io/en/latest/guide/first-steps.html (pyImgui)
 # https://pyimgui.readthedocs.io/en/latest/reference/imgui.core.html?highlight=plot#imgui.core.plot_histogram
 
+=======
+import csv
+import json
+import pandas as pd
+from stochastic_hybrid_game.src.models.SWH import SWH, R_BOUNDARY, S_BOUNDARY
+import matplotlib.pyplot as plt
+from matplotlib import style
+from stochastic_hybrid_game.src.data.base_data_module import BaseDataModule
+
+DATA_DIR = BaseDataModule.data_dirname()
+
+# https://pyimgui.readthedocs.io/en/latest/guide/first-steps.html (pyImgui)
+# https://pyimgui.readthedocs.io/en/latest/reference/imgui.core.html?highlight=plot#imgui.core.plot_histogram
+# If we want to draw dynamically
+# Generally seems like create another thread an draw in parallel to send the data.
+# Tinker https://stackoverflow.com/questions/5618620/create-dynamic-updated-graph-with-python
+# https://stackoverflow.com/questions/10944621/dynamically-updating-plot-in-matplotlib
+>>>>>>> master
 # SWH.get_boundaries = classmethod(SWH.get_boundaries())
 # Bound = SWH.get_boundaries()
 # R = Bound["R"]
 # S = Bound["S"]
+<<<<<<< HEAD
 
 #data = s.loader_data()
 #time = data["t"]
+=======
+# data = s.loader_data()
+# time = data["t"]
+
+>>>>>>> master
 R = R_BOUNDARY
 S = S_BOUNDARY
 
 
+<<<<<<< HEAD
+=======
+def preprocess_time_hr_24_after(times):
+    return [float((t-24*60)/60) for t in times]
+
+
+def plot_controllers_results():
+    data = BaseDataModule()
+    data_config = data.config()
+    life_time = data_config["life_time"]
+    start_time = data_config["start_time"]
+    smpc_local = pd.read_csv(f"{DATA_DIR}/results_SMPC_LOCAL_data.csv")
+    sompc_uppaal = pd.read_csv(f"{DATA_DIR}/results_SOMPC_UPPAAL_data.csv")
+    static_data = json.load(open(f"{DATA_DIR}/static_data.json"))
+    set_point = static_data["Tg"]
+    with open(f"{DATA_DIR}/uncontrollable_data.txt", 'r', newline='') as file:
+        lines = file.readlines()
+    u_actions = [float(line[0:-1]) for line in lines]
+    u_actions = u_actions[start_time:start_time+len(smpc_local["t"])]
+    # with plt.style.context('dark_background'): #ggplot
+
+    ######### time preprocess to visualize #########
+    time_plot = preprocess_time_hr_24_after(smpc_local["t"])
+    start_time = float(start_time-24*60)/60
+    life_time = float(life_time-24*60)/60
+    ################################################
+
+    ############### figure 1 #############################
+    plt.axis([start_time, life_time, 0, 80])
+    plt.plot(time_plot, smpc_local["T"], 'cyan',
+             linewidth=0.8, label='smpc local')
+    plt.plot(time_plot, sompc_uppaal["T"], 'red',
+             linewidth=0.8, label='sompc uppaal')
+    # plt.plot([start_time, life_time], [set_point, set_point], 'cyan',
+    #          linewidth=0.4)
+    plt.ylabel('Temperature(C)')
+    plt.xlabel('time[hrs]')
+    plt.legend()
+    plt.grid(True, linewidth=0.6, linestyle='--')
+    plt.savefig(
+        './doc/ucsp-mcs-thesis-english-2018/images/controllers.png')
+    plt.show()
+    ############### figure 2 #############################
+    plt.figure(figsize=(10, 2))
+    plt.axis([start_time, life_time, 0, 5])
+    plt.plot(time_plot, u_actions, 'cyan', linewidth=0.8,
+             label="valve", drawstyle='steps')
+    plt.ylabel('Valve event')
+    plt.xlabel('time[hrs]')
+    plt.legend()
+    plt.grid(True, linewidth=0.6, linestyle='--')
+    plt.savefig(
+        './doc/ucsp-mcs-thesis-english-2018/images/uncontrollable.png')
+    plt.show()
+    ############### figure 3 #############################
+    with plt.style.context('dark_background'):  # ggplot
+        fig = plt.figure(num='Simulation', figsize=(11, 11))
+        grid = plt.GridSpec(4, 4, wspace=0.8, hspace=0.7)
+        plt.subplot(grid[0:2, :4])
+        plt.axis([start_time, life_time, 0, 80])
+        plt.plot(time_plot, smpc_local["T"], 'cyan',
+                 linewidth=0.8, label='smpc local')
+        plt.plot(time_plot, sompc_uppaal["T"], 'red',
+                 linewidth=0.8, label='sompc uppaal')
+        # plt.plot([start_time, life_time], [set_point, set_point], 'cyan',
+        #          linewidth=0.4)
+        plt.ylabel('Temperature(C)')
+        plt.xlabel('time[hrs]')
+        plt.legend()
+        plt.grid(True, linewidth=0.6, linestyle='--')
+
+        plt.subplot(grid[2, :4])
+        plt.plot(time_plot, smpc_local["E"], 'cyan',
+                 linewidth=0.8, label="smpc local")
+        plt.plot(time_plot, sompc_uppaal["E"], 'red',
+                 linewidth=0.8, label="sompc uppaal")
+        plt.ylabel('Energy[KJ]')
+        plt.xlabel('time[hrs]')
+        plt.legend()
+        plt.grid(True, linewidth=0.6, linestyle='--')
+        # plt.subplot(grid[2, :4])
+        # plt.plot(smpc_local["t"], smpc_local["r"], 'red', linewidth=0.8,
+        #          label="resistance", drawstyle='steps')
+        # plt.plot(smpc_local["t"], smpc_local["f"], 'cyan', linewidth=0.8,
+        #          label="exp/comp", drawstyle='steps')
+        # plt.plot(smpc_local["t"], smpc_local["p"], 'orange', linewidth=0.8,
+        #          label="piston", drawstyle='steps')
+        # plt.ylabel('{r,f,p,v}')
+        # plt.xlabel('t(hr)')
+        # plt.legend()
+        # plt.grid(True, linewidth=0.6, linestyle='--')
+
+        # load other file
+        plt.subplot(grid[3, :4])
+        plt.plot(time_plot, u_actions, 'cyan', linewidth=0.8,
+                 label="valve", drawstyle='steps')
+        plt.ylabel('Valve event')
+        plt.xlabel('time[hrs]')
+        plt.legend()
+        plt.grid(True, linewidth=0.6, linestyle='--')
+        plt.show()
+
+    return
+
+
+>>>>>>> master
 def viz2(states, c_actions, u_actions, data_config, disturbs, control_times, state_times):
     T = []
     V = []

@@ -1,3 +1,38 @@
 \begin{thebibliography}{}
 
+\bibitem[\protect\astroncite{Branicky}{1994}]{branicky1994stability}
+Branicky, M.~S. (1994).
+\newblock Stability of switched and hybrid systems.
+\newblock In {\em Proceedings of 1994 33rd IEEE Conference on Decision and
+  Control}, volume~4, pages 3498--3503. IEEE.
+
+\bibitem[\protect\astroncite{Larsen et~al.}{2016}]{larsen2016online}
+Larsen, K.~G., Miku{\v{c}}ionis, M., et~al. (2016).
+\newblock Online and compositional learning of controllers with application to
+  floor heating.
+\newblock In {\em International Conference on Tools and Algorithms for the
+  Construction and Analysis of Systems}, pages 244--259. Springer.
+
+\bibitem[\protect\astroncite{Le~Co{\"e}nt et~al.}{2017}]{le2017improved}
+Le~Co{\"e}nt, A., dit Sandretto, J.~A., et~al. (2017).
+\newblock An improved algorithm for the control synthesis of nonlinear sampled
+  switched systems.
+\newblock {\em Formal Methods in System Design}, pages 1--21.
+
+\bibitem[\protect\astroncite{Le~Co{\"e}nt et~al.}{2016}]{le2016distributed}
+Le~Co{\"e}nt, A., Fribourg, L., et~al. (2016).
+\newblock Distributed synthesis of state-dependent switching control.
+\newblock In {\em International Workshop on Reachability Problems}, pages
+  119--133. Springer.
+
+\bibitem[\protect\astroncite{Liberzon}{2003}]{liberzon2003switching}
+Liberzon, D. (2003).
+\newblock {\em Switching in systems and control}.
+\newblock Springer Science \& Business Media.
+
+\bibitem[\protect\astroncite{Tsilingiris}{1996}]{tsilingiris1996solar}
+Tsilingiris, P. (1996).
+\newblock Solar water-heating design—a new simplified dynamic approach.
+\newblock {\em Solar Energy}, 57(1):19--28.
+
 \end{thebibliography}

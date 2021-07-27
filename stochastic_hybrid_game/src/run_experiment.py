@@ -1,14 +1,17 @@
 
-
 import csv
 import multiprocessing
 import argparse
 import importlib
+<<<<<<< HEAD
 <<<<<<< HEAD:stochastic_hybrid_game/src/run_experiment.py
 from stochastic_hybrid_game.src.controllers import UPPAAL, MPC
 from stochastic_hybrid_game.src.viz import viz2
 =======
 from stochastic_hybrid_game.src.controllers import SOMPC_UPPAAL, SMPC_LOCAL
+=======
+from stochastic_hybrid_game.src.controllers import SOMPC_UPPAAL, SMPC_LOCAL, OMPC_UPPAAL
+>>>>>>> master
 from stochastic_hybrid_game.src.viz import viz2
 from stochastic_hybrid_game.src.data.base_data_module import BaseDataModule
 

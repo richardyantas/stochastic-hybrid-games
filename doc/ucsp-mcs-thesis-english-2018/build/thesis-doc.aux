@@ -18,25 +18,128 @@
 \providecommand\HyField@AuxAddToFields[1]{}
 \providecommand\HyField@AuxAddToCoFields[2]{}
 \babel@aux{english}{}
-\@writefile{toc}{\contentsline {chapter}{\numberline {1}Safe and near optimal controller synthesis}{V}{chapter.1}}
+\newacro{CNN}[\AC@hyperlink{CNN}{CNN}]{Convolutional Neural Network}
+\newacro{CSV}[\AC@hyperlink{CSV}{CSV}]{Comma-Separated Values}
+\newacro{GIS}[\AC@hyperlink{GIS}{GIS}]{Geographic Information System}
+\newacro{HMM}[\AC@hyperlink{HMM}{HMM}]{Hidden Markov Model}
+\newacro{JSON}[\AC@hyperlink{JSON}{JSON}]{JavaScript Object Notation}
+\newacro{ML}[\AC@hyperlink{ML}{ML}]{Machine Learning}
+\newacro{MSE}[\AC@hyperlink{MSE}{MSE}]{Mean Squared Error}
+\newacro{MST}[\AC@hyperlink{MST}{MST}]{Minimal Spanning Tree}
+\newacro{NLP}[\AC@hyperlink{NLP}{NLP}]{Natural Language Processing}
+\newacro{OCR}[\AC@hyperlink{OCR}{OCR}]{Optical Character Recognition}
+\newacro{RBF}[\AC@hyperlink{RBF}{RBF}]{Radial Basis Function}
+\newacro{SVG}[\AC@hyperlink{SVG}{SVG}]{Scalable Vector Graphics}
+\newacro{SVM}[\AC@hyperlink{SVM}{SVM}]{Support Vector Machine}
+\@writefile{toc}{\contentsline {chapter}{List of Tables}{XV}{chapter*.7}}
+\citation{liberzon2003switching}
+\@writefile{toc}{\contentsline {chapter}{List of Figures}{XVII}{chapter*.8}}
+\citation{liberzon2003switching}
+\@writefile{toc}{\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{ch:proposal}{{1}{V}{Safe and near optimal controller synthesis}{chapter.1}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {1.1}Case study}{V}{section.1.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.1.1}Setup system}{VI}{subsection.1.1.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.1.2}State Variables}{VI}{subsection.1.1.2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.1.3}Constants}{VII}{subsection.1.1.3}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.1.4}Input Variables}{VII}{subsection.1.1.4}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.1.5}Disturbance Variables}{VII}{subsection.1.1.5}}
-\@writefile{lot}{\contentsline {table}{\numberline {1.1}{\ignorespaces Parameter values.\relax }}{VIII}{table.caption.2}}
+\newlabel{ch:intro}{{1}{1}{Introduction}{chapter.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {1.1}Motivation and Context}{1}{section.1.1}}
+\newlabel{sec:motivation}{{1.1}{1}{Motivation and Context}{section.1.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {1.2}Problem Statement}{1}{section.1.2}}
+\newlabel{sec:problem}{{1.2}{1}{Problem Statement}{section.1.2}{}}
+\citation{le2017improved}
+\citation{larsen2016online}
+\@writefile{toc}{\contentsline {section}{\numberline {1.3}Objectives}{2}{section.1.3}}
+\newlabel{sec:objectives}{{1.3}{2}{Objectives}{section.1.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {1.4}Contributions}{2}{section.1.4}}
+\newlabel{sec:contributions}{{1.4}{2}{Contributions}{section.1.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {1.5}Outline}{3}{section.1.5}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {2}Related Works}{5}{chapter.2}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{ch:relatedWorks}{{2}{5}{Related Works}{chapter.2}{}}
+\citation{larsen2016online}
+\citation{le2017improved}
+\citation{le2016distributed}
+\@writefile{toc}{\contentsline {section}{\numberline {2.1}Online and Compositional Learning of Controllers with Application to Floor Heating}{6}{section.2.1}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.2}An Improved Algorithm for the Control Synthesis of Nonlinear Sampled Switched Systems}{6}{section.2.2}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.3}Distributed Synthesis of State-Dependent Switching Control}{6}{section.2.3}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.4}Final Considerations}{7}{section.2.4}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {3}Background}{9}{chapter.3}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{ch:background}{{3}{9}{Background}{chapter.3}{}}
+\citation{branicky1994stability}
+\@writefile{toc}{\contentsline {section}{\numberline {3.1}Switched systems}{10}{section.3.1}}
+\newlabel{sec:switchedsystems}{{3.1}{10}{Switched systems}{section.3.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.1}{\ignorespaces atched System Schematic\relax }}{10}{figure.caption.11}}
+\citation{liberzon2003switching}
+\citation{liberzon2003switching}
+\citation{le2016distributed}
+\newlabel{hybridsystem}{{3.2}{11}{Switched systems}{equation.3.1.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces Trajectory of a hybrid system. The switching signal ${\sigma (t)}$ takes on integer values that change at discrete-time instances.\citep  {liberzon2003switching}\relax }}{11}{figure.caption.12}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.2}Safe patterns computation}{11}{section.3.2}}
+\newlabel{sec:safepatterncomputation}{{3.2}{11}{Safe patterns computation}{section.3.2}{}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Decomposition\relax }}{13}{algorithm.1}}
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{table}{{1.1}{VIII}{Parameter values.\relax }{table.caption.2}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {1.2}Hybrid solar water heating as a Sthocastic Hybrid Game}{VIII}{section.1.2}}
-\newlabel{temperature-equation}{{1.6}{VIII}{Hybrid solar water heating as a Sthocastic Hybrid Game}{equation.1.2.6}{}}
-\newlabel{volume-equation}{{1.7}{VIII}{Hybrid solar water heating as a Sthocastic Hybrid Game}{equation.1.2.7}{}}
-\newlabel{Energy-equation}{{1.8}{VIII}{Hybrid solar water heating as a Sthocastic Hybrid Game}{equation.1.2.8}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {1.3}Simulations and Results}{IX}{section.1.3}}
-\@writefile{lof}{\contentsline {figure}{\numberline {1.1}{\ignorespaces An example image not including a Wombat\relax }}{IX}{figure.1.1}}
-\@writefile{lof}{\contentsline {figure}{\numberline {1.2}{\ignorespaces An example image not including a Wombat\relax }}{X}{figure.1.2}}
+\newlabel{decomposition}{{1}{13}{Decomposition\relax }{algorithm.1}{}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {2}{\ignorespaces Find Pattern with forbidden transitions\relax }}{14}{algorithm.2}}
+\newlabel{findPattern}{{2}{14}{Find Pattern with forbidden transitions\relax }{algorithm.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.3}Near optimal Switched Controller synthesis}{15}{section.3.3}}
+\newlabel{fig:2a}{{3.3a}{19}{Stochastic, $D(24h)=4200$.\relax }{figure.caption.13}{}}
+\newlabel{sub@fig:2a}{{a}{19}{Stochastic, $D(24h)=4200$.\relax }{figure.caption.13}{}}
+\newlabel{fig:2b}{{3.3b}{19}{Offline naive. $D(24h)=2750$.\relax }{figure.caption.13}{}}
+\newlabel{sub@fig:2b}{{b}{19}{Offline naive. $D(24h)=2750$.\relax }{figure.caption.13}{}}
+\newlabel{fig:2c}{{3.3c}{19}{Offline splitting, $D(24h)=468$.\relax }{figure.caption.13}{}}
+\newlabel{sub@fig:2c}{{c}{19}{Offline splitting, $D(24h)=468$.\relax }{figure.caption.13}{}}
+\newlabel{fig:2d}{{3.3d}{19}{Online naive, $D(24h)=471.5$.\relax }{figure.caption.13}{}}
+\newlabel{sub@fig:2d}{{d}{19}{Online naive, $D(24h)=471.5$.\relax }{figure.caption.13}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.3}{\ignorespaces One-room 24h trajectories of various control strategies\relax }}{19}{figure.caption.13}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.1}{\ignorespaces Performance evaluation of one room controller synthesis: offline-3(-6) methods synthetize strategy for entire 72 hours (144 hours respectively ) at once, strategy distance is evaluated on 70 simulations; online-3 methods synthetize a strategy for 5 periods of 15 min ahead and repeat synthesis and execution until 72 hours are covered, the distance is averaged over 70 online simulations. \relax }}{20}{table.caption.14}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.4}Safe and near optimal controller for sthocastic hybrid games}{21}{section.3.4}}
+\citation{tsilingiris1996solar}
+\citation{larsen2016online}
+\@writefile{toc}{\contentsline {chapter}{\numberline {4}Safe and Near Optimal Controller Synthesis for Stochastic hybrid Games}{23}{chapter.4}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{ch:proposal}{{4}{23}{Safe and Near Optimal Controller Synthesis for Stochastic hybrid Games}{chapter.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.1}Solar Water Heating Case study}{24}{section.4.1}}
+\newlabel{sec:casestudy}{{4.1}{24}{Solar Water Heating Case study}{section.4.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces Solar Water Heating diagram\relax }}{24}{figure.caption.15}}
+\newlabel{fig:casestudy}{{4.1}{24}{Solar Water Heating diagram\relax }{figure.caption.15}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.1}data analysis}{24}{subsection.4.1.1}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.2}{\ignorespaces State changes of valves along the day.\relax }}{25}{figure.caption.16}}
+\newlabel{fig:uncontrollable}{{4.2}{25}{State changes of valves along the day.\relax }{figure.caption.16}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.3}{\ignorespaces Weather time series, irradiance and temperature \relax }}{26}{figure.caption.17}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.4}{\ignorespaces An example of prediction using \textsc  {arima} forecaster\relax }}{26}{figure.4.4}}
+\newlabel{prediction_environment}{{4.4}{26}{An example of prediction using \textsc {arima} forecaster\relax }{figure.4.4}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4.1}{\ignorespaces Parameter values are used to compute $c_1,c_2, c_3$ and $c_4$.\relax }}{27}{table.caption.18}}
+\newlabel{data-table}{{4.1}{27}{Parameter values are used to compute $c_1,c_2, c_3$ and $c_4$.\relax }{table.caption.18}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.2}Hybrid Solar Water Heating as a Sthocastic Hybrid Game}{28}{subsection.4.1.2}}
+\newlabel{temperature-equation}{{4.1}{28}{Hybrid Solar Water Heating as a Sthocastic Hybrid Game}{equation.4.1.1}{}}
+\newlabel{volume-equation}{{4.2}{28}{Hybrid Solar Water Heating as a Sthocastic Hybrid Game}{equation.4.1.2}{}}
+\newlabel{Energy-equation}{{4.3}{28}{Hybrid Solar Water Heating as a Sthocastic Hybrid Game}{equation.4.1.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.5}{\ignorespaces Automaton with forbidden transitions because of the addition of a discrete variable \emph  {f} which facilate the system modelling in cases such as piston expansion and compression.\relax }}{29}{figure.caption.19}}
+\newlabel{fig:automaton}{{4.5}{29}{Automaton with forbidden transitions because of the addition of a discrete variable \emph {f} which facilate the system modelling in cases such as piston expansion and compression.\relax }{figure.caption.19}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.2}Experiments: }{30}{section.4.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.1}Patterns computation}{30}{subsection.4.2.1}}
+\citation{le2017improved}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {3}{\ignorespaces Find Pattern with forbidden transitions\relax }}{31}{algorithm.3}}
+\newlabel{euclid}{{3}{31}{Find Pattern with forbidden transitions\relax }{algorithm.3}{}}
+\newlabel{alg:filter_transitions}{{10}{31}{Find Pattern with forbidden transitions\relax }{algorithm.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.6}{\ignorespaces Simulation for the firsts three patterns\relax }}{32}{figure.caption.20}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.2}Near optimal Experiments}{34}{subsection.4.2.2}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.7}{\ignorespaces Container temparature comparison between greedy controller with uppaal stratego controller, both approaches are safe.\relax }}{35}{figure.4.7}}
+\newlabel{uncontrollableactions}{{4.2.2}{35}{Near optimal Experiments}{figure.4.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.8}{\ignorespaces Template of the safe an near optimal algorithm\relax }}{36}{figure.4.8}}
+\newlabel{strategotemplate}{{4.2.2}{36}{Near optimal Experiments}{figure.4.8}{}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {5}Discussion and Conclusions}{39}{chapter.5}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{ch:conclusions}{{5}{39}{Discussion and Conclusions}{chapter.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.1}Limitations and Future Work}{39}{section.5.1}}
+\newlabel{sec:limitations}{{5.1}{39}{Limitations and Future Work}{section.5.1}{}}
 \bibstyle{src/apabrahand}
 \bibdata{thesis-doc}
+\bibcite{branicky1994stability}{{1}{1994}{{Branicky}}{{}}}
+\bibcite{larsen2016online}{{2}{2016}{{Larsen et~al.}}{{}}}
+\bibcite{le2017improved}{{3}{2017}{{Le~Co{\"e}nt et~al.}}{{}}}
+\bibcite{le2016distributed}{{4}{2016}{{Le~Co{\"e}nt et~al.}}{{}}}
+\bibcite{liberzon2003switching}{{5}{2003}{{Liberzon}}{{}}}
+\bibcite{tsilingiris1996solar}{{6}{1996}{{Tsilingiris}}{{}}}

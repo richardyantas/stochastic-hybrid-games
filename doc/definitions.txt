@@ -1,0 +1,24 @@
+control synthesis:
+
+Very abstractly, controller synthesis, given a model of the assumed behaviour of the environment and a system goal, 
+produces an operational behaviour model for a component that when executing in an environment consistent with the assumptions 
+results in a system that is guaranteed to satisfy the goal.
+
+We have an automata as a hybrid system thus a control synthesis is to find
+one strategy to optimize the behavour in other words, to satisfy the goal 
+
+
+undecidable?
+
+The verification of continuous and hybrid systems is a challenging problem,
+ and various approaches are currently being investigated to overcome the complexities of 
+ representing and computing with continuous sets of states. Since verification problems 
+ are generally undecidable for such systems, experimental results are vital for
+  evaluating and developing new ideas.
+
+https://control.ee.ethz.ch/research/theory/control-of-constrained-hybrid-systems/control-synthesis.html
+
+
+https://www.ariadne-cps.org/tutorial/
+
+behavior

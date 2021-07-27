@@ -205,8 +205,7 @@ bool findPattern2 (const sampledSwitchedSystem& sys, const IntervalVector W,
           //nop
         }
         else
-        {
-          
+        {          
           if (stay_S)// && !cross_B)
           {
             if (node_current.pattern.size() < k)
