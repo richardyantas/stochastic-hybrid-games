@@ -3,6 +3,7 @@ __pycache__/
 /doc/literature/BOOKS/
 /doc/literature
 /doc/literature/references/
+/doc/literature/ucsp-mcs-thesis-english-2018/build/
 /build
 .vscode/
 .pytest_cache
