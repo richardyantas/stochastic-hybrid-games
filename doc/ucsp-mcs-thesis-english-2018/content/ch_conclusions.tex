@@ -1,23 +1,46 @@
 \chapter{Discussion and Conclusions}
 \label{ch:conclusions}
-In the \emph{Hybrid Solar Water Heating} case study we evaluated the 
-existing \textsc{uppaal stratego} controller synthesis subject to certain
-operation modes called patterns wich ensure a safe system behaviour, this
-methodology helps enginners not only guarantee a safe controller 
-but also some strategies which optimize trough reinforcement learning
-given by \textsc{uppaal stratego}. The proposal was successfully 
-concatenated finding safe and near optimal control strategies for our 
-controller.
+
+\section{Conclusions}
+\label{sec:conclusions}
+We showed that the \emph{Hybrid Solar Water Heating} case study can 
+be modeled as a stochastic hybrid game and apply formal 
+controller synthesis to automatically derive controllers 
+for our \ac{SWH}, such that symbolic and reinforced learning 
+techniques from \textsc{uppaal stratego} are used. This evaluation 
+is subject to certain operation modes called patterns wich ensure 
+a safe coontrol.
+
+The use of zonotopes allows an efficient implementation of the 
+stochastic controller synthesis with \textsc{stratego}. The experimental
+ evaluation showed that this method can compute a safe control strategy 
+ in a short horizon $75$ minutes and also the cost function was 
+ significantly optimized comparable in performance to the \emph{greedy} 
+ controller. The  framework developed is adapted to an online 
+ model-predictive control setting and helps engineers not only guarantee 
+ a  safe controller  but also apply formal controller synthesis to 
+ automatically derive controllers through reinforcement learning given
+by \textsc{uppaal stratego}.
 
 \section{Limitations and Future Work}
-
 \label{sec:limitations}
 
-To reduce the complexity to compute patterns on way to face problems
-related dynamic setpoint configurations would be to have more than 
-one R regions.
+Future research directions; Although it is true that we use
+real environment data, temperature of input water is not provided. However,
+considering not variations we set a constant temperature, which in fact 
+change in time, would be interesting to test the simulator with real 
+input water temperatures. Additionally, the distributions of perturbations
+was modelled using 1 uniform distribution and 2 normal distribution, 
+around $7h$ and $19h$. However, a more realistic distributions can be 
+obtained through historical data provided by the interaction
+between members of family in a house and our algorithm.
 
-\myparagraph{Solar car}
-The latest advances in solar machines are cars, this system interact with
-disturbances which is irradiances, the roads to stop the car lose energy.
-This would work with spatial trajectories as spatio temporal series of data.
+
+% To reduce the complexity to compute patterns on way to face problems
+% related dynamic setpoint configurations would be to have more than 
+% one R regions.
+% \myparagraph{Solar car}
+% The latest advances in solar machines are cars, this system interact
+%  with disturbances which is irradiances, the roads to stop the car 
+%  lose energy. This would work with spatial trajectories as spatio
+%   temporal series of data.

@@ -1,45 +1,43 @@
-\chapter{Background} % Background
-
+\chapter{Background}
 % proposal
 \label{ch:background}
 In this chapter we present basic concepts that are needed to understand better
 our work. In \autoref{sec:switchedsystems} we define some definitions about switched systems 
 and the difference between hybrid system a basic concept that we will use for our
-analysis,
-
-% \ref{} to equations or tables
-
+analysis, \cite{sanfelice2020hybrid}. In \autoref{sec:modelpredictivecontroller} we 
+describe the \ac{MPC} approach. In \autoref{sec:safepatterncomputation} we explains
+the method to find patterns. In \autoref{sec:uppaalstratego} we describe 
+\textsc{Uppaal Stratego}. In \autoref{sec:onlinestochastichybridcontroller} we describe
+a method to control stochastic hybrid games using online controller. In \autoref{sec:safeandoptimal}
+we explain the methodology to join the safe and optimal approach. Lastly in 
+\autoref{sec:workflow}, we show a general diagram that explain how the system works.
 \clearpage
-
-% commments: aun no me queda claro sonbre la ecuacion de distribucion del uncontrollable event
-
 \section{Switched systems}
 \label{sec:switchedsystems}
-    \textbf{Switched systems} are loosely defined as dynamical system whose state has
-    two components, one of which evolves in a continuous set such as 
-    $\mathbb{R}$  while the other evolves in a discrete set such as
-    $\mathbb{N}$ according to some transition logic based rule. 
-    Hybrid System is an bastract meaning of switched system which 
-    is a system which changes acording to switch rule, this rule 
-    comprises of discrete events, \citep{branicky1994stability}.
-
-    \begin{figure}[!h]
-        \begin{center}
-            \includegraphics[width=\textwidth*4/5]{images/ss}
-            \caption{atched System Schematic}
-        \end{center}
+    \textbf{Switched systems} are loosely defined as dynamical 
+    system whose state has two components, one of which evolves 
+    in a continuous set such as $\mathbb{R}$  while the other 
+    evolves in a discrete set such as $\mathbb{N}$ according to 
+    some transition logic based rule. Hybrid System is an bastract 
+    meaning of switched system which is a system which changes 
+    acording to switch rule, this rule comprises of discrete events, 
+    \citep{branicky1994stability}.
+    \begin{figure}[!hbt]
+      \centering
+      \input{content/sources/switchedsystem.tex}
+      \captionsetup{format=hang}
+      \caption{A general overview about the procedure to control a \ac{SHG}}
+      \label{fig:switchedsystem}
     \end{figure}
-
     Let us consider nonlinear switched systems such that
-
-    \begin{equation}
-        \dot x = f_{\sigma(t)}(x(t),d(t)) \\
+    \begin{equation}        
+        \dot x(t) = \mathcal{F}_{c,u}(\tau,x(t),d(t)) \\
     \end{equation}
 
     defined for all $t \geqslant 0$, where $x(t) \in \mathbb{R}^n$ is the state
-    of the system, $\sigma(.): \mathbb{R}^+ \rightarrow U$ is the switching 
-    rule, and $d(t) \in \mathbb{R}^m$ is a bounded perturbation. The finite
-    set $U = \left\lbrace 1,2,.. N \right\rbrace$ is the set of switching
+    of the system, $\sigma(.): \mathbb{R}^+ \rightarrow M$ is the switching 
+    rule, and $d(t) \in \mathbb{R}^m$ is the disturbances, the finite
+    set $M= \left\lbrace 1,2,.. N \right\rbrace$ is the set of switching
     modes of the system. We focus on sampled switched systems: given a sampling
     period $\tau > 0$, switching will occur at time $\tau, 2\tau, ...$ Switching 
     depend only on time, and not on states: \emph{this is the main difference with 
@@ -50,23 +48,19 @@ analysis,
     $\tau, 2\tau, 3\tau, ...$ The switching rule $\sigma(.)$ is thus piecewise
     constant, we shall consider that $\sigma(.)$ is constant on the time interval
     $[(k-1)\tau,k\tau[$ for $k \geqslant 1 $. We call \emph{"pattern"} a finite
-    sequence of modes $\pi =  (i_1,i_2,...i_k) \in U^k$. With such a control
+    sequence of modes $\pi =  (i_1,i_2,...i_k) \in M^k$. With such a control
     input, and under a given perturbation $d$, we shall denote by $x(t;t_0;x_0,d,\pi)$
     the solution at time $t$ of the system.
     
     \begin{equation} % move to center then
         \begin{array}{l}
-            \dot x (t) = f_{\sigma(t)}(x(t),d(t)), \\
+            \dot x (t) = \mathcal{F}_{\sigma(t)}(x(t),d(t)), \\
             x(t_0) = x_0, \\
             \forall j \in \left\lbrace 1, ... , k \right\rbrace, \sigma(t)=i_j
-            \in U \text{ for, } t \in \lbrack 1,2 \lbrack
+            \in M \text{ for, } t \in \lbrack 1,2 \lbrack
         \end{array}
         \label{hybridsystem}
     \end{equation}
-
-    % We address the "problem" of synthesizing a state-dependent switching rule
-    % $\sigma(.)$ for \ref*{hybridsystem} in order to verify some properties.
-    % This important problem is formalized as follows.
 
     We will use \ref{hybridsystem} in order to have a clear understanding about
     some definitions that will be useful for our methodology.
@@ -74,17 +68,76 @@ analysis,
     \begin{figure}[!h]
         \begin{center}
             \includegraphics[width=\textwidth*3/5]{images/swiched}
+            \captionsetup{format=hang}
             \caption{Trajectory of a hybrid system. The switching signal
             ${\sigma(t)}$ takes on integer values that change at 
             discrete-time instances.\citep{liberzon2003switching}}
         \end{center}
     \end{figure}
 
+    After the system digitalization we can obtain the following:
 
+    \begin{eqnarray}
+      \label{eq:digitalhybridsystem}
+      x(k+1) = f_{\sigma(k)}(x(k),d(k))  \\   
+      x_0    = x(t_0)
+    \end{eqnarray}
+
+    It is important to bear in mind the difference between digitalization sampling
+    and period between events or switching in the hybrid system.
+
+\clearpage
+
+\section{Model predictive control for hybrid systems}
+\label{sec:modelpredictivecontroller}
+    Model predictive control \ac{MPC} technique is based on a prediction model 
+    that includes state estimation $x(k)$ through disturbances prediction $d(k)$
+    and also a perturbation distribution(uncertainties) $u(k)$.
+    \begin{gather*} 
+      x(k+1) = \mathcal{F}_{c,u}(x(k),d(k)), \\
+      y(k) = x(k), \\
+      \text{subject to    } h_{c,u}(x(k), d(k)) \leqslant 0
+    \end{gather*}
+    Where $x(k)$, $u(k)$ and $y(k)$ are the state vector, manipulated variables
+    and output vectors at instant  $k$. However, the 
+    control law $c(k) \in \mathbb{C}$, perturbation/uncertainties 
+    $u(k)$ and $x(k)$ as a tuple $\gamma_i=(c, x)$
+     becomes a configuration and is subject to the switching rule $\sigma(k)$ 
+     as \autoref{eq:digitalhybridsystem}. 
+    \begin{gather*} 
+      \pi_{\sigma_T} = \gamma_0::\tau::\gamma_1::\tau::\gamma_2::\tau::\gamma_3::\tau, ...
+    \end{gather*}
+    
+    In order to use this model to 
+     predict the future evolution of the plant from the current state 
+     $x$, a sequence of $H$ future inputs and perturbations: 
+
+    From all admissible $\sigma$ combinations, it is chosen the one which
+    provides the best predicted evolution of the plant along a finite 
+    prediction horizon $N$. This is measured by a certain performance index
+    which depends on the considered control objective. In the usual case 
+    of regulation to a given set-point target $y_s$ the performance index 
+    to be minimized penalizes the deviation between the predicted outputs,
+    inputs, perturbances/uncertainties, and corresponding target $y_s$ 
+    respectively as \autoref{eq:costfunction}. The control law is derived from the solution of the optimization problem 
+    by means of the so-called receding horizon technique: At each sampling time
+    $k$, the optimization problem is solved for the current sate $x(k)$,
+    but only the control action corresponding to the current sampling time is 
+    applied, and hence the optimization problem is repeatedly solved. Thus the 
+    control law is given by:
+    \begin{equation} 
+      \label{eq:costfunction}
+      c_p = \text{min}_c \norm{x_{pred}(x_0,c,u,d_{pred})-y_s}
+    \end{equation}
+    For each pair $(x(k),c(k))$ in node correspoing to the time $k$ we compute
+    the next $c(k+1)$ in order to have the solution for the next node in time, 
+    in real application the controller strategy computation time 
+    is limited by the switching period $\tau$.
+    \clearpage
 
 \section{Safe patterns computation}
 \label{sec:safepatterncomputation}
-    In this part is presented a some definitions based on an existing 
+    In this part is presented some definitions based on an existing 
     procedure of state-space bisection and made available for nonlinear 
     systems  with the help of guaranteed integration, the algorithm has
     been  improved to be able to consider longer patterns of modes with a better
@@ -110,7 +163,7 @@ analysis,
         \phi(t;t_0,x^0,\sigma,w) \in S}$ .}
     \end{itemize}
     
-    \textbf{Definition 2} \emph{((${R_1,R_2,S}$) - Reachability ). %problem
+    \textbf{Definition 2} \emph{((${R_1,R_2,S}$) - Reachability )}. %problem
         Given a switched system of the form shown above, two sets  
         ${ R_1 \subset \mathbb{R}^n}$  and ${ R_2 \subset \mathbb{R}^n}$ 
         and a safety set  ${S \subset  \mathbb{R}^n}$, $R_2$ is reachable if
@@ -118,7 +171,7 @@ analysis,
         there is a control rule  ${\sigma}$ :
         ${\mathbb{R}^+\rightarrow U}$ such that, for any initial condition 
         ${x_0  \in  R_1}$ and any perturbation  ${\varpi : \mathbb{R}^+  
-        \rightarrow U}$, the following holds:}
+        \rightarrow U}$, the following holds:
     
     \begin{itemize}
         \item  \emph{Reachability from ${R_1}$ to ${R_2}$: there exists 
@@ -137,7 +190,7 @@ analysis,
     \begin{itemize}
         \item \emph{ ${\tau}$-stability: ${x(t)}$ return in R 
         infinitely often, at some multiples of sampling time ${\tau}$}.
-        \item \emph{ safety: ${x(t)}$ always stays in ${S/B}$.}
+        \item \emph{ safety: ${x(t)}$ always stays in ${S/B}$.}        
     \end{itemize}
 
     \begin{algorithm}    
@@ -167,7 +220,7 @@ analysis,
 
 
       \begin{algorithm}
-        \caption{Find Pattern with forbidden transitions}\label{findPattern}
+        \caption{Find Pattern}\label{findPattern}
         \begin{algorithmic}[1]
           \Procedure{FindPattern}{$W,R,S,B,K$}\Comment{List of set of patterns} \\
             \textbf{Input:} A box $W$, a box $R$,
@@ -177,10 +230,7 @@ analysis,
             $\mathcal{L}= \lbrace (W,W,\emptyset) \rbrace$
             \While{$\mathcal{L} \neq \emptyset$}
               \State $e_{current} = takeHead(\mathcal{L})$
-              \For{$i \in U$}:
-                \If {$Pair(l,i) = False $}\Comment{$l$ is the current mode}
-                  \State \textbf{continue}\Comment{Not considered transition $l,i$}
-                \EndIf                
+              \For{$i \in U$}:                
                 \If {$ Post_{i}(e_{current}.Y_{current}) \subseteq R$ \textbf{and} $Tube_{i}(e_{current}.Y_{current}) \cup B = \emptyset $ \textbf{and} $Tube_{i}(e_{current}.Y_{current}) \cup B \subseteq S $ }
                   \State putTail($\mathcal{S}e_{current}.\prod + i$)
                 \Else
@@ -199,22 +249,53 @@ analysis,
           \EndProcedure    
         \end{algorithmic}
       \end{algorithm}
-    
-    % \subsection{Zonotopes and linear systems}
-    %   Let us first introduce \emph{zonotopes}, a type of symmetrical
-    %   polytopes, allowing to represent efficiently boxes of ${\mathbb{R}^n}$, 
-    %   and thus very useful for performing tilings of the state-space.
-    %   Furthermore, there exist multiple ways to compute images of zonotopes
-    %   by linear or nonlinear transformation.
-
-    %   \textbf{definition here!}
-
     \clearpage
 
 
 
+% \textsc{uppaal stratego}. 
 
-\section{Near optimal Switched Controller synthesis}
+    % \textbf{Learning strategies for PTMPDs}
+    % The algorithm used to learn will generate an approximation of the optimal strategy.
+    % The algorithm has five main phases, and one optional. All these can be seen 
+    % in \textsc{fig} . We will now shortly each of these steps. In the following 
+    % sections. 
+
+    % check learning optimal schedullign for time uncertain cet
+    % \textbf{Simuation}
+    % \textbf{Filtering}
+    % \textbf{Learning}
+    % \textbf{Determinization}
+    % \textbf{Evaluation}
+
+    % uncontrollable action si defined in a interval [min, max] at the moment to run 
+    % the find pattern. 
+
+    % \textbf{add this part}
+    % add the pseudocode about the methodoloy pattern and near optimal.
+
+    % \textbf{add the uppaal template}
+    % in this part add a figure with the template and describe it.
+
+
+
+\section{Uppaal Stratego} 
+    \label{sec:uppaalstratego}
+    We use the modelling tool \textsc{Uppaal Stratego} for control 
+    synthesis. It integrates \textsc{Uppaal} with the two branches
+    \textsc{Uppaal SMC}(statistical model checking for stochastic 
+    hybrid systems) and \textsc{Uppaal Tiga} (synthesis for timed games).
+    Therefore, \textsc{Uppaal} is able to synthetize safe and
+    optimal strategy $\sigma_{opt}$. We use Dynbex and safe algorithms
+    first we abstract the \ac{SHG} ignoring all stochasticity.
+    Subsequently, reinforcement learning is used to obtain an 
+    optimal sub-strategy $\sigma_{opt}$ based on $\mathcal{G}|
+    \sigma_{safe}$ and the given random optimization variable.
+    Several learning algorithms are at the modelers disposal in 
+    \textsc{Uppaal Stratego}. Recently, 
+
+\section{Online Stochastic Hybrid Controller Synthesis}
+    \label{sec:onlinestochastichybridcontroller}
     \textbf{Definition 1.(Stochastic Hybrid Game).} A stochastic hybrid game $\mathcal{G}$ is a
     tuple $(\mathcal{C,U,X,F},\delta)$ where:
     \\
@@ -224,17 +305,19 @@ analysis,
     \emph{3. $\mathcal{X} = \left\lbrace x_1,x_2,..x_n \right\rbrace$ is a finite set of
     continuous (real-valued) variables } \\
     \emph{4. for each c $\in$ C and $u \in U, \mathcal{F}_{c,u} : \mathbb{R}_{>0}
-     \times \mathbb{R}^X \rightarrow\mathbb{R}^X$ 
+      \times \mathbb{R}^X \rightarrow\mathbb{R}^X$ 
         is the flow-function that describes the evolution of the continuous variables
         over time in the combined mode (c,u), and} \\
     \emph{5. $\delta$ is a family of density functions, $\delta_\gamma: 
-    \mathbb{R}_{\geqslant 0} \times U \rightarrow 
-    \mathbb{R}_{\geqslant 0}$, where $ \gamma = (c,u,v) \in C \times U
-    \times \mathbb{R}^X$.
-    more precisely, $\delta_{\gamma}(\tau,u')$ is the density that $\mathcal{U}$
-    in the global configuration $ \gamma = (c,u,v)$ will change to the
-     uncontrollable mode $u'$ after a delay of $\tau$ 
-     \footnote{Note that $\sum_u,\int_{\tau}\delta_{c,u,v}(\tau,u')d\tau = 1$ for all $(c,u,v)$.}}.
+    U \rightarrow 
+    %\mathbb{R}_{\geqslant 0} \times U \rightarrow 
+    [0,1]$, where $ \gamma = (c,u,v) \in C \times U
+    %\mathbb{R}_{\geqslant 0}$, where $ \gamma = (c,u,v) \in C \times U
+    \times \mathbb{R}^X$ is a global configuration.
+    More precisely, $\delta_{\gamma}(u')$ is the probability that $u \in \mathcal{U}$
+    in the global configuration $ \gamma = (c,u,x)$ will change to the
+      uncontrollable mode $u'$ after a delay of $\tau$ 
+      \footnote{Note that $\sum_u,\int_{\tau}\delta_{c,u,v}(\tau,u')d\tau = 1$ for all $(c,u,v)$.}}.
 
     We shall assume that among the continuous variables $\mathcal{X}$, there is a variable
     \textbf{time} measuring global time, i.e $\mathcal{F}_{c,u}(\tau,v)(\textbf{time})$ 
@@ -312,8 +395,11 @@ analysis,
     in case $c'=c, v'=\mathcal{F}_{(c,u)(\tau,v)}$ and $\delta_{\gamma}(\tau,u') > 0$. Let $\sigma: \mathbb{C} \rightarrow C$
     be a (memoryless) strategy. Consider an interleaved sequence $\pi$ of configurations and
     relative time-delays of the form:
+    
+    \begin{center}
+      $\pi = \gamma_0 :: \tau_1 :: \gamma_1 :: \tau_2 :: \lambda_2 :: \tau_3 :: \gamma_3 ...$  
+    \end{center}
 
-    $\pi = \gamma_0 :: \tau_1 :: \gamma_1 :: \tau_2 :: \lambda_2 :: \tau_3 :: \gamma_3 ...$
 
     where $\gamma_i = (c_i,u_i,v_i), \tau_i \in \mathbb{R}_{\geqslant 0}$ and for all \emph{n} 
     there  exist \emph{i} st. $\sum_{j \geqslant i}\tau_j = nP$. Then $\pi$ is a run according
@@ -326,7 +412,7 @@ analysis,
     Thus, if $H \in \mathbb{N}$ is a given time-horizon, and $D$ is a random variable on runs--e.g.
     measuring the integrated deviation of the continuous variables wrt. given target values--
     then $\mathbb{E}^{\mathcal{G,\gamma}}_{\sigma,H}(D) \in \mathbb{R}_{\geqslant 0}$ is 
-    the expected value of $D$ with respect to random runs of $\mathbb{G}|\sigma$ of length
+    the expected value of $D$ with respect to random runs of $\mathcal{G}|\sigma$ of length
     $H$ starting in the configuration $\gamma$. We want to obtain a strategy $\sigma^H$ which
     minimizes (or maximizes) this expected value.
 
@@ -482,11 +568,104 @@ analysis,
     \clearpage
 
 
-\section{Safe and near optimal controller for sthocastic hybrid games}
-    \textbf{Model Predictive Control} 
-    In principle, model predictive control is very effective in discrete control.
-    Now consider the issue of critical systems where is mandatory a safe evolve 
-    along the control. This suggest to incorporate a sequence of modes that guarantee
-    a safe system. For this reason the study incorporat e a methodology to find patterns
-    for non linear hybrid systems [ref adrien].
+
+
+
+
+
+\section{Safe and optimal strategies for stochastic hybrid games}
+    \label{sec:safeandoptimal}
+    For a given \ac{SHG}, a nondeterministic \emph{strategy} $\sigma$.
+    Formally, a strategy is a function $\sigma: \mathbb{C} \rightarrow 2^C$
+    ,where we denote $\mathbb{C}$ the set of global configurations 
+    $\gamma = (c,u,x) \in C \times U \times \mathbb{R}^X$
+    that returns a nonempty set of allowed modes in a configuration  
+    $\gamma$.
+    % 20
+    The behavior of the \ac{SHG} $\mathcal{G}$ under supervision of a 
+    strategy $\sigma$, denoted as the stochastic process $\mathcal{G}|\sigma$,
+    is defined as follows. A run $\pi$ of \ac{SHG} is an interleaved 
+    sequene $\pi \in \mathbb{C} \times (\mathbb{R}_{\geqslant 0} 
+    \times \mathbb{C})^{*}$ of configurations and time-delays of 
+    some given period $P$, starting with initial configuration $\gamma_0$: 
+    \begin{center}
+      $\pi = \gamma_0 :: P :: \gamma_1 :: P :: \gamma_2 :: P :: \gamma_3 ...$  
+    \end{center}
+    where $\gamma_i=(c_i.u_i,x_i)$, for all $n$ there exist $i$
+    such that $\sum_{i \geqslant n}(\tau_i) = nP$, and for all $i$
+    there exists some isntantaneous changes after a time $P$ such as:
+
+    \begin{enumerate}
+      \item The flow function is used to update the state values
+      $\gamma_{i-1}=(c_{i-1}, u_{i-1}, x_{i-1}) \xrightarrow{P} (c_{i-1}, u_{i-1}, x_{i})$ 
+      \item Some perturbations that destabilize the system occur, 
+      $c_{i-1},u_i,x_i$ where $\delta_{\alpha_i}(u_I) > 0$.
+      \item The controller changes mode each step we extract 
+      values from the strategy $\sigma$, i.e. $\gamma_i=(c_i,u_i,x_i)$ 
+      with $c_i \in \sigma$. 
+    \end{enumerate}
+    
+
+    % \textbf{cambiar todoe!! }
+    
+    
+    A strategy $\sigma$ is safe with respect to a set of configurations
+    $S \subset \mathbb{C}$ if for any run $\pi$ according to $\sigma$ 
+    all configurations encountered are within the safe set S.
+    Note that we require $\gamma_i \in S$ for all $i$ and also 
+    $\gamma'_i \in S$ whenever $\gamma_i \xrightarrow{\tau} \gamma'_i$ 
+    with $\tau \geqslant P$.
+    
+    The optimality of a strategy can be evaluated for the stochastic 
+    process $\mathcal{G}|\sigma$ with a given optimization variable.
+    Let $H \in \mathbb{R} \geqslant 0$ be a given time-horizon and $D$
+    a random variable on finite runs, then $\mathbb{E}^{\mathcal{G},
+    \gamma}_{\sigma,H}(D) \in \mathcal{R}_{\geqslant 0}$ is the 
+    expected value of $D$ on the space of runs of $\mathcal{G|\sigma}$
+    of length $H$ starting in configuration $\gamma$. For Example
+    , $D$ can be the integrated error(or deviation) of a continuous 
+    variable with respect to its desired target value.
+
     \clearpage
+
+    \begin{figure}[!hbt]
+      \centering
+      \includegraphics[width=0.7\linewidth]{images/realtime}      
+      \caption{\ac{MPC} with \textsc{Uppaal} optimization in a 
+      horizon $H$ subject to normal and uniform distributions as stochastic perturbations for $t=6$ in a real time simulation.}
+      \label{fig:realtime}
+    \end{figure}
+    
+    The goal is to synthetize a safe and optimal $\sigma_{opt}$ 
+    strategy for a given \ac{SHG} $\mathcal{G}$, initial configuration
+    $\gamma$, safety set $S$, optimization variable $D$, and time 
+    horizon $H$. To obtain 
+    $\sigma_{opt}$, the tool \textsc{Uppaal Stratego} first a 
+    maximally permissive safe strategy $\sigma_{safe}$ is synthetized
+    with respect to $S$. Subsequently, $\sigma_{opt}$ is a sub-strategy
+    of $\sigma_{safe}$ (i.e, $\forall \gamma \in \mathbb{C}: 
+    \sigma_{opt}(\gamma) \subseteq \sigma_{safe}(\gamma)$ that 
+    optimize (minimizes or maximizes) $\mathbb{E}^{\mathcal{G},
+    \gamma}_{\sigma,H}(D)$. For additive random variables, the 
+    optimal sub-strategy of the maximally permissive strategy is 
+    deterministic.
+
+    \begin{figure}[!hbt]
+      \centering
+      \includegraphics[width=0.4\linewidth]{images/uppaalstratego.jpeg}
+      \captionsetup{format=hang}
+      \caption{ \textsc{Uppaal Stratego}, facilitates generation, optimization, comparison as well as consequence and performance exploration of strategies for stochastic priced timed games in a user-friendly manner.}
+      \label{fig:uppaalstratego}
+    \end{figure}
+
+    \clearpage
+    
+\section{Workflow}
+    \label{sec:workflow}
+    \begin{figure}[!hbt]
+      \centering
+      \input{content/sources/workflow.tex}
+      \captionsetup{format=hang}
+      \caption{A general overview about the procedure to control a \ac{SHG}}
+      \label{fig:perturbationsgeneration}
+    \end{figure}

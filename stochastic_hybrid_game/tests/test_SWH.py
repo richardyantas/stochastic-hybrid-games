@@ -1,4 +1,4 @@
-# pytest -v sthocastic_hybrid_game/tests/test_SWH.py
+# pytest -v stochastic_hybrid_game/tests/test_SWH.py
 from stochastic_hybrid_game.src.models.SWH import SWH
 from stochastic_hybrid_game.src.data.SOLAR import SOLAR
 import matplotlib.pyplot as plt

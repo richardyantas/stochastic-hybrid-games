@@ -2,16 +2,20 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces atched System Schematic\relax }}{10}{figure.caption.11}
-\contentsline {figure}{\numberline {3.2}{\ignorespaces Trajectory of a hybrid system. The switching signal ${\sigma (t)}$ takes on integer values that change at discrete-time instances.\citep {liberzon2003switching}\relax }}{11}{figure.caption.12}
-\contentsline {figure}{\numberline {3.3}{\ignorespaces One-room 24h trajectories of various control strategies\relax }}{19}{figure.caption.13}
+\contentsline {figure}{\numberline {3.1}{\ignorespaces A general overview about the procedure to control a \ac {SHG}\relax }}{8}{figure.caption.15}
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Trajectory of a hybrid system. The switching signal ${\sigma (t)}$ takes on integer values that change at discrete-time instances.\citep {liberzon2003switching}\relax }}{9}{figure.caption.16}
+\contentsline {figure}{\numberline {3.3}{\ignorespaces One-room 24h trajectories of various control strategies\relax }}{17}{figure.caption.17}
+\contentsline {figure}{\numberline {3.4}{\ignorespaces \ac {MPC} with \textsc {Uppaal} optimization in a horizon $H$ subject to normal and uniform distributions as stochastic perturbations for $t=6$ in a real time simulation.\relax }}{20}{figure.caption.19}
+\contentsline {figure}{\numberline {3.5}{\ignorespaces \textsc {Uppaal Stratego}, facilitates generation, optimization, comparison as well as consequence and performance exploration of strategies for stochastic priced timed games in a user-friendly manner.\relax }}{20}{figure.caption.20}
+\contentsline {figure}{\numberline {3.6}{\ignorespaces A general overview about the procedure to control a \ac {SHG}\relax }}{21}{figure.caption.21}
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Solar Water Heating diagram\relax }}{24}{figure.caption.15}
-\contentsline {figure}{\numberline {4.2}{\ignorespaces State changes of valves along the day.\relax }}{25}{figure.caption.16}
-\contentsline {figure}{\numberline {4.3}{\ignorespaces Weather time series, irradiance and temperature \relax }}{26}{figure.caption.17}
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Solar Water Heating diagram\relax }}{24}{figure.caption.22}
+\contentsline {figure}{\numberline {4.2}{\ignorespaces State changes of valves along the day.\relax }}{25}{figure.caption.23}
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Weather time series, irradiance and temperature \relax }}{25}{figure.caption.24}
 \contentsline {figure}{\numberline {4.4}{\ignorespaces An example of prediction using \textsc {arima} forecaster\relax }}{26}{figure.4.4}
-\contentsline {figure}{\numberline {4.5}{\ignorespaces Automaton with forbidden transitions because of the addition of a discrete variable \emph {f} which facilate the system modelling in cases such as piston expansion and compression.\relax }}{29}{figure.caption.19}
-\contentsline {figure}{\numberline {4.6}{\ignorespaces Simulation for the firsts three patterns\relax }}{32}{figure.caption.20}
-\contentsline {figure}{\numberline {4.7}{\ignorespaces Container temparature comparison between greedy controller with uppaal stratego controller, both approaches are safe.\relax }}{35}{figure.4.7}
-\contentsline {figure}{\numberline {4.8}{\ignorespaces Template of the safe an near optimal algorithm\relax }}{36}{figure.4.8}
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Automaton with forbidden transitions because of the addition of a discrete variable \emph {f} which facilate the system modelling either on piston expansion or compression, the valve action is not considered in this representation.\relax }}{29}{figure.caption.26}
+\contentsline {figure}{\numberline {4.6}{\ignorespaces This algorithm is modified to ignore forbidden transitions and is improved filtering invalid transition in the line 9.\relax }}{30}{figure.caption.27}
+\contentsline {figure}{\numberline {4.8}{\ignorespaces The model of the controller. The \textbf {select} statement is a simplification of having a set of edges with one for each value in the select range.\relax }}{34}{figure.caption.29}
+\contentsline {figure}{\numberline {4.9}{\ignorespaces The model generating stochastic perturbations as valve aperturing and closing\relax }}{35}{figure.caption.30}
+\contentsline {figure}{\numberline {4.10}{\ignorespaces Solar water heating 24h trajectories of two control strategies\relax }}{36}{figure.caption.31}
 \addvspace {10\p@ }

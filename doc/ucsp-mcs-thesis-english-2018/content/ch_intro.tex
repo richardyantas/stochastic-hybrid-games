@@ -1,24 +1,64 @@
     \chapter{Introduction}
     
     \label{ch:intro}
-    In \autoref{sec:motivation} we describe the motivation and 
-    context of our work, \autoref{sec:problem} presents our 
-    problem statement. \autoref{sec:objectives} shows the 
-    objectives of this work. Finally, \autoref{sec:contributions}
-    describes the structure of this thesis document.
+    In this thesis, we present a control synthesis method for a special 
+    form of hybrid systems with stochastic perturbations that we call
+     \ac{SHG}. Such systems have been 
+    recently used in various domains such as solar energy industry and power 
+    electronics (e.g power converters). They are continuous-time systems
+    with discrete switching events. More precisely, these systems are 
+    described by piecewise continuous dynamics called \emph{modes}; the 
+    change of modes takes place instantaneously at so-called \emph{switching
+    instants}. We suppose that switching instants occur \emph{periodically}
+    at constant sampling period $\tau$ \emph{sampled switching systems}.
+    The \emph{control synthesis} problem consist in finding a \emph{switching}
+    rule $\sigma$ in order to satisfy a given specification. At each sampling
+    time $\tau, 2\tau,..,$ according to the state of the system, the rule 
+    $\sigma$ selects an appropiate mode to fulfill the specification.
+    \ac{SHG} has challenging problems such as optimization and safety that
+    are some of those which hybrid system community are focused. For this reason,
+    we implement a methodology to improve a real time \ac{SHG} that combines
+    model checking, reinforcement learning and constraint computation. We 
+    use formal methods to synthetize a safe and near optimal controller. 
+    In \autoref{sec:casestudy}, we model a \ac{SWH}, including 
+    the human interaction to access the water 
+    in it as stochastic. In \autoref{sec:uppaalstratego}, we define 
+    use the tool \textsc{Uppaal Stratego} to synthetize
+    a control strategy minimizing a cost function composed by energy consumption
+    (\emph{optimization}) and temperature distance (\emph{safety}) while the last
+    one also guaranteeing no overflow a max and min temparature defined previously.
+    In \autoref{sec:onlinestochastichybridcontroller}, We define a \ac{SHG}
+    
+    % In \autoref{sec:motivation} we describe the motivation and 
+    % context of our work, \autoref{sec:problem} presents our 
+    % problem statement. \autoref{sec:objectives} shows the 
+    % objectives of this work. Finally, \autoref{sec:contributions}
+    % describes the structure of this thesis document.
 
     \section{Motivation and Context}
     \label{sec:motivation}
     %%%TODO: FALTA MAS TEXTO EN LA MOTIVATION
 
-    Hybrid systems are widely used in engineering applications and its 
-    importance has grown up considerably these last years, because of their 
-    ease of implementation for controlling cyber-physical systems.
-    A switched systems is a set of dynamical systems, each with its own 
-    dynamical behaviour controlled by a parameter mode $u$ whose values 
-    are in a finite set $U$(See ~\cite{liberzon2003switching}). However, due to the composition of many switched systems together, the global switched systems has a number of modes and dynamics which increases exponentially. 
-    Switched systems have numerous applications in control of mechanical systems, the automotive industry, and many other fields. 
-
+    Stochastic Hybrid systems are widely used in engineering 
+    applications and its importance has grown up considerably 
+    these last years, because of their ease of implementation 
+    for controlling cyber-physical systems. A \ac{SHG} is a Stochastic 
+    hybrid model which represent a set of dynamical systems supervised by 
+    a switching rule $\sigma$, whose values are in a finite set 
+    $\mathbb{C}$(See ~\cite{liberzon2003switching}) and a stochastic
+    perturbation $u$, which together and also with the state variable $x$
+    determine a configuraion $\gamma = (c,u,x)$ as defined in 
+    \autoref{sec:onlinestochastichybridcontroller}. However, due to 
+    the composition of many switched systems together with stochastic 
+    perturbation, the global switched systems has ups and downs
+    over each variables in the state without boundaries thus a risk
+    in the system behaviour and the environment. For this reason,
+    in order to guarantee to synthesize a safe and optimal strategy
+    in each control step followed by a safe and near optimal control
+    a long the real time system behaviour. \ac{SHG} have numerous applications 
+    in control of mechanical systems, the automotive industry, and 
+    many other fields. 
+    
     \section{Problem Statement}
     \label{sec:problem}
     Nowadays, there is a large number of methods to solve switched systems;
@@ -46,11 +86,9 @@
         This thesis proposes a novel approach to solve 
         switched systems guaranteeing safety and optimal
         controller synthesis. 
-
         %\usepackage[spanish, es-ucroman]{babel}}
         %\usepackage[spanish, es-ucroman]{babel}e}
-        %\usepackage[spanish, es-ucroman]{babel}a synthesis controller with the next:.
-        
+        %\usepackage[spanish, es-ucroman]{babel}a synthesis controller with the next:
         \begin{itemize}
             \item Find safe patterns for our case study using
             decomposition algorithm (\cite{le2017improved}).

@@ -1,0 +1,52 @@
+
+FALTA PARAFRASEAR INTRODUCCion 
+
+en related works falta referencia y agregar mas contenido
+
+
+Con respecto a las definiciones en safe patterns
+creo que la definicion 2 va antes del 1 ( en la tesis solo usan la de estabilidad y si esta en ese mismo orden )
+
+
+falta mejorar en background - optimal - quizas el mismo formato
+hay 2 tipos de definiciones. es el mismo ejemplo? parafrasear?
+
+
+en main
+
+en el automata falta agregar diagramas automatas simplificados y especificar los 
+que hay no incluyen lo estochastico
+
+hay que entender bien la distribucio probabilistica de 
+lo no controlable.  
+
+
+
+
+En el capitulo background falata el contenido
+
+tambien agregar mas ejemplos en background safe sobre todo ejemplos
+
+mejorar en main la metodologia
+
+quizas hacer un pipeline de la metodologia similar al otro paper.
+
+podemos apuntar a 40 paginas.
+
+
+
+hay que mejorar un poco main con el otro paper.
+
+
+
+que significa game porque game??? 
+
+
+TACAS
+Empowered with efficient techniques and tools, game
+theory comes with the promise of automatic synthesis of improved, optimal and
+personalized control strategies produced on demand by the user herself. In fact,
+the tool Uppaal Tiga has already been successfully 2 applied to user-directed
+and user-demanded synthesis of control strategies for lighting in a house, and
+been implemented in a complete tool-chain on a Raspberry Pi [12].
+

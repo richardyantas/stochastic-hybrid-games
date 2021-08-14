@@ -6,6 +6,22 @@ Branicky, M.~S. (1994).
 \newblock In {\em Proceedings of 1994 33rd IEEE Conference on Decision and
   Control}, volume~4, pages 3498--3503. IEEE.
 
+\bibitem[\protect\astroncite{Fribourg et~al.}{2014}]{fribourg2014finite}
+Fribourg, L., K{\"u}hne, U., et~al. (2014).
+\newblock Finite controlled invariants for sampled switched systems.
+\newblock {\em Formal Methods in System Design}, 45(3):303--329.
+
+\bibitem[\protect\astroncite{Girard}{2005}]{girard2005reachability}
+Girard, A. (2005).
+\newblock Reachability of uncertain linear systems using zonotopes.
+\newblock In {\em International Workshop on Hybrid Systems: Computation and
+  Control}, pages 291--305. Springer.
+
+\bibitem[\protect\astroncite{Jain and Mallick}{2017}]{jain2017study}
+Jain, G. and Mallick, B. (2017).
+\newblock A study of time series models arima and ets.
+\newblock {\em Available at SSRN 2898968}.
+
 \bibitem[\protect\astroncite{Larsen et~al.}{2016}]{larsen2016online}
 Larsen, K.~G., Miku{\v{c}}ionis, M., et~al. (2016).
 \newblock Online and compositional learning of controllers with application to
@@ -29,6 +45,23 @@ Le~Co{\"e}nt, A., Fribourg, L., et~al. (2016).
 Liberzon, D. (2003).
 \newblock {\em Switching in systems and control}.
 \newblock Springer Science \& Business Media.
+
+\bibitem[\protect\astroncite{Sanfelice}{2020}]{sanfelice2020hybrid}
+Sanfelice, R.~G. (2020).
+\newblock {\em Hybrid Feedback Control}.
+\newblock Princeton University Press.
+
+\bibitem[\protect\astroncite{Shukla et~al.}{2013}]{shukla2013recent}
+Shukla, R., Sumathy, K., et~al. (2013).
+\newblock Recent advances in the solar water heating systems: A review.
+\newblock {\em Renewable and Sustainable Energy Reviews}, 19:173--190.
+
+\bibitem[\protect\astroncite{{solargis}}{2010}]{solargis}
+{solargis} (2010).
+\newblock {MS Windows NT} kernel description.
+\newblock
+  \url{https://solargis.com/es/products/time-series-and-tmy-data/useful-resources}.
+\newblock accessed: 2010-09-30.
 
 \bibitem[\protect\astroncite{Tsilingiris}{1996}]{tsilingiris1996solar}
 Tsilingiris, P. (1996).

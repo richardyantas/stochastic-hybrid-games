@@ -2,7 +2,7 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {3.1}{\ignorespaces Performance evaluation of one room controller synthesis: offline-3(-6) methods synthetize strategy for entire 72 hours (144 hours respectively ) at once, strategy distance is evaluated on 70 simulations; online-3 methods synthetize a strategy for 5 periods of 15 min ahead and repeat synthesis and execution until 72 hours are covered, the distance is averaged over 70 online simulations. \relax }}{20}{table.caption.14}
+\contentsline {table}{\numberline {3.1}{\ignorespaces Performance evaluation of one room controller synthesis: offline-3(-6) methods synthetize strategy for entire 72 hours (144 hours respectively ) at once, strategy distance is evaluated on 70 simulations; online-3 methods synthetize a strategy for 5 periods of 15 min ahead and repeat synthesis and execution until 72 hours are covered, the distance is averaged over 70 online simulations. \relax }}{18}{table.caption.18}
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {4.1}{\ignorespaces Parameter values are used to compute $c_1,c_2, c_3$ and $c_4$.\relax }}{27}{table.caption.18}
+\contentsline {table}{\numberline {4.1}{\ignorespaces Parameter values used for computing $c_1,c_2, c_3$ and $c_4$.\relax }}{27}{table.caption.25}
 \addvspace {10\p@ }

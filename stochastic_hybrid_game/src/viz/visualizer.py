@@ -51,6 +51,15 @@ def plot_controllers_results():
     ################################################
 
     ############### figure 1 #############################
+    mean_T1 = 0
+    mean_T2 = 0
+    l = len(smpc_local["T"])
+    for i in range(0, l):
+        mean_T1 = mean_T1 + abs(smpc_local["T"][i]-55)
+        mean_T2 = mean_T2 + abs(sompc_uppaal["T"][i]-55)
+    print("Mean Temperature smpc_local: ", mean_T1/l)
+    print("Mean Temperature sompc_uppaal: ", mean_T2/l)
+
     plt.axis([start_time, life_time, 0, 80])
     plt.plot(time_plot, smpc_local["T"], 'cyan',
              linewidth=0.8, label='smpc local')
@@ -65,7 +74,31 @@ def plot_controllers_results():
     plt.savefig(
         './doc/ucsp-mcs-thesis-english-2018/images/controllers.png')
     plt.show()
+
     ############### figure 2 #############################
+    # mean_E = 0
+    #l = len(smpc_local["E"])
+    # for i in range(0, l):
+    #     mean_E = mean_E + smpc_local["E"][i]-sompc_uppaal["E"][i]
+    Ea = list(smpc_local["E"])
+    Eb = list(sompc_uppaal["E"])
+    print("Saved Energy: ", abs(Eb[-1]-Ea[-1]))
+
+    plt.axis([start_time, life_time, 0, 25000])
+    plt.plot(time_plot, smpc_local["E"], 'cyan',
+             linewidth=0.8, label='smpc local')
+    plt.plot(time_plot, sompc_uppaal["E"], 'red',
+             linewidth=0.8, label='sompc uppaal')
+    # plt.plot([start_time, life_time], [set_point, set_point], 'cyan',
+    #          linewidth=0.4)
+    plt.ylabel('Energy(C)')
+    plt.xlabel('time[hrs]')
+    plt.legend()
+    plt.grid(True, linewidth=0.6, linestyle='--')
+    plt.savefig(
+        './doc/ucsp-mcs-thesis-english-2018/images/energycomparison.png')
+    plt.show()
+    ############### figure 3 #############################
     plt.figure(figsize=(10, 2))
     plt.axis([start_time, life_time, 0, 5])
     plt.plot(time_plot, u_actions, 'cyan', linewidth=0.8,
@@ -77,7 +110,7 @@ def plot_controllers_results():
     plt.savefig(
         './doc/ucsp-mcs-thesis-english-2018/images/uncontrollable.png')
     plt.show()
-    ############### figure 3 #############################
+    ############### figure 4 #############################
     with plt.style.context('dark_background'):  # ggplot
         fig = plt.figure(num='Simulation', figsize=(11, 11))
         grid = plt.GridSpec(4, 4, wspace=0.8, hspace=0.7)
@@ -124,7 +157,6 @@ def plot_controllers_results():
         plt.legend()
         plt.grid(True, linewidth=0.6, linestyle='--')
         plt.show()
-
     return
 
 

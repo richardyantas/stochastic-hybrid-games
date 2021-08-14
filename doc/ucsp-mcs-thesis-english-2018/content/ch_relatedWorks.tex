@@ -4,42 +4,87 @@
 
 Our work draws on prior research in the areas of hybrid systems, safe patterns
 and online control synthesis.
-\clearpage
 
 \section{Online and Compositional Learning of Controllers with Application to Floor Heating}
-%\label{sec:mapInterpretation}
-This work has proposed one method to perform 
-\textit{optimal controller synthesis for stochastic hybrid switched systems} e.g. a 
-floor heating system in a house \cite{larsen2016online}. Is proposed a general
- and scalable methodology for controller synthesis for such systems. Instead of
-  off-line synthesis of a controller for all possible input temperatures and an
-   arbitrary time horizon, is proposed an on-line synthesis methodology, where 
-   it periodically compute the controller only for the near future based on the
-    current sensor readings.
+    \label{sec:onlinefloorheating}
+    This work has proposed one method to perform \textit{optimal controller 
+    synthesis for stochastic hybrid games} \ac{SHG} e.g. a  floor heating 
+     system in a house \cite{larsen2016online}. 
+    Is proposed a general and scalable methodology for controller synthesis 
+    for such systems. Instead of off-line synthesis of a controller for 
+    all possible input temperatures and an arbitrary time horizon, is 
+    proposed an on-line synthesis methodology, where  it periodically 
+    compute the controller only for the near future based on the 
+    current sensor readings. \textsc{uppaal}, is an integrated tool environment 
+    for modelling, validation and verification of real-time systems modeled as 
+    networks of  timed automata, extended with data types. \textsc{stratego} 
+    facilitates generation, optimization, comparison as well as consequence and
+    performance exploration of strategies for stochastic priced timed games
+    in a user-friendly manner. The online approach may be seen as a instance 
+    of model predictive control \ac{MPC} or receding time horizon control for hybrid 
+    systems. The application of \ac{MPC} to hybrid systems subject to disturbances or 
+    uncertainties gives rises to uncertain optimization problems. Many robust 
+    \ac{MPC} schemes are based on the min-max strategy originally.
 
-\section{An Improved Algorithm for the Control Synthesis
-of Nonlinear Sampled Switched Systems}
-%\label{sec:chartInterpretation}
-In this paper is presented and algorithm for the control synthesis for
- nonlinear switched systems using and existing procedure of state-space 
- and made available for nonlinear systems with the help of guaranteed 
- integration, the algorithm has been improved to be able to consider longer 
- patterns of modes with a better running approach. 
+\section{An Improved Algorithm for the Control Synthesis of Nonlinear Sampled Switched Systems}
+    \label{sec:safealgorithm}
+    In this paper is presented and algorithm for the control synthesis for
+    nonlinear \ac{SS} using and existing procedure of state-space 
+    and made available for nonlinear systems with the help of guaranteed 
+    integration, the algorithm has been improved to be able to consider longer 
+    patterns of modes with a better running approach. This approach permits 
+    to deal with stability, reachability, safety and forbidden region 
+    constraints. The approach was numerically validated
+    on several examples taken from the literature \cite{le2017improved}. Additionally, the search of patterns that guarantee 
+    stability, reachability and safety is given by an \emph{decomposition}
+    and \emph{find patterns} algorithms; the decomposition algorithm 
+    divide each box in small box in order to find pattern that 
+    satisfy stability definition at \autoref{sec:safepatterncomputation}. 
+    This methods are widely discussed in \citep{fribourg2014finite} for instance 
+    operators such as $Post_{\pi_i}(X)$ and $Tube_{ \pi_i}(X)$ that determine 
+    the state after $\tau$ time and sequences of states to reach $Post_{\pi_i}(X)$ 
+    respectively. Some applications are also proposed the boost DC-DC converter,
+    helicopter motion, two-room building heating and multilevel converter.
+    The control with disturbances is one of the very interesting features 
+    in the algorithm due to is only necessary replace the disturbances with
+    an interval with its respective zonotope to get the pattern. The zonotope
+    is an small region that was divided with the objective to verify 
+    stability and safety, these zonotopes was proposed to as polytopes with
+    several interesting properties: these can be encoded efficiently, 
+    \emph{stability} property require \emph{reachibility} property which is 
+    discussed and analized in \citep*{girard2005reachability}
 
-This approach permits to deal with stability, reachability, 
-safety and forbidden region constraints. The approach was numerically validated
- on several examples taken from the literature.\cite{le2017improved}
+    
+
+    
+    
 
 
-\section{Distributed Synthesis of State-Dependent
-Switching Control}
-%\label{sec:intApps}
-In this part is presented a correct-by-design method of state-dependent control
- synthesis for linear discrete-time switching systems. Given an objective region 
- R of the state space, the method builds a region S. \cite{le2016distributed}
+% \section{Distributed Synthesis of State-Dependent Switching Control}
+%     \label{sec:distributedsynthesis}
+%     In this part is presented a correct-by-design method of state-dependent control
+%     synthesis for linear discrete-time switching systems. Given an objective region 
+%     R of the state space, the method builds a region S. \cite{le2016distributed}
 
 
 \section{Final Considerations}
-This chapter presented some recent proposals related to our thesis work. Some research works have been focused on analyzing safety controller over switched systems. On the other hand, other works have focused on optimize controller synthesis using some techniques related to model checking. 
+    This chapter presented some recent proposals related to our thesis work. Some research works have been focused on analyzing safety controller over switched systems. On the other hand, other works have focused on optimize controller synthesis using some techniques related to model checking. 
+    The next chapter will present some concepts needed to understand better our work, those concepts are related to the modelling physical system over our case of study and represent as a state space.
 
-The next chapter will present some concepts needed to understand better our work, those concepts are related to the modelling physical system over our case of study and represent as a state space.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
