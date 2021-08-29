@@ -180,9 +180,9 @@ int j, index;
 // stocastic variables 
 int k=0;
 double d = 1*12.0;
-double u1 = 7*60.0/5;
-double u2 = 13*60.0/5;
-double u3 = 19*60.0/5;
+double u1 = 7*60.0;
+double u2 = 13*60.0;
+double u3 = 19*60.0;
 int    delta[5];// 
 
 double normal_prob(double x, double sigma, double mean){
@@ -191,6 +191,13 @@ double normal_prob(double x, double sigma, double mean){
 
 double uniform_prob(double x){
     return 1/(12*12); // simulation time
+}
+
+void set_deltas(){
+    delta[0]=fint(100*normal_prob(t_ini+it*tau, u1, d));
+    delta[1]=fint(100*normal_prob(t_ini+it*tau, u2, d));
+    delta[2]=fint(100*normal_prob(t_ini+it*tau, u3, d));
+    delta[3]=fint(100*uniform_prob(t_ini+it*tau));
 }
 
 void post(int it, int _mode)
@@ -366,7 +373,7 @@ id_zonotope_t getZonotope()
 		<location id="id5" x="306" y="-875">
 			<urgent/>
 		</location>
-		<location id="id6" x="307" y="-731">
+		<location id="id6" x="306" y="-688">
 			<urgent/>
 		</location>
 		<location id="id7" x="307" y="-629">
@@ -383,7 +390,7 @@ id_zonotope_t getZonotope()
 			<urgent/>
 		</location>
 		<location id="id11" x="306" y="-824">
-			<label kind="invariant" x="331" y="-833">xc &lt;= step</label>
+			<label kind="invariant" x="323" y="-824">xc &lt;= step</label>
 		</location>
 		<location id="id12" x="306" y="-1020">
 			<urgent/>
@@ -394,21 +401,18 @@ id_zonotope_t getZonotope()
 		<transition controllable="false">
 			<source ref="id5"/>
 			<target ref="id12"/>
-			<label kind="guard" x="144" y="-952">k&lt;=3</label>
-			<label kind="assignment" x="144" y="-926">k=k+1</label>
+			<label kind="guard" x="144" y="-943">k&lt;=3</label>
+			<label kind="assignment" x="136" y="-926">k=k+1</label>
 			<nail x="195" y="-875"/>
 			<nail x="195" y="-1020"/>
 		</transition>
 		<transition controllable="false">
 			<source ref="id3"/>
 			<target ref="id12"/>
-			<label kind="assignment" x="314" y="-1164">mode=applyMode(zonotope,p_id,ppos),
+			<label kind="assignment" x="314" y="-1139">mode=applyMode(zonotope,p_id,ppos),
 ppos=ppos+1,
 k=0,
-delta[0]=fint(100*normal_prob(it, u1, d)),
-delta[1]=fint(100*normal_prob(it, u2, d)),
-delta[2]=fint(100*normal_prob(it, u3, d)),
-delta[3]=fint(100*uniform_prob(it)),
+set_deltas(),
 valve = 0</label>
 		</transition>
 		<transition controllable="false">
@@ -418,7 +422,8 @@ valve = 0</label>
 		<transition controllable="false">
 			<source ref="id11"/>
 			<target ref="id6"/>
-			<label kind="assignment" x="323" y="-807">post(it, mode),
+			<label kind="guard" x="314" y="-799">xc==step</label>
+			<label kind="assignment" x="314" y="-782">post(it, mode),
 xc = 0,
 rc = 0,
 pareto = paretoFunc()</label>
@@ -440,12 +445,12 @@ pareto = paretoFunc()</label>
 		<transition>
 			<source ref="id13"/>
 			<target ref="id10"/>
-			<label kind="probability" x="331" y="-977">1</label>
+			<label kind="probability" x="340" y="-977">delta[k]</label>
 		</transition>
 		<transition>
 			<source ref="id13"/>
 			<target ref="id9"/>
-			<label kind="probability" x="263" y="-977">5</label>
+			<label kind="probability" x="204" y="-977">100-delta[k]</label>
 		</transition>
 		<transition controllable="false">
 			<source ref="id8"/>
@@ -456,14 +461,14 @@ pareto = paretoFunc()</label>
 		<transition controllable="false">
 			<source ref="id6"/>
 			<target ref="id7"/>
-			<label kind="guard" x="315" y="-705">yc &gt;  horizon</label>
+			<label kind="guard" x="314" y="-671">yc &gt;  horizon</label>
 		</transition>
 		<transition controllable="false">
 			<source ref="id6"/>
 			<target ref="id1"/>
 			<label kind="guard" x="-9" y="-1147">yc &lt;= horizon</label>
 			<label kind="assignment" x="16" y="-1113">it=it+1</label>
-			<nail x="59" y="-731"/>
+			<nail x="59" y="-688"/>
 			<nail x="59" y="-1377"/>
 		</transition>
 		<transition>

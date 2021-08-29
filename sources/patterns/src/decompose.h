@@ -191,7 +191,7 @@ bool findPattern2 (const sampledSwitchedSystem& sys, const IntervalVector W,
       
       if (fin_R && stay_S)// && !cross_B)
       {       
-        cout << "sol found !" << endl;
+        cout << "sol found ***************************************************************************************************************** !" << endl;
         node_current.pattern.push_back(i);        
         res_pattern_list.push_back(node_current.pattern);        
         res = true;

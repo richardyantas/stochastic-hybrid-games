@@ -2,8 +2,8 @@
     
     \label{ch:intro}
     In this thesis, we present a control synthesis method for a special 
-    form of hybrid systems with stochastic perturbations that we call
-     \ac{SHG}. Such systems have been 
+    form of hybrid systems with stochastic perturbations that we model as
+    a \ac{SHG}. Such models have been 
     recently used in various domains such as solar energy industry and power 
     electronics (e.g power converters). They are continuous-time systems
     with discrete switching events. More precisely, these systems are 
@@ -61,9 +61,10 @@
     
     \section{Problem Statement}
     \label{sec:problem}
-    Nowadays, there is a large number of methods to solve switched systems;
-    however, it does not have guarantee in safety. For that reason, we 
-    propose a new approach to solve switched systems. 
+    Nowadays, there is a large number of methods to face issues related 
+    to switched systems; however in case of stochastic hybrid systems 
+     we notice some advances either only optimization or only safety
+     but none of them propose a method that concatenate these. 
     
     \section{Objectives}
     \label{sec:objectives}
@@ -99,7 +100,7 @@
             \item Find a near optimal patterns to online control(\cite{larsen2016online}).
             \begin{itemize}
                 \item Implement an \textsc{api} between simulator and \textsc{uppaal}.
-                \item Build a timed automata MDP in \textsc{uppaal} for a real time \textsc{MPC}.
+                \item Build a timed automata \ac{MDP} in \textsc{uppaal} for a real time \ac{MPC}.
             \end{itemize}
         \end{itemize}
 

@@ -3,7 +3,8 @@ import csv
 import multiprocessing
 import argparse
 import importlib
-from stochastic_hybrid_game.src.controllers import SOMPC_UPPAAL, SMPC_LOCAL, OMPC_UPPAAL
+# from stochastic_hybrid_game.src.controllers import SOMPC_UPPAAL, SMPC_LOCAL, OMPC_UPPAAL
+from stochastic_hybrid_game.src.controllers.MPC import Greedy, MPC, Uppaal
 from stochastic_hybrid_game.src.viz import viz2
 from stochastic_hybrid_game.src.data.base_data_module import BaseDataModule
 
@@ -22,7 +23,8 @@ def _setup_parser():
     parser = argparse.ArgumentParser(add_help=False)
     parser.add_argument("--data_class", type=str, default="SOLAR")
     parser.add_argument("--model_class", type=str, default="SWH")
-    parser.add_argument("--controller_class", type=str, default="SMPC_LOCAL")
+    parser.add_argument("--controller_class", type=str,
+                        default="Greedy")  # default = SMPC_LOCAL
     temp_args, _ = parser.parse_known_args()
     data_class = _import_class(
         f"stochastic_hybrid_game.src.data.{temp_args.data_class}")

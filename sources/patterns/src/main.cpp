@@ -29,10 +29,10 @@ int main(int argc, char* argv[]){
     Variable x(n);
     for(int i=0;i<8;i++){
         p = modes[i][0];r = modes[i][1];f = modes[i][2];
-        Function mode = Function(x, Return( 
-            - factorTe*2.8811059759131854e-6*(x[0]-Te)/(0.1*p) - Interval(0,1)*9.34673995175876e-05*(x[0]-Ti)/(0.1*p)
+        Function mode = Function(x, Return( // TASKKKKKKKKKKKKKKKKKKKKKKK cambiar a Interval(0,5) para el nuevo set de perturbaciones 50 100 200, ademas agregar un tabla H 75 150 300, numero de perturbacion filas, columnas tiempos de asentamiento, ahorro energetico paara cada uno greedy y uppaal
+            - factorTe*2.8811059759131854e-6*(x[0]-Te)/(0.1*p) - Interval(0,2)*9.34673995175876e-05*(x[0]-Ti)/(0.1*p)
             - f*0.001005026*(0.1*p-x[1])*(x[0]-Ti)/(0.1*p)            //  original -> 0.00009346739
-            + factorI*0.7*0.7*8.403225763080125e-07*I/(0.1*p) + factorE*r*0.008801843/(0.1*p) , rate*( 0.1*p - x[1]) ) 
+            + factorI*0.7*0.7*8.403225763080125e-07*I/(0.1*p) + 1*factorE*r*0.008801843/(0.1*p) , rate*( 0.1*p - x[1]) ) 
         );
         sys.dynamics.push_back(mode);
     }             

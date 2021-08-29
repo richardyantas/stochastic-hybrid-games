@@ -44,7 +44,7 @@ def generate_uncontrollable_data():
     life_time = data_config["life_time"]
     start_time = data_config["start_time"]
     u_modes = (np.zeros(int(life_time))).tolist()
-    num_actions = random.randrange(5, 10)
+    num_actions = random.randrange(100, 200)
     standard_deviation = 1*12  # 2
     for i in range(0, num_actions):
         u_modes[int(random.gauss(start_time +
@@ -106,15 +106,6 @@ class SWH():
             lines = file.readlines()
         lines = [float(line[0:-1]) for line in lines]
         return list(lines)
-
-    # def kitchen_effect(self):
-    #     # valve ON 1 min
-    #     return
-
-    # def bathroom_effect(self):
-    #     # A  valve ON (3min) 4 times in [30-45] get a shower [1-2] a day
-    #     # Toilet 1min []
-    #     return
 
     def update(self, mode, u_action, state, index):
         state = self.post(mode, u_action, state, index)

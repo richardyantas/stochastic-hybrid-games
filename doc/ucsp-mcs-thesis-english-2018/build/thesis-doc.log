@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2021.6.25)  14 AUG 2021 02:42
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2021.6.25)  29 AUG 2021 17:18
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1442,38 +1442,37 @@ File: upzd.fd 2001/06/04 font definitions for U/pzd.
 LaTeX Font Info:    Try loading font information for U+psy on input line 64.
  (/usr/share/texlive/texmf-dist/tex/latex/psnfss/upsy.fd
 File: upsy.fd 2001/06/04 font definitions for U/psy.
-))) (./src/colors.tex) (build/thesis-doc.aux
-
-LaTeX Warning: Label `eq:costfunction' multiply defined.
-
+))) (./src/colors.tex)
+\GPT@outputbox=\box72
+ (build/thesis-doc.aux
 
 LaTeX Warning: Label `fig:perturbationsgeneration' multiply defined.
 
 )
 \openout1 = `thesis-doc.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 71.
-LaTeX Font Info:    ... okay on input line 71.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 71.
-LaTeX Font Info:    ... okay on input line 71.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 71.
-LaTeX Font Info:    ... okay on input line 71.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 71.
-LaTeX Font Info:    ... okay on input line 71.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 71.
-LaTeX Font Info:    ... okay on input line 71.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 71.
-LaTeX Font Info:    ... okay on input line 71.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 71.
-LaTeX Font Info:    ... okay on input line 71.
-LaTeX Info: Redefining \celsius on input line 71.
-Package gensymb Info: Faking symbols for \degree and \celsius on input line 71.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 72.
+LaTeX Font Info:    ... okay on input line 72.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 72.
+LaTeX Font Info:    ... okay on input line 72.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 72.
+LaTeX Font Info:    ... okay on input line 72.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 72.
+LaTeX Font Info:    ... okay on input line 72.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 72.
+LaTeX Font Info:    ... okay on input line 72.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 72.
+LaTeX Font Info:    ... okay on input line 72.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 72.
+LaTeX Font Info:    ... okay on input line 72.
+LaTeX Info: Redefining \celsius on input line 72.
+Package gensymb Info: Faking symbols for \degree and \celsius on input line 72.
 
 
 Package gensymb Warning: Not defining \perthousand.
 
-LaTeX Info: Redefining \ohm on input line 71.
-Package gensymb Info: Using \Omega for \ohm on input line 71.
+LaTeX Info: Redefining \ohm on input line 72.
+Package gensymb Info: Using \Omega for \ohm on input line 72.
 
 Package gensymb Warning: Not defining \micro.
 
@@ -1482,7 +1481,7 @@ Package gensymb Warning: Not defining \micro.
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count369
 \scratchdimen=\dimen352
-\scratchbox=\box72
+\scratchbox=\box73
 \nofMPsegments=\count370
 \nofMParguments=\count371
 \everyMPshowfont=\toks58
@@ -1648,8 +1647,8 @@ LaTeX Info: Redefining \selectfont on input line 126.
 \RaggedRightParindent=\skip86
 \JustifyingParindent=\skip87
 )
-\AtBeginShipoutBox=\box73
-Package hyperref Info: Link coloring ON on input line 71.
+\AtBeginShipoutBox=\box74
+Package hyperref Info: Link coloring ON on input line 72.
  (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
  (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
@@ -1657,23 +1656,23 @@ Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
 \c@section@level=\count375
 )
-LaTeX Info: Redefining \ref on input line 71.
-LaTeX Info: Redefining \pageref on input line 71.
-LaTeX Info: Redefining \nameref on input line 71.
+LaTeX Info: Redefining \ref on input line 72.
+LaTeX Info: Redefining \pageref on input line 72.
+LaTeX Info: Redefining \nameref on input line 72.
  (build/thesis-doc.out) (build/thesis-doc.out)
 \@outlinefile=\write6
 \openout6 = `thesis-doc.out'.
 
 \c__siunitx_mathsf_int=\count376
-LaTeX Font Info:    Try loading font information for U+rsfs on input line 71.
+LaTeX Font Info:    Try loading font information for U+rsfs on input line 72.
  (/usr/share/texlive/texmf-dist/tex/latex/jknapltx/ursfs.fd
 File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 )
-LaTeX Font Info:    Try loading font information for U+msa on input line 71.
+LaTeX Font Info:    Try loading font information for U+msa on input line 72.
  (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 71.
+LaTeX Font Info:    Try loading font information for U+msb on input line 72.
  (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
@@ -1681,7 +1680,7 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 <ucsp.png, id=155, 669.50125pt x 280.04625pt>
 File: ucsp.png Graphic file (type png)
 <use ucsp.png>
-Package pdftex.def Info: ucsp.png  used on input line 73.
+Package pdftex.def Info: ucsp.png  used on input line 74.
 (pdftex.def)             Requested size: 167.3749pt x 70.01138pt.
  [1
 
@@ -1691,7 +1690,7 @@ Overfull \vbox (2.49998pt too high) has occurred while \output is active []
  [2
 
 ]
-Underfull \hbox (badness 1852) in paragraph at lines 73--73
+Underfull \hbox (badness 1852) in paragraph at lines 74--74
 []|\T1/aer/m/it/12 To my par-ents, Mario and Maria,
  []
 
@@ -1755,10 +1754,12 @@ Overfull \vbox (2.49998pt too high) has occurred while \output is active []
  [16
 
 ] (build/thesis-doc.lof
-Package acronym Info: Label `acro:SHG' newly defined as it shall be overridden
+Package acronym Info: Label `acro:SS' newly defined as it shall be overridden
 although it is yet undefined on input line 5.
 Package acronym Info: Label `acro:MPC' newly defined as it shall be overridden
-although it is yet undefined on input line 8.
+although it is yet undefined on input line 9.
+Package acronym Info: Label `acro:SHG' newly defined as it shall be overridden
+although it is yet undefined on input line 10.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
@@ -1782,20 +1783,22 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 ]
-LaTeX Font Info:    Try loading font information for OMS+aer on input line 77.
+LaTeX Font Info:    Try loading font information for OMS+aer on input line 78.
  (/usr/share/texlive/texmf-dist/tex/latex/ae/omsaer.fd
 File: omsaer.fd 1999/12/27
 )
 LaTeX Font Info:    Font shape `OMS/aer/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 77.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 78.
 
 Overfull \vbox (2.49998pt too high) has occurred while \output is active []
 
  [2]
-Overfull \hbox (3.02647pt too wide) in paragraph at lines 93--96
+Overfull \hbox (3.02647pt too wide) in paragraph at lines 94--97
 []\T1/aer/m/n/12 Find safe pat-terns for our case study us-ing de-com-po-si-tion al-go-rithm ([][]Le Coënt
  []
 
+Package acronym Info: Label `acro:MDP' newly defined as it shall be overridden
+although it is yet undefined on input line 103.
 ) (./content/ch_relatedWorks.tex
 Overfull \vbox (2.49998pt too high) has occurred while \output is active []
 
@@ -1806,8 +1809,6 @@ Overfull \vbox (2.49998pt too high) has occurred while \output is active []
 
 ]
 Chapter 2.
-Package acronym Info: Label `acro:SS' newly defined as it shall be overridden
-although it is yet undefined on input line 32.
 
 Underfull \vbox (badness 2326) has occurred while \output is active []
 
@@ -1816,141 +1817,176 @@ Overfull \vbox (15.11194pt too high) has occurred while \output is active []
 
  [6]
 Chapter 3.
+thesis-doc.tex:7:Warning: Referencia no definida
+
+thesis-doc.tex:7: LaTeX Warning: Reference `sec:modelpredictivecontroller' on page 7 undefined on input line 7.
+
 [7
 
 ] (./content/sources/switchedsystem.tex)
+Underfull \hbox (badness 10000) in paragraph at lines 17--40
+
+ []
+
+
 Overfull \vbox (2.49998pt too high) has occurred while \output is active []
 
  [8
 
 ]
-<images/swiched.png, id=444, 615.80063pt x 287.57437pt>
-File: images/swiched.png Graphic file (type png)
-<use images/swiched.png>
-Package pdftex.def Info: images/swiched.png  used on input line 70.
-(pdftex.def)             Requested size: 250.9522pt x 117.191pt.
+<images/oneroom1.png, id=445, 553.06625pt x 428.60126pt>
+File: images/oneroom1.png Graphic file (type png)
+<use images/oneroom1.png>
+Package pdftex.def Info: images/oneroom1.png  used on input line 80.
+(pdftex.def)             Requested size: 250.95476pt x 194.4776pt.
+<images/heatingmodes.png, id=446, 341.275pt x 168.63pt>
+File: images/heatingmodes.png Graphic file (type png)
+<use images/heatingmodes.png>
+Package pdftex.def Info: images/heatingmodes.png  used on input line 86.
+(pdftex.def)             Requested size: 146.39133pt x 72.3345pt.
+<images/windowprofile.png, id=447, 327.2225pt x 197.73875pt>
+File: images/windowprofile.png Graphic file (type png)
+<use images/windowprofile.png>
+Package pdftex.def Info: images/windowprofile.png  used on input line 91.
+(pdftex.def)             Requested size: 146.39133pt x 88.46265pt.
+<images/distancetogoal.png, id=448, 273.02pt x 75.28125pt>
+File: images/distancetogoal.png Graphic file (type png)
+<use images/distancetogoal.png>
+Package pdftex.def Info: images/distancetogoal.png  used on input line 96.
+(pdftex.def)             Requested size: 146.39133pt x 40.36523pt.
 
 Overfull \vbox (2.49998pt too high) has occurred while \output is active []
 
- [9 <./images/swiched.png>]
-Overfull \vbox (2.49998pt too high) has occurred while \output is active []
-
- [10
+ [9
 
 ]
-Overfull \hbox (5.46953pt too wide) in paragraph at lines 161--162
-\T1/aer/m/it/12 (pos-i-tive) in-te-gers $[]$ such that for all $[]$. 
- []
-
-Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on input line 197.
-
-Overfull \hbox (22.85999pt too wide) in paragraph at lines 242--243
-[] \T1/aer/m/n/12 putTail$\OT1/cmr/m/n/12 (\OMS/cmsy/m/n/12 L\OML/cmm/m/it/12 ; \OT1/cmr/m/n/12 (\OML/cmm/m/it/12 e[]:Y[]:Post[]\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 e[]:Y[]\OT1/cmr/m/n/12 )\OML/cmm/m/it/12 ; e[]: [] \OT1/cmr/m/n/12 +\OML/cmm/m/it/12 i\OT1/cmr/m/n/12 ))$ 
- []
-
-
-Overfull \vbox (2.49998pt too high) has occurred while \output is active []
-
- [11
-
-]
-Overfull \vbox (2.49998pt too high) has occurred while \output is active []
-
- [12]
-Underfull \hbox (badness 10000) in paragraph at lines 299--321
+Underfull \hbox (badness 10000) in paragraph at lines 137--159
 
  []
 
 
 Overfull \vbox (2.49998pt too high) has occurred while \output is active []
 
- [13
-
-]
+ [10 <./images/oneroom1.png> <./images/heatingmodes.png> <./images/windowprofile.png> <./images/distancetogoal.png>]
 Overfull \vbox (2.49998pt too high) has occurred while \output is active []
 
- [14]
+ [11]
+<images/uppaalstratego.jpeg, id=481, 259.97125pt x 195.73125pt>
+File: images/uppaalstratego.jpeg Graphic file (type jpg)
+<use images/uppaalstratego.jpeg>
+Package pdftex.def Info: images/uppaalstratego.jpeg  used on input line 243.
+(pdftex.def)             Requested size: 167.2989pt x 125.95747pt.
+
 Overfull \vbox (2.49998pt too high) has occurred while \output is active []
 
- [15] (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
+ [12] (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2015/06/04 1.6 listings language file
 )
-Overfull \hbox (89.26085pt too wide) in paragraph at lines 442--443
+Overfull \hbox (89.26085pt too wide) in paragraph at lines 273--274
 [][][][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
 
 Overfull \vbox (2.49998pt too high) has occurred while \output is active []
 
- [16]
-<images/2_a.png, id=510, 731.73375pt x 471.7625pt>
+ [13 <./images/uppaalstratego.jpeg>]
+<images/2_a.png, id=496, 731.73375pt x 471.7625pt>
 File: images/2_a.png Graphic file (type png)
 <use images/2_a.png>
-Package pdftex.def Info: images/2_a.png  used on input line 469.
+Package pdftex.def Info: images/2_a.png  used on input line 287.
 (pdftex.def)             Requested size: 213.30707pt x 137.52026pt.
-<images/2_b.png, id=511, 735.74875pt x 477.785pt>
+<images/2_b.png, id=497, 735.74875pt x 477.785pt>
 File: images/2_b.png Graphic file (type png)
 <use images/2_b.png>
-Package pdftex.def Info: images/2_b.png  used on input line 474.
+Package pdftex.def Info: images/2_b.png  used on input line 292.
 (pdftex.def)             Requested size: 213.30707pt x 138.51764pt.
-<images/2_c.png, id=512, 733.74126pt x 398.48875pt>
+<images/2_c.png, id=498, 733.74126pt x 398.48875pt>
 File: images/2_c.png Graphic file (type png)
 <use images/2_c.png>
-Package pdftex.def Info: images/2_c.png  used on input line 479.
+Package pdftex.def Info: images/2_c.png  used on input line 297.
 (pdftex.def)             Requested size: 213.30707pt x 115.84456pt.
-<images/2_d.png, id=513, 722.7pt x 399.4925pt>
+<images/2_d.png, id=499, 722.7pt x 399.4925pt>
 File: images/2_d.png Graphic file (type png)
 <use images/2_d.png>
-Package pdftex.def Info: images/2_d.png  used on input line 484.
+Package pdftex.def Info: images/2_d.png  used on input line 302.
 (pdftex.def)             Requested size: 213.30707pt x 117.91022pt.
 
-Overfull \hbox (10.97655pt too wide) in paragraph at lines 468--487
+Overfull \hbox (10.97655pt too wide) in paragraph at lines 286--305
 []$[]$|  $[]$ 
  []
 
 
-Overfull \hbox (10.97655pt too wide) in paragraph at lines 468--487
+Overfull \hbox (10.97655pt too wide) in paragraph at lines 286--305
 []$|  $[]$ 
  []
 
 
-Underfull \vbox (badness 1515) has occurred while \output is active []
-
-
 Overfull \vbox (2.49998pt too high) has occurred while \output is active []
 
- [17
+ [14
 
  <./images/2_a.png> <./images/2_b.png> <./images/2_c.png> <./images/2_d.png>]
-Overfull \hbox (2.58936pt too wide) in paragraph at lines 533--533
+Overfull \hbox (2.58936pt too wide) in paragraph at lines 352--352
 [][] 
  []
 
 
-Overfull \hbox (2.58936pt too wide) in paragraph at lines 539--539
+Overfull \hbox (2.58936pt too wide) in paragraph at lines 358--358
 [][] 
  []
 
 
-Overfull \hbox (2.58936pt too wide) in paragraph at lines 546--546
+Overfull \hbox (2.58936pt too wide) in paragraph at lines 365--365
 [][] 
  []
 
 
-Overfull \hbox (63.97809pt too wide) in paragraph at lines 526--553
+Overfull \hbox (63.97809pt too wide) in paragraph at lines 345--373
  [][] 
  []
 
 
 Overfull \vbox (2.49998pt too high) has occurred while \output is active []
 
+ [15]
+Overfull \hbox (58.95097pt too wide) in paragraph at lines 393--395
+\T1/aer/bx/n/12 Time \T1/aer/m/n/12 starts with 0:  [] 
+ []
+
+
+Overfull \hbox (37.85468pt too wide) in paragraph at lines 395--397
+\T1/aer/m/n/12 state:  [] 
+ []
+
+
+Overfull \vbox (2.49998pt too high) has occurred while \output is active []
+
+ [16]
+
+Package hyperref Warning: No autoref name for `' on input line 459.
+
+
+Package hyperref Warning: Suppressing link with empty target on input line 459.
+
+Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on input line 484.
+
+Overfull \hbox (22.85999pt too wide) in paragraph at lines 529--530
+[] \T1/aer/m/n/12 putTail$\OT1/cmr/m/n/12 (\OMS/cmsy/m/n/12 L\OML/cmm/m/it/12 ; \OT1/cmr/m/n/12 (\OML/cmm/m/it/12 e[]:Y[]:Post[]\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 e[]:Y[]\OT1/cmr/m/n/12 )\OML/cmm/m/it/12 ; e[]: [] \OT1/cmr/m/n/12 +\OML/cmm/m/it/12 i\OT1/cmr/m/n/12 ))$ 
+ []
+
+
+Overfull \vbox (2.49998pt too high) has occurred while \output is active []
+
+ [17]
+Overfull \vbox (2.49998pt too high) has occurred while \output is active []
+
  [18]
-Overfull \hbox (2.48668pt too wide) in paragraph at lines 599--601
+Overfull \hbox (2.48668pt too wide) in paragraph at lines 566--568
 []\T1/aer/m/n/12 The flow func-tion is used to up-date the state va-lues $\OML/cmm/m/it/12 ^^M[] \OT1/cmr/m/n/12 = (\OML/cmm/m/it/12 c[]; u[]; x[]\OT1/cmr/m/n/12 ) []
  []
 
 
-Overfull \hbox (16.49568pt too wide) in paragraph at lines 601--603
+Overfull \hbox (16.49568pt too wide) in paragraph at lines 568--570
 []\T1/aer/m/n/12 Some per-tur-ba-tions that desta-bi-lize the sys-tem oc-cur, $\OML/cmm/m/it/12 c[]; u[]; x[]$ \T1/aer/m/n/12 where $\OML/cmm/m/it/12 ^^N[]\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 u[]\OT1/cmr/m/n/12 ) \OML/cmm/m/it/12 >
  []
 
@@ -1960,31 +1996,24 @@ Overfull \vbox (2.49998pt too high) has occurred while \output is active []
  [19
 
 ]
-<images/realtime.png, id=540, 559.08875pt x 251.94125pt>
+<images/realtime.png, id=554, 559.08875pt x 251.94125pt>
 File: images/realtime.png Graphic file (type png)
 <use images/realtime.png>
-Package pdftex.def Info: images/realtime.png  used on input line 633.
+Package pdftex.def Info: images/realtime.png  used on input line 600.
 (pdftex.def)             Requested size: 292.77629pt x 131.93668pt.
-<images/uppaalstratego.jpeg, id=544, 259.97125pt x 195.73125pt>
-File: images/uppaalstratego.jpeg Graphic file (type jpg)
-<use images/uppaalstratego.jpeg>
-Package pdftex.def Info: images/uppaalstratego.jpeg  used on input line 655.
-(pdftex.def)             Requested size: 167.2989pt x 125.95747pt.
-
-Overfull \vbox (2.49998pt too high) has occurred while \output is active []
-
- [20
-
- <./images/realtime.png> <./images/uppaalstratego.jpeg>] (./content/sources/workflow.tex
+ (./content/sources/workflow.tex
 LaTeX Font Info:    Try loading font information for T1+ptm on input line 88.
  (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1ptm.fd
 File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
 ))) (./content/ch_main.tex
 Overfull \vbox (2.49998pt too high) has occurred while \output is active []
 
- [21
+ [20
 
-]
+ <./images/realtime.png>]
+Overfull \vbox (2.49998pt too high) has occurred while \output is active []
+
+ [21]
 Overfull \vbox (2.49998pt too high) has occurred while \output is active []
 
  [22
@@ -1992,7 +2021,7 @@ Overfull \vbox (2.49998pt too high) has occurred while \output is active []
 ]
 Chapter 4.
 [23] (./content/sources/diag1.tex
-<content/sources/5.png, id=574, 609.27625pt x 352.31625pt>
+<content/sources/5.png, id=588, 609.27625pt x 352.31625pt>
 File: content/sources/5.png Graphic file (type png)
 <use content/sources/5.png>
 Package pdftex.def Info: content/sources/5.png  used on input line 14.
@@ -2003,7 +2032,7 @@ Overfull \vbox (2.49998pt too high) has occurred while \output is active []
  [24
 
  <./content/sources/5.png>]
-<images/uncontrollable.png, id=583, 722.7pt x 144.54pt>
+<images/uncontrollable.png, id=596, 722.7pt x 144.54pt>
 File: images/uncontrollable.png Graphic file (type png)
 <use images/uncontrollable.png>
 Package pdftex.def Info: images/uncontrollable.png  used on input line 67.
@@ -2013,7 +2042,7 @@ Overfull \hbox (83.64944pt too wide) in paragraph at lines 67--69
  [][] 
  []
 
-<images/solaris2.png, id=586, 722.7pt x 144.54pt>
+<images/solaris2.png, id=599, 722.7pt x 144.54pt>
 File: images/solaris2.png Graphic file (type png)
 <use images/solaris2.png>
 Package pdftex.def Info: images/solaris2.png  used on input line 82.
@@ -2029,7 +2058,7 @@ Overfull \vbox (15.11194pt too high) has occurred while \output is active []
  [25
 
  <./images/uncontrollable.png> <./images/solaris2.png>]
-<images/prediction.png, id=598, 462.528pt x 346.896pt>
+<images/prediction.png, id=611, 462.528pt x 346.896pt>
 File: images/prediction.png Graphic file (type png)
 <use images/prediction.png>
 Package pdftex.def Info: images/prediction.png  used on input line 99.
@@ -2094,12 +2123,12 @@ Overfull \vbox (2.49998pt too high) has occurred while \output is active []
  [30
 
 ]
-<images/safe_post_pattern.png, id=634, 462.528pt x 346.896pt>
+<images/safe_post_pattern.png, id=647, 462.528pt x 346.896pt>
 File: images/safe_post_pattern.png Graphic file (type png)
 <use images/safe_post_pattern.png>
 Package pdftex.def Info: images/safe_post_pattern.png  used on input line 324.
 (pdftex.def)             Requested size: 213.30707pt x 159.98166pt.
-<images/safe_post_pattern_perturb.png, id=635, 462.528pt x 346.896pt>
+<images/safe_post_pattern_perturb.png, id=648, 462.528pt x 346.896pt>
 File: images/safe_post_pattern_perturb.png Graphic file (type png)
 <use images/safe_post_pattern_perturb.png>
 Package pdftex.def Info: images/safe_post_pattern_perturb.png  used on input line 331.
@@ -2136,12 +2165,12 @@ Overfull \vbox (2.49998pt too high) has occurred while \output is active []
 Overfull \vbox (15.11194pt too high) has occurred while \output is active []
 
  [35]
-<images/controllers.png, id=686, 462.528pt x 346.896pt>
+<images/controllers.png, id=701, 462.528pt x 346.896pt>
 File: images/controllers.png Graphic file (type png)
 <use images/controllers.png>
 Package pdftex.def Info: images/controllers.png  used on input line 508.
 (pdftex.def)             Requested size: 213.30707pt x 159.98166pt.
-<images/energycomparison.png, id=687, 462.528pt x 346.896pt>
+<images/energycomparison.png, id=702, 462.528pt x 346.896pt>
 File: images/energycomparison.png Graphic file (type png)
 <use images/energycomparison.png>
 Package pdftex.def Info: images/energycomparison.png  used on input line 514.
@@ -2173,31 +2202,34 @@ File: t1aett.fd 1997/11/16 Font definitions for T1/aett.
 Overfull \vbox (2.49998pt too high) has occurred while \output is active []
 
  [40]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 96.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 96.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 97.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 97.
  (build/thesis-doc.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 96.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 96.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 97.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 97.
 Package rerunfilecheck Info: File `thesis-doc.out' has not changed.
-(rerunfilecheck)             Checksum: 89EA9E210E1C778E5E8DE8C1CFC23933;2279.
+(rerunfilecheck)             Checksum: 5BA4DB4E697DFF63B916EE0E5C8A2CA7;2252.
 
 
-thesis-doc.bbl:96: LaTeX Warning: There were multiply-defined labels.
+thesis-doc.bbl:97: LaTeX Warning: There were undefined references.
+
+
+thesis-doc.bbl:97: LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 47890 strings out of 492982
- 1070504 string characters out of 6134896
- 1303701 words of memory out of 5000000
- 50376 multiletter control sequences out of 15000+600000
+ 47933 strings out of 492982
+ 1071100 string characters out of 6134896
+ 1305656 words of memory out of 5000000
+ 50410 multiletter control sequences out of 15000+600000
  589417 words of font info for 141 fonts, out of 8000000 for 9000
  1149 hyphenation exceptions out of 8191
  64i,22n,103p,10505b,1677s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
-Output written on build/thesis-doc.pdf (58 pages, 1000759 bytes).
+{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
+Output written on build/thesis-doc.pdf (58 pages, 1083968 bytes).
 PDF statistics:
- 835 PDF objects out of 1000 (max. 8388607)
- 694 compressed objects within 7 object streams
- 163 named destinations out of 1000 (max. 500000)
- 437 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 854 PDF objects out of 1000 (max. 8388607)
+ 706 compressed objects within 8 object streams
+ 169 named destinations out of 1000 (max. 500000)
+ 452 words of extra memory for PDF output out of 10000 (max. 10000000)
 
