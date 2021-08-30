@@ -51,8 +51,8 @@ def plot_controllers_results():
     data_config = data.config()
     life_time = data_config["life_time"]
     start_time = data_config["start_time"]
-    smpc_local = pd.read_csv(f"{DATA_DIR}/results_SMPC_LOCAL_data.csv")
-    sompc_uppaal = pd.read_csv(f"{DATA_DIR}/results_SOMPC_UPPAAL_data.csv")
+    smpc_local = pd.read_csv(f"{DATA_DIR}/results_MPC.Greedy_data.csv")
+    sompc_uppaal = pd.read_csv(f"{DATA_DIR}/results_MPC.Uppaal_data.csv")
     static_data = json.load(open(f"{DATA_DIR}/static_data.json"))
     set_point = static_data["Tg"]
     with open(f"{DATA_DIR}/uncontrollable_data.txt", 'r', newline='') as file:
@@ -68,11 +68,20 @@ def plot_controllers_results():
     ################################################
 
     ############### figure 1 #############################
+    mean_T1 = 0
+    mean_T2 = 0
+    l = len(smpc_local["T"])
+    for i in range(0, l):
+        mean_T1 = mean_T1 + abs(smpc_local["T"][i]-55)
+        mean_T2 = mean_T2 + abs(sompc_uppaal["T"][i]-55)
+    print("Mean Temperature greedy: ", mean_T1/l)
+    print("Mean Temperature uppaal: ", mean_T2/l)
+
     plt.axis([start_time, life_time, 0, 80])
     plt.plot(time_plot, smpc_local["T"], 'cyan',
-             linewidth=0.8, label='smpc local')
+             linewidth=0.8, label='Greedy')
     plt.plot(time_plot, sompc_uppaal["T"], 'red',
-             linewidth=0.8, label='sompc uppaal')
+             linewidth=0.8, label='Uppaal')
     # plt.plot([start_time, life_time], [set_point, set_point], 'cyan',
     #          linewidth=0.4)
     plt.ylabel('Temperature(C)')
@@ -80,9 +89,33 @@ def plot_controllers_results():
     plt.legend()
     plt.grid(True, linewidth=0.6, linestyle='--')
     plt.savefig(
-        './doc/ucsp-mcs-thesis-english-2018/images/controllers.png')
+        './doc/ucsp-mcs-thesis-english-2018/images/controllers1.png')
     plt.show()
+
     ############### figure 2 #############################
+    # mean_E = 0
+    #l = len(smpc_local["E"])
+    # for i in range(0, l):
+    #     mean_E = mean_E + smpc_local["E"][i]-sompc_uppaal["E"][i]
+    Ea = list(smpc_local["E"])
+    Eb = list(sompc_uppaal["E"])
+    print("Saved Energy: ", abs(Eb[-1]-Ea[-1]))
+
+    plt.axis([start_time, life_time, 0, 25000])
+    plt.plot(time_plot, smpc_local["E"], 'cyan',
+             linewidth=0.8, label='Greedy')
+    plt.plot(time_plot, sompc_uppaal["E"], 'red',
+             linewidth=0.8, label='Uppaal')
+    # plt.plot([start_time, life_time], [set_point, set_point], 'cyan',
+    #          linewidth=0.4)
+    plt.ylabel('Energy(C)')
+    plt.xlabel('time[hrs]')
+    plt.legend()
+    plt.grid(True, linewidth=0.6, linestyle='--')
+    plt.savefig(
+        './doc/ucsp-mcs-thesis-english-2018/images/energycomparison.png')
+    plt.show()
+    ############### figure 3 #############################
     plt.figure(figsize=(10, 2))
     plt.axis([start_time, life_time, 0, 5])
     plt.plot(time_plot, u_actions, 'cyan', linewidth=0.8,
@@ -94,16 +127,16 @@ def plot_controllers_results():
     plt.savefig(
         './doc/ucsp-mcs-thesis-english-2018/images/uncontrollable.png')
     plt.show()
-    ############### figure 3 #############################
+    ############### figure 4 #############################
     with plt.style.context('dark_background'):  # ggplot
         fig = plt.figure(num='Simulation', figsize=(11, 11))
         grid = plt.GridSpec(4, 4, wspace=0.8, hspace=0.7)
         plt.subplot(grid[0:2, :4])
         plt.axis([start_time, life_time, 0, 80])
         plt.plot(time_plot, smpc_local["T"], 'cyan',
-                 linewidth=0.8, label='smpc local')
+                 linewidth=0.8, label='Greedy')
         plt.plot(time_plot, sompc_uppaal["T"], 'red',
-                 linewidth=0.8, label='sompc uppaal')
+                 linewidth=0.8, label='Uppaal')
         # plt.plot([start_time, life_time], [set_point, set_point], 'cyan',
         #          linewidth=0.4)
         plt.ylabel('Temperature(C)')
@@ -113,9 +146,9 @@ def plot_controllers_results():
 
         plt.subplot(grid[2, :4])
         plt.plot(time_plot, smpc_local["E"], 'cyan',
-                 linewidth=0.8, label="smpc local")
+                 linewidth=0.8, label="Greedy")
         plt.plot(time_plot, sompc_uppaal["E"], 'red',
-                 linewidth=0.8, label="sompc uppaal")
+                 linewidth=0.8, label="Uppaal")
         plt.ylabel('Energy[KJ]')
         plt.xlabel('time[hrs]')
         plt.legend()
@@ -141,7 +174,6 @@ def plot_controllers_results():
         plt.legend()
         plt.grid(True, linewidth=0.6, linestyle='--')
         plt.show()
-
     return
 
 

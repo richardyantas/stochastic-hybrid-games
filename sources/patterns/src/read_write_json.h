@@ -24,7 +24,7 @@ string jsonToString(string filename){
 void parse_to_json(vector<pair <IntervalVector, list<vector<int> > > > result){
     vector< pair<IntervalVector, list<vector<int> >  > >::const_iterator it = result.begin();
     for (; it != result.end(); it++){              
-        event["zonotope"].append(jBox(it->first));              
+        event["zonotopes"].append(jBox(it->first));       // esto se puede mejorar para que sea un solo array [] o quizas esta bien asi necesita estandarizar con el json       
         list< vector<int> >::const_iterator it_pat = (it->second).begin();
         Json::Value tmp;
         for (; it_pat != (it->second).end(); it_pat++) {

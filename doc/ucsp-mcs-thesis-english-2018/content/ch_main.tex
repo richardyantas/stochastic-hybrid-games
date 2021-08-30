@@ -26,54 +26,74 @@
   a toolbox for real time simulation in \textsc{python} \cite{larsen2016online}.
   \clearpage
 
-  \section{Solar Water Heating Case study}
+  \section{Solar Water Heating Case study}: 
     \label{sec:casestudy}
-
+    Solar water heating (SWH) has a widely usage and applications in 
+    both domestic and industrial sectors. Solar water heating is not only 
+    environment friendly but requires minimal maintenance and operation 
+    cost compared to other solar energy \cite{shukla2013recent}. Extensive
+    research has been performed to further improve the thermal efficency of
+    solar water heating. This research presents a detailed review exclusively
+    on the system modelling as stochastic hybrid game and a new way to increase
+    efficency not from a colector material perspective but from the usage 
+    and control.
     \begin{figure}[!hbt]
+      \centering
       \input{content/sources/diag1.tex}
+      \captionsetup{format=hang}
       \caption{Solar Water Heating diagram}
       \label{fig:casestudy}
     \end{figure}
-
-    \subsection{data analysis}
+    The system setup is about a hybrid solar water heating which involves 
+    Auxiliar energy to heat the system and also a collector that transform 
+    solar irradiance to heat energy, transfering it to the container. The system also
+    contain a piston which change the volume, the simplify the analysis 
+    we devide it in three levels as shown in \autoref{fig:casestudy}. We also 
+    considered some asumptions in the temperature because of the gradient change
+    along the volumen, for simplyfing our analysis we decide to work with 
+    the mean temperature as one variable in the state.
+    \clearpage 
+    \subsection{Data processing and generation}      
       \textbf{Stochastic events as historical data}. In practice
       we notice unpredictable discrete events which can perturbate a dynamical 
       system, these stochastic discrete perturbations we call uncontrallable actions and 
-      is managed using a stochastic approach and machine learning to optimize
-      the behaviour. Generate this actions with a realist criteria for our case study 
+      is managed using a stochastic model approach and machine learning to optimize
+      the control. Generate this actions with a realistic criteria for our case study 
       we choose three gaussian distributions with $\mu_1 = 7h$, $\mu_2 = 12h$ and $\mu_3 = 19h$
       and $\sigma_1=12,\sigma_2=15, \sigma_3=10$ respectively. Finally we add 
       a uniform distribution around the day.
       \begin{figure}[!hbt]      
+        \centering
         \includegraphics[width=1.2\linewidth]{images/uncontrollable}      
+        \captionsetup{format=hang}
         \captionof{figure}{State changes of valves along the day.}
         \label{fig:uncontrollable}
       \end{figure}
-
-      \clearpage
 
       \textbf{Solaris Data and preprocessing} The data collected is from 
       spain solaris, which consist of a set of environment features such as
       environment temperature and irradiance that would be useful for the 
       simulation. However, we preprocess the data for our purpose such us
-      modify the time step from 15 minutes to 1 minute trough interpolation.
+      modify the time step from 15 minutes to 1 minute trough interpolation. 
+      The data is collected in Spain, Almeria \cite{solargis}.
+
       \begin{figure}[!hbt]
+        \centering
         \includegraphics[width=1.2\linewidth]{images/solaris2}
+        \captionsetup{format=hang}
         \captionof{figure}{Weather time series, irradiance and temperature }
       \end{figure}
-      % \begin{minipage}{\linewidth}
-      %     \begin{center}  
-      %         \includegraphics[width=1.2\linewidth]{images/solaris2}
-      %         \captionof{figure}{An example image not including a Wombat}
-      %     \end{center}
-      % \end{minipage}
+      \clearpage
       
       \textbf{Prediction Data}.
-      To integrate a model predictive controller approach we had to implement 
+      To integrate a model predictive controller approach we configurate
       a forecaster in real time in order to get a sequence of environment data
       on future which will be used to control future states an get the correct
       patterns on present. \textsc{arima} state model is used with a realtime 
-      pivot .. bla bla .
+      pivot $= 24h$ prediction size $ = 3h$ as shown in \autoref{prediction_environment}, 
+      however in the real time simulation we set a prediction size $=1h$ 
+       \cite{jain2017study}.
+
       \begin{minipage}{\linewidth}
         \begin{center}
             \includegraphics[width=0.7\linewidth]{images/prediction}
@@ -81,22 +101,19 @@
             \label{prediction_environment}
         \end{center}
       \end{minipage}
-      \clearpage
-  
-    % % equation description
-    % The energy inside of the container is calculated as a control volume, an abstract
-    % region which experiment power input and output, doing a energy balance is obtained
-    % the dynamical either volumen or temperature as described in \ref{energy-balance}
-    % and \ref{volume-balance}.
-    % \begin{equation} 
-    % §    \factorheat\mcont(t)\frac{d}{dt}\tcont =  A_c\irradiance + \haux - v\factorheat \flowin (\tcont-\tin) -   k_c A_t (\tcont-\tenv) + rQ
-    %     \label{energy-balance}
-    % \end{equation}
-    % \begin{equation}
-    %     \frac{d}{dt}\mcont(t) =  \rho \frac{d}{dt}\vcont = \rho (pV_{min} - \vcont); \quad
-    %     \label{volume-balance}
-    % \end{equation}
 
+      Disturbances such as environment temperatures and irradiance affect 
+      the system either positive or negative depending of the state and desired state. 
+      \emph{Model predictive control} is a method to control establishing in a future 
+      horizon to explore best actions control for future states.      
+      % \begin{equation} 
+      % §    \factorheat\mcont(t)\frac{d}{dt}\tcont =  A_c\irradiance + \haux - v\factorheat \flowin (\tcont-\tin) -   k_c A_t (\tcont-\tenv) + rQ
+      %     \label{energy-balance}
+      % \end{equation}
+      % \begin{equation}
+      %     \frac{d}{dt}\mcont(t) =  \rho \frac{d}{dt}\vcont = \rho (pV_{min} - \vcont); \quad
+      %     \label{volume-balance}
+      % \end{equation}
     % table 
       \begin{table}[hbt!]
       \begin{tabular}{ |p{2cm}||p{6cm}|p{2cm}|p{2cm}|  }
@@ -140,294 +157,370 @@
           $\tenv$ & the outside temperature in & $[0-16.5]$ & \si{\degreeCelsius} \\
           \hline
       \end{tabular}
-      \caption{Parameter values are used to compute $c_1,c_2, c_3$ and $c_4$.}
+      \caption{Parameter values used for computing $c_1,c_2, c_3$ and $c_4$.}
       \label{data-table}
       \end{table}
       \clearpage
     \subsection{Hybrid Solar Water Heating as a Sthocastic Hybrid Game}.
-    The hybrid solar water heating scenario with 12 modes of operations is
-    defined  like this: $\mathcal{G}_{n,m} = (\mathcal{C,U,X,F},\delta)$, 
-    where the controller $\mathcal{C}$ has a finite set of controllable modes,
-    given by resistance state ${r \in \mathbb{B}}$ and piston position $p \in 
-    \left\lbrace1,2,3\right\rbrace $. The environment $\mathcal{U}$ has a finite  
-    set of uncontrollable modes $v \in \mathbb{B} $, that means the valve state 
-    for opening/closing water aperture. \hlc{We assume that $\mathcal{U}$ given
-    $\delta$ can switch among modes with equal probability at every period}. 
-    The state variables in $\mathcal{X}$ are given by $\left\lbrace 
-    T,E,V \right\rbrace $, container temperature, energy used and container 
-    volumen respectively.
+      The hybrid solar water heating scenario with 12 modes of operations is
+      defined  like this: $\mathcal{G}_{n,m} = (\mathcal{C,U,X,F},\delta)$, 
+      where the controller $\mathcal{C}$ has a finite set of controllable actions,
+      given by resistance state ${r \in \mathbb{B}}$ and piston position $p \in 
+      \left\lbrace1,2,3\right\rbrace $. The environment $\mathcal{U}$ has a finite  
+      set of stochastic discrete perturbations $v \in \mathbb{B} $, that means the valve state 
+      for opening/closing water aperture. We assume that $\mathcal{U}$ given 
+      $\delta$ can switch among modes acording to the probabilistic distributions 
+      defined in \autoref{fig:uncontrollable} at every period. 
+      The state variables in $\mathcal{X}$ are given by $\left\lbrace 
+      E,V,T \right\rbrace $, container temperature, energy used and container 
+      volumen respectively.
 
-    Given the container temparature and volume, a controllable modes $r \in \mathbb{B}$
-    and $p \in \left\lbrace1,2,3\right\rbrace $ and uncontrollable mode
-    $v \in \mathbb{B} $ and a time delay $\tau$ \autoref{fig:casestudy}.
+      Given the container temperature and the volume, a controllable 
+      actions $r \in \mathbb{B}$ and $p \in \left\lbrace1,2,3\right\rbrace$,
+      a stochastic discrete perturbation $v \in \mathbb{B} $ and a 
+      time delay $\tau$ \autoref{fig:casestudy}.
 
-    \begin{equation}
-      \begin{aligned}
-        \frac{d}{dt}\tcont = \frac{1}{V(t)} [ -\constone(\tcont-\tenv)
-        - v \consttwo(\tcont-\tin) \\
-        - f \constthree(pV_{min} - \vcont)(\tcont-\tin)
-        + \constfour\irradiance+ 
-        r \constfive ]
-      \end{aligned}
-      \label{temperature-equation}
-    \end{equation}
+      \begin{equation}
+        \begin{aligned}
+          \frac{d}{dt}\tcont = \frac{1}{V(t)} [ -\constone(\tcont-\tenv)
+          - v \consttwo(\tcont-\tin) \\
+          - f \constthree(pV_{min} - \vcont)(\tcont-\tin)
+          + \constfour\irradiance + 
+          r \constfive ]
+        \end{aligned}
+        \label{eq:temperature-equation}
+      \end{equation}
 
-    \begin{equation}
-    \frac{d}{dt}\vcont = pV_{min} - \vcont; \quad
-    \label{volume-equation}
-    \end{equation}
+      \begin{equation}
+        \frac{d}{dt}\vcont = pV_{min} - \vcont; \quad
+        \label{eq:volume-equation}
+      \end{equation}
 
-    \begin{equation} 
-    \frac{d}{dt}E_{used} =  r \constthree ;
-    \label{Energy-equation}
-    \end{equation}
+      \begin{equation} 
+        \frac{d}{dt}E_{used} = r \constthree ;
+        \label{eq:Energy-equation}
+      \end{equation}
 
-    The equation \ref{temperature-equation} has some constants $\left\lbrace 
-    \constone, \consttwo, \constthree, \constfour \right\rbrace $ this
-    parameters are computed with the parameteres defines in table \ref{data-table} 
-    and equal to $\left\lbrace 2.44e^{-5},  4.77e^{-6}, 0.0024, 0.01 \right\rbrace$ respectively.
-    Another important variable to consider is $f$, which
-    means the transition between event $p$ and $p'$ which create a term that affect the total energy
-    \autoref{temperature-equation}, this term measure the changes of energy when the
-    piston is in expansion thus, the water entrance and the container temperature decrement
-    so as the increment of the volume, or contraction which cause water dispense 
-    the loss of total energy decreasing the volumen but not the container temperature.
-    $p < p' \rightarrow f' == 1$, which means a piston expansion otherwise a piston contraction 
-    $p \geqslant p' \rightarrow f' == 0$, in initial conditions we set $f == 0$.
-    
-    According to our case study we find some transisions such as $\gamma_2 \xrightarrow{\tau} \gamma_{0} $,
-    $\gamma_3 \xrightarrow{\tau} \gamma_{0} $, $\gamma_2 \xrightarrow{\tau} \gamma_{1} $,
-    $\gamma_3 \xrightarrow{\tau} \gamma_{0} $ so as $\gamma_6 \xrightarrow{\tau} \gamma_{3} $,
-    $\gamma_7 \xrightarrow{\tau} \gamma_{3} $, $\gamma_6 \xrightarrow{\tau} \gamma_{5} $,
-    $\gamma_7 \xrightarrow{\tau} \gamma_{5} $
-    \clearpage
+      In \ref{eq:temperature-equation}, \ref{eq:volume-equation}, 
+      \ref{eq:Energy-equation}  we note some constants $\left\lbrace 
+      \constone, \consttwo, \constthree, \constfour \right\rbrace $, these
+      are computed with the parameteres defined in table \ref{data-table} 
+      resulting $\left\lbrace 2.44e^{-5},  4.77e^{-6}, 0.0024, 0.01 \right\rbrace$ 
+      respectively. Another important variable to consider is $f \in 
+      \lbrace 0,1 \rbrace$,
+      this variable affect the term $f\constthree(pV_{min}-\vcont)(\tcont-\tin)$ 
+      that measure the energy removed in the system due to the piston 
+      expansion when $p \xrightarrow{\tau} p', (p'>p)$ thus $f=1$
+      which imply the incoming of cold water at \autoref{eq:temperature-equation}.
+      However, if the piston is contracted, that means 
+      $p \xrightarrow{\tau} p', p \geqslant p'$ and hence $f=0$,
+      in this case there is no temperature changes but rather a loss of 
+      energy due to the outgoing water.
+      % According to our case study we find some forbidden transisions such as
+      % $\gamma_0 \xrightarrow{\tau} \gamma_{2} $,
+      % $\gamma_0 \xrightarrow{\tau} \gamma_{3} $, $\gamma_1 \xrightarrow{\tau} \gamma_{2} $,
+      % $\gamma_1 \xrightarrow{\tau} \gamma_{3} $ as well as $\gamma_4 \xrightarrow{\tau} \gamma_{6} $,
+      % $\gamma_4 \xrightarrow{\tau} \gamma_{7} $, $\gamma_5 \xrightarrow{\tau} \gamma_{6} $,<
+      % $\gamma_5 \xrightarrow{\tau} \gamma_{7} $
+      \clearpage
 
-    \begin{figure}[!hbt]
-      \input{content/sources/automaton.tex}
-      \caption{Automaton with forbidden transitions because of the addition of a 
-      discrete variable \emph{f} which facilate the system modelling in cases such
-       as piston expansion and compression.}
-      \label{fig:automaton}
-    \end{figure}
+      \begin{figure}[!hbt]
+        \centering
+        \input{content/sources/automaton.tex}
+        \captionsetup{format=hang}
+        \caption{Automaton with forbidden transitions because of the addition of a 
+        discrete variable \emph{f} which facilate the system modelling either on
+        piston expansion or compression, the valve action is not considered
+        in this representation.}
+        \label{fig:automaton}
+      \end{figure}
+      As we notice, there are eight operation modes, is because in this step
+      we do not care the stochasticity  either perturbations or disturbances 
+      will be considered as intervals assuming the best and the worst case.
+      There are forbidden transitions in the automaton, for this reason we 
+      modify the algorithm which not filter forbidden transitions, otherwise
+      the algorihtm ignore the direction exploring modes which can cause problems
+      in the pattern search.
+      % Finally we set as controllable actions $c = (p,r,f) \in \lbrace 1,2,3 \rbrace \times 
+      % \lbrace 0,1 \rbrace \times \lbrace 0,1 \rbrace $ and uncontrollable actions 
+      % \hlc{ $u = \sum_{i=0}^{3} p_{i}(t)$, $p_1(t)$ }as shown at \autoref{fig:uncontrollable}.      
+      \clearpage 
+      \
+      \
+      \begin{figure}
+      % \begin{algorithm}
+        % \caption{Find Pattern with forbidden transitions}\label{euclid}
+        \begin{algorithmic}[1]
+          \Procedure{FindPattern}{$W,R,S,B,K$}\Comment{List of set of patterns} \\
+            \textbf{Input:} A box $W$, a box $R$,
+            a box $S$, a box $B$, a length $K$ of input pattern\\
+            \textbf{Output:} $<\prod,True> or <_,False>$ \\
+            $\mathcal{S}= \lbrace \emptyset \rbrace$ \\
+            $\mathcal{L}= \lbrace (W,W,\emptyset) \rbrace$
+            \While{$\mathcal{L} \neq \emptyset$}
+              \State $e_{current} = takeHead(\mathcal{L})$
+              \For{$i \in U$}:
+                \If {$Pair(l,i) = False $}\Comment{$l$ is the current mode}
+                  \State \textbf{continue}\Comment{Not considered transition $l,i$}
+                \EndIf
+                \label{alg:filter_transitions}
+                \If {$ Post_{i}(e_{current}.Y_{current}) \subseteq R$ \textbf{and} $Tube_{i}(e_{current}.Y_{current}) \cup B = \emptyset $ \textbf{and} $Tube_{i}(e_{current}.Y_{current}) \cup B \subseteq S $ }
+                  \State putTail($\mathcal{S}e_{current}.\prod + i$)
+                \Else
+                  \If{$ Tube_{i}(e_{current}.Y_{current}) \cap B \neq \emptyset $ \textbf{or} $ Tube_{i}(e_{current}.Y_{current}) \nsubseteq S $}
+                    \State discard $e_{current}$
+                  \EndIf
+                  \If{$ Tube_{i}(e_{current}.Y_{current}) \cap B = \emptyset $ \textbf{and} $ Tube_{i}(e_{current}.Y_{current}) \subseteq S $}
+                    \If {$Length(\prod)+1<K$}
+                      \State putTail$(\mathcal{L},(e_{current}.Y_{init}.Post_{i}(e_{current}.Y_{current}),e_{current}.\prod+i))$
+                    \EndIf              
+                  \EndIf
+                \EndIf
+              \EndFor          
+            \EndWhile
+            \State \textbf{return} $<_,False>$ \Comment{if no solution is found, or $<\prod,True>$, $\prod$ beaing any pattern validated in $Solution$.}
+          \EndProcedure    
+        \end{algorithmic}
+        \captionsetup{format=hang}
+        \caption{This algorithm is modified to ignore forbidden transitions  
+        and is improved filtering invalid transition in the line 9.}
+      % \end{algorithm}
+      \end{figure}                  
+      % This algorithm is modified to ignore forbidden transitions  and studied in 
+      % \cite{le2017improved} is improved filtering invalid transition in the line \ref{alg:filter_transitions}.
+      \clearpage
 
-    Finally we set as controllable actions $c = (p,r,f) \in \lbrace 1,2,3 \rbrace \times 
-    \lbrace 0,1 \rbrace \times \lbrace 0,1 \rbrace $ and uncontrollable actions 
-    \hlc{ $u = \sum_{i=0}^{3} p_{i}(t)$, $p_1(t)$ }as shown at \autoref{fig:uncontrollable}.    
-    \clearpage 
-    \section{Experiments: }
+  \section{Experiments: }
     \subsection{Patterns computation}
-    To establish a safe sthocastic hybrid system,
-    we start to compute patterns as \autoref{sec:safepatterncomputation} 
-    explains. It is important to bear in mind that the stochastic events 
-    shall not be considered as discrete state but as interval, \hlc{in other 
-    words the sthocastic action will be composed by lower case when valve
-    is close doing the loss energy as zero and the higher case when valve 
-    is open doing loss energy due to water dispense}. Safe patterns are 
-    computed and associated to zonotopes,which are regions where patterns
-    verify the next: Given $D = 20, K = 3$ and by constructing a law 
-    $\sigma(.)$, such that for all $x_o \in R$, and under the unknown 
-    bounded perturbation $d$, there exists $\pi = \sigma(.) \in U^k$ for
-     some $k$ such that:
-    \begin{center}
-      $x(t_0 + k\tau; t_0,x_0,d,\pi) \in R$ \\
-      $\forall t\in  \lbrack t_0, t_0+k\tau\rbrack, x(t; t_0,x_0,d,\pi)
-       \in S $  \\
-      $\forall t\in  \lbrack t_0, t_0+k\tau\rbrack, x(t; t_0,x_0,d,\pi)
-       \not\in B$
-    \end{center}
-    Such a law permits to perform a safe control guaranteeing limits for each
-    action in each step conditioning a safe sequence of modes called 
-    \emph{pattern}. We configurate $R = \begin{bmatrix} 40 & 70 \\ 0.1 & 0.2
-    \end{bmatrix}$, $S = \begin{bmatrix} 30 & 80 \\ 0.09 & 0.31 \end{bmatrix}$,
-    $W = \begin{bmatrix} 40 & 70 \\ 0.1 & 0.2 \end{bmatrix}$,
-    $B = \begin{bmatrix} 0 & 0 \\ 0 & 0 \end{bmatrix}$, after to run the 
-    
-    \textbf{Proposition 1.} \emph{
-      Algorithm Decomposition with input (R,R,S,B,D,K) returns, when it successfully 
-      terminates, a decomposition $\lbrace V_i, \pi_i \rbrace_{i \in I}$ 
-      of $R$ which solves Problem 1.
-    }    
-    \clearpage
+      To establish a safe stochastic hybrid game,
+      we start to compute patterns as the \autoref{sec:safepatterncomputation} 
+      explains. It is important to bear in mind that the stochastic discrete
+      perturbation $v$ is considered as an interval $[0,1]$, thus in the second term
+      in the \autoref{eq:temperature-equation} results $Interval(0,1)c_2(x[0]-Ti)/(0.1p)$,
+      which means the term becomes zero when the valve is close. However, 
+      when the valve is open the term will change to its biggest value due to
+      the cold water incoming and warm water outgoing. Safe patterns are 
+      computed and associated to zonotopes,which are regions where patterns
+      verify the next: Given $D = 20, K = 3$ and by constructing a law 
+      $\sigma$, such that for all $x_o \in R$, and under the unknown 
+      bounded perturbation $d$, there exists a $ \sigma: \mathbb{C} \rightarrow C^k$ for      
+      some $k$ such that:      
+      Such a law permits to perform a safe control guaranteeing limits for each
+      action in each step conditioning a safe sequence of modes called 
+      \emph{pattern} which verify stability and safety defined in
+       \autoref{sec:safepatterncomputation}.
 
-    There are forbidden transitions in the automaton, for this reason we 
-    modify the algorithm which only permit to evaluate allowed transitions, otherwise
-    the algorihtm ignore the mode exploring other modes to complete the pattern.
-    
-    \begin{algorithm}
-      \caption{Find Pattern with forbidden transitions}\label{euclid}
-      \begin{algorithmic}[1]
-        \Procedure{FindPattern}{$W,R,S,B,K$}\Comment{List of set of patterns} \\
-          \textbf{Input:} A box $W$, a box $R$,
-          a box $S$, a box $B$, a length $K$ of input pattern\\
-          \textbf{Output:} $<\prod,True> or <_,False>$ \\
-          $\mathcal{S}= \lbrace \emptyset \rbrace$ \\
-          $\mathcal{L}= \lbrace (W,W,\emptyset) \rbrace$
-          \While{$\mathcal{L} \neq \emptyset$}
-            \State $e_{current} = takeHead(\mathcal{L})$
-            \For{$i \in U$}:
-              \If {$Pair(l,i) = False $}\Comment{$l$ is the current mode}
-                \State \textbf{continue}\Comment{Not considered transition $l,i$}
-              \EndIf
-              \label{alg:filter_transitions}
-              \If {$ Post_{i}(e_{current}.Y_{current}) \subseteq R$ \textbf{and} $Tube_{i}(e_{current}.Y_{current}) \cup B = \emptyset $ \textbf{and} $Tube_{i}(e_{current}.Y_{current}) \cup B \subseteq S $ }
-                \State putTail($\mathcal{S}e_{current}.\prod + i$)
-              \Else
-                \If{$ Tube_{i}(e_{current}.Y_{current}) \cap B \neq \emptyset $ \textbf{or} $ Tube_{i}(e_{current}.Y_{current}) \nsubseteq S $}
-                  \State discard $e_{current}$
-                \EndIf
-                \If{$ Tube_{i}(e_{current}.Y_{current}) \cap B = \emptyset $ \textbf{and} $ Tube_{i}(e_{current}.Y_{current}) \subseteq S $}
-                  \If {$Length(\prod)+1<K$}
-                    \State putTail$(\mathcal{L},(e_{current}.Y_{init}.Post_{i}(e_{current}.Y_{current}),e_{current}.\prod+i))$
-                  \EndIf              
-                \EndIf
-              \EndIf
-            \EndFor          
-          \EndWhile
-          \State \textbf{return} $<_,False>$ \Comment{if no solution is found, or $<\prod,True>$, $\prod$ beaing any pattern validated in $Solution$.}
-        \EndProcedure    
-      \end{algorithmic}
-    \end{algorithm}
-  
-    The algorithm find pattern second version on \cite{le2017improved} 
-    is improved filtering invalid transition in the line \ref{alg:filter_transitions}.     
-    % $R = \lbrack 40,70; 0.1,0.2 \rbrack $
-    \begin{figure}[!hbt]
-      \begin{center}
-          \input{content/sources/safe_post_pattern.tex}
-          \caption{Simulation for the firsts three patterns}
-      \end{center}
-    \end{figure}
-    
-    % caption simulate the first 3 patterns randomly  acording to the right zonotope.     
-    
-    % AJA
-    \textsc{python simulator}. We implement a \emph{toolbox} which support
-    sthocastic hybrid models $\mathcal{G}_{n,m}$ and controllers $\mathcal{C}$. The models works with seasonal data 
-    disturbances for this reason we incorporate modules to preprocess the data.
-    \textbf{Simulation} In the initial step of the Model predictive algorithm to control,
-    we use the first pattern corresponding to the current zonotope. In the subsequent 
-    iterations e use the \textsc{stratego} to find a near optimal strategy from a selected
-    set of safe patterns as show \ref{strategotemplate}. It is very important to bear in mind 
-    the way of model predictive controler operate which is an asynchrnous call 
-    before finish the last mode in the current pattern, sending to \textsc{stratego}
-    the current dynamical states such as \emph{mode, volume, temperature} and so on with the
-    corresponding environment predictions \ref{prediction_environment}.
-    After the near optimal pattern computation for stochastic hybrid game 
-    by \textsc{stratego} the process repeat.
+      % \begin{figure}[!hbt]
+      %   \begin{center}
+      %       \input{content/sources/safe_post_pattern.tex}
+      %       \captionsetup{format=hang}
+      %       \caption{Simulation for the first three patterns}
+      %       \label{fig:patternsimulation}
+      %   \end{center}
+      % \end{figure}
 
-    \textsc{uppaal stratego}. 
+      \begin{figure}[!htb]        
+        \begin{subfigure}{0.51\textwidth}
+          \includegraphics[width=1.0\linewidth]{images/safe_post_pattern.png}
+          \captionsetup{format=hang}
+          \caption{Simulation for the first three patterns of lengths $3,2,3$ respectively.} 
+          \label{fig:safepostpattern}
+        \end{subfigure}
+        \hspace*{\fill}
+        \begin{subfigure}{0.51\textwidth}
+          \includegraphics[width=1.0\linewidth]{images/safe_post_pattern_perturb.png}
+          \captionsetup{format=hang}
+          \caption{Stabilization after the normal perturbation $u=7h,\sigma=1.6$ between $6h$ and $8h$.} 
+          \label{fig:safepostpatternperturbation}
+        \end{subfigure}%                  
+      \end{figure}
 
-    \textbf{Learning strategies for PTMPDs}
-    The algorithm used to learn will generate an approximation of the optimal strategy.
-    The algorithm has five main phases, and one optional. All these can be seen 
-    in \textsc{fig} . We will now shortly each of these steps. In the following 
-    sections. 
+      We define the boundaries for the \ac{SWH} such as 
+      $R = \begin{bmatrix} 40 & 70 \\ 0.1 & 0.2
+      \end{bmatrix}$, $S = \begin{bmatrix} 30 & 80 \\ 0.09 & 0.31 \end{bmatrix}$,
+      $W = \begin{bmatrix} 40 & 70 \\ 0.1 & 0.2 \end{bmatrix}$,
+      $B = \begin{bmatrix} 0 & 0 \\ 0 & 0 \end{bmatrix}$ that are required for the 
+      decomposition algorithm developed in \cite{liberzon2003switching}. We can 
+      see the states returning to the $R$ region after finish the pattern 
+      satisfying stability and safety in the simulation \autoref{fig:safepostpattern}.
+      However, the algorithm is able to stabilize even when a perturbation 
+      occur as \autoref{fig:safepostpatternperturbation}.
+      \clearpage        
+    \subsection{Real Time Model Predictive Controller}
+      \textsc{python simulator}. We implement a \emph{toolbox} which incorporate
+      sthocastic hybrid models $\mathcal{G}_{n,m}$ and controllers $\mathcal{C}$.
+      The models works with seasonal data  \emph{disturbances} for this reason we 
+      incorporate modules to preprocess the data. In the initial step of the model 
+      predictive algorithm to control \ac{MPC}. The application of \ac{MPC} to 
+      stochastic hybrid games subject to disturbances and
+      stochastic perturbations gives rise to uncertain optimization problems.
+      We use the first pattern corresponding to the current zonotope. In the subsequent 
+      iterations we use the \textsc{stratego} to find a near optimal strategy from a selected
+      set of safe patterns as show \ref{sssection:upppalstratego}. It is very important to bear in mind 
+      the way of model predictive controler operate which is an asynchrnous call 
+      before finish the last mode in the current pattern, sending to \textsc{stratego}
+      the current dynamical states such as \emph{mode, volume, temperature} and so on with the
+      corresponding environment predictions \ref{prediction_environment}.
+      After the near optimal pattern computation for stochastic hybrid game 
+      by \textsc{stratego} the process repeat.
 
-    check learning optimal schedullign for time uncertain cet
-    \textbf{Simuation}
-    \textbf{Filtering}
-    \textbf{Learning}
-    \textbf{Determinization}
-    \textbf{Evaluation}
+    \subsection{Controllers Optimizations:}
+      Regarding our experiments, we implement two controller synthesis 
+      optimization over a real time simulator which run a \ac{MPC} and 
+      synthetize a switching rule $\sigma$ written in  \textsc{Python} 
+      and a number of controllers associated to two optimization, 
+      including a greedy method and the ones produced by \textsc{uppaal 
+      stratego}. The simulator use our case study a \ac{SWH} as plant
+      and a \ac{SHG} $\mathcal{G}_{n,m}$ as model in the second 
+      optimization. We introduce the optimizations which we use in our experiments. We
+      present the current controller operating in the house, one controller
+      proposed by engineers and another one controller synthetized using 
+      online synthesis and \textsc{uppaal-stratego} as follows.
 
-    uncontrollable action si defined in a interval [min, max] at the moment to run 
-    the find pattern. 
-
-    \textbf{add this part}
-    add the pseudocode about the methodoloy pattern and near optimal.
-
-    \textbf{add the uppaal template}
-    in this part add a figure with the template and describe it.
-
-
-    \clearpage
-
-    \subsection{Near optimal Experiments}
-    Regarding our experiments, we have two major components: a simulator 
-    written in  \textsc{Python} and a number of controllers, including 
-    the ones produced by \textsc{uppaal stratego}. The simulator implements
-    a solar water heating as stochastic hybrid game $\mathcal{G}_{n,m}$. For our 
-    experiments, in the simulator we fix a time horizon \emph{H} of 75 minutes
-    with a period \emph{P} of 5 minutes. As in the real house, every 
-    5 minutes, the simulator outputs the current container values such as
-    temperature \emph{T}, volume \emph{V}, energy \emph{E}, mode and predicted 
-    environment data Subsequently, the controller inputs the control actions 
-    such as resistor \emph{r}, piston \emph{p} which are used by the simulator  
-    for the next 5 minutes. The house has a desired temperature $T^g$ and alpha
-    parameters which denotes the importance to minimize either target or 
-    energy consumption. Our goal is to optimize the comfort for the water 
-    consumption reducing the energy consumption. To define 
-    this cost function subject to controller (strategy) $\sigma$ and 
-    $\mathcal{G}_{n,m}$ of the form $\pi = \gamma_0 \xrightarrow{t_{1}} 
-    \gamma_1 \xrightarrow{t_{2}} ... \xrightarrow{t_{k-1}} 
-    \gamma_{k-1} \xrightarrow{t_{k}} \gamma_{k}$ where $k = H/P$ is the 
-    number of control steps in the run $\pi$. Let $T_{i}(\gamma_j)$ denote
-    the container temperature $T_i$ at configuration $\gamma_j$. Then the 
-    cost function is defined by
-
-    \begin{equation}
-      \begin{aligned}
-          cost(\pi) = \alpha(E) + (1-\alpha)(T-T_g)
-      \end{aligned}
-    \end{equation}
-
-    In our experiments, we evaluate a number of different controllers. The 
-    simulator uses the cost function to compare the different
-    controllers.
-
-    \textbf{Controllers}. In the following we introduce a number of controllers
-    which we use in out experiments. We present the current controller operating
-    in the house, two controllers proposed by engineers and the controllers 
-    synthetized using online synthesis and \textsc{uppaal-stratego}.
-
-    % \emph{Bang-Bang Controller}. The bang-bang controller is currently running
-    % in the physical house and after each reading of container temperature $T$,
-    % it simply switch the resistor $ON$ of container where $T < T^g$ and leaves 
-    % the remaining switch $OFF$.
-
-    \emph{Safe Greddy Controller with Patterns}. 
-    The greddy controller explore pattern by pattern and is chosen those which minimize
-    the cost function, due to the use of complete patterns it guarantee a safe 
-    behaviour and is optimize without consider the uncontrollable action 
-    valve thus it could be optimize even more from a sthocastic approach.
-
-    \emph{Statego Online Controller}.
-    The Figure environment "floats" to find an optimal position on the page
-    . When you begin a figure, you can use the options [htbp!] to specify whether 
-    the figure should go "here", the "top" of this page, the "bottom" of this page,
-     or a special "page" reserved for floats. LaTeX, in its infinite wisdom,
-      will sometimes prevent you from putting a figure in an "ugly" place, 
-      but you can (sort of) override its decision using the "!" option. 
-      When you haven't used any option, the environment assumes that you
-       provided [tbp], and it's choosing to put the figure at the top of
-        the page, above where your section goes.
-
+      \subsubsection{ \emph{Greedy optimization}}
+        The greddy controller explore a set of patterns that correspond to the 
+        current zonotope and is chosen the pattern that minimize
+        the cost function. Due to the use of a complete pattern, this 
+        approach is able to guaranteeing a safe behaviour. Additionally, this 
+        approach only optimize partially due to the stochasticity is ignored 
+        thus it can be optimized even more.
         
-    \begin{minipage}{\linewidth}
-      \begin{center}
-          \includegraphics[width=0.8\linewidth]{images/controllers}
-          \captionof{figure}{Container temparature comparison between greedy controller with 
-          uppaal stratego controller, both approaches are safe.}
-      \end{center}
-      \label{uncontrollableactions}
-    \end{minipage}
+        \begin{center}
+          $J_{\sigma_{safe},H} = \norm{x(\sigma_{safe},t,d,u)-x_d(\sigma_{safe},t,d,u)} $ \\
+          $\sigma_{opt} = \underset{\sigma \subseteq \sigma_{safe}}{\mathrm{argmin}}(J_{\sigma,H}$)
+        \end{center}
 
-    \begin{minipage}{\linewidth}
-      \begin{center}
-          \includegraphics[width=1.0\linewidth]{images/automaton_uppaal}
-          \captionof{figure}{Template of the safe an near optimal algorithm}
-      \end{center}
-      \label{strategotemplate}
-    \end{minipage}
-    We can observe an algorithm that run on \textsc{stratego}, this template 
-    is adapted to find near optimal strategies for stochastic hybrid games, 
-    \hlc{some heuristics are running for an exhaustive stochastic exploration} and
-    reinforcement learning is used to 
+      \subsubsection{ \emph{Reinforcement learning optimization} }
+        \label{sssection:upppalstratego}
+        (\textsc{Stratego-ON}) The controller is synthetized by \textsc{Uppaal Stratego}
+        using the online strategy synthesis methodology introduced in 
+        \autoref{sec:onlinestochastichybridcontroller} with a short 
+        horizon $H$ ahead and $ P=\tau$. The aim is to learn the optimal control actions 
+        configurations for several steps ahead using machine learning 
+        methods dealing with stochastic discrete perturbations through
+        a set of patterns which guaranteeing a safe behaviour and hence
+        synthetize controllers that avoid overflow/underflow.
+        
+        For our experiments, in the simulator we fix a time horizon \emph{H} of 75 minutes
+        with a period \emph{P} of 5 minutes. As in the real house, every 
+        5 minutes, the simulator outputs the current container values such as
+        temperature \emph{T}, volume \emph{V}, energy \emph{E}, mode and predicted 
+        environment data in order to \textsc{Uppaal} can use these to calculate the optimal
+        strategy. Subsequently, each operation mode that correspond to the strategy
+        is used mapping it as control actions such as resistor \emph{r}, 
+        piston \emph{p} which are used to control the states during the 
+        real time \ac{MPC} simulation for the next 5 minutes. The house 
+        has a desired temperature $T^g$ and an alpha parameter which denotes 
+        the importance to minimize either the distance $T - T_g$ or energy 
+        consumption $E$. Our goal is to optimize  
+        the comfort for the water consumption reducing the energy consumption. 
+        To define this cost function that is subject to controller (strategy) $\sigma$ and 
+        $\mathcal{G}_{n,m}$ of the form $\pi = \gamma_0 \xrightarrow{t_{1}} 
+        \gamma_1 \xrightarrow{t_{2}} ... \xrightarrow{t_{k-1}} 
+        \gamma_{k-1} \xrightarrow{t_{k}} \gamma_{k}$ where $k = H/P$ is the 
+        number of control steps in the run $\pi$. Let $T(\gamma_j)$ denote
+        the container temperature $T$ at configuration $\gamma_j$. Then the 
+        cost function is defined by
 
-    \emph{Safe and Near Optimal Controller}.
+        \begin{equation}
+          \begin{aligned}
+            \sigma^{H}_{opt} = \underset{\sigma \subseteq \sigma_{safe}}{\mathrm{argmin}}(\mathbb{E}^{\mathcal{G},\gamma}_{\sigma_{safe},H}(\alpha(E) + (1-\alpha)(T-T_g)))            
+          \end{aligned}
+          \label{eq:costfunction}
+        \end{equation}
 
+        In our experiments, we evaluate a number of different controllers. The 
+        simulator uses the cost function to compare the different
+        controllers.
 
-    \textbf{Evaluation Scenarios}
+        \clearpage
+        % \begin{minipage}{\linewidth}
+        %   \begin{center}
+        %       \includegraphics[width=0.7\linewidth]{images/automaton_uppaal}
+        %       \captionof{figure}{Template of the safe an near optimal algorithm}
+        %   \end{center}
+        %   \label{strategotemplate}
+        % \end{minipage}
 
-    \textbf{Controller Evaluation}
+        \begin{figure}[!hbt]
+          \centering
+          \input{content/sources/template1.tex}
+          \captionsetup{format=hang}
+          \caption{The model of the controller. The \textbf{select} statement is a simplification of having a set of edges with one for each value in the select range.}          
+          \label{fig:selectoperator}
+        \end{figure}
 
+        The first part in the algorithm consist on mapping the current sate to 
+        the corresponding pairs such as zonotope and set of patterns, the 
+        \emph{select} statement represent a set of edges each of these with its 
+        corresponding pattern; the output is the new strategy when a whole modes
+        in the current pattern were visited otherwise it just move to next 
+        mode, each mode is associated to a configuration $\gamma_i$.
+
+        Subsequently, we define distributions $\delta^k_i$ which estimates
+        events in the system as stochastic discrete perturbations, similar to the 
+        defined in the real time \ac{MPC} the distributions are composed by 
+        3 normal distributions and 1 uniform distribution as described in 
+        \autoref{fig:uncontrollable}. It is important to bear in mind,
+        the event accumulation which means the number of valves open 
+        depending of the probability, after to define the perturbations 
+        in the $x_{clock}<P$ we reset the $x_{clock}=0$. Then, we implement
+        an \emph{Euler method} to evolve the system each period $P$, this method
+        update the state $x$ using the flow function $\mathcal{F}_{c,u}(x(t),d(t))$
+        and defined in \autoref{eq:temperature-equation},\autoref{eq:volume-equation},
+        \autoref{eq:Energy-equation} respectively, this updating is 
+        subject to a cost function defined in \autoref{eq:costfunction}. Finally, 
+        We defined another $y_{clock}$ to limit the processing 
+        until it reach the horizon $H$.
+
+      
+        \begin{figure}[!hbt]
+          \centering
+          \input{content/sources/template2.tex}
+          \captionsetup{format=hang}
+          \caption{The model generating stochastic perturbations as valve aperturing and closing}
+          \label{fig:perturbationsgeneration}
+        \end{figure}
+        
+
+        \clearpage
+
+        After to define the automaton as \ac{SHG} \textsc{Uppaal Stratego}
+        we use the command 1 to find the strategy which minimize the cost 
+        function in a horizon $H$. Then, simulate the system for a horizon
+        in order to get modes. These modes are used in the real time 
+        simulator which use \ac{MPC} to optimize strategies subject to safe
+        patterns for $24h$ as shown in \autoref{fig:resulta}.
+
+        \begin{lstlisting}
+          1. strategy Opt = minE (pareto) [<=horizon]: 
+          <> GTime>=horizon
+          2. simulate 1 [<=horizon] {mode} under Opt
+        \end{lstlisting}
+
+        We notice a better performace with online control using \textsc{stratego}
+        because  of the stochastic aproach which explore the best set of modes in 
+        a \emph{horizon} $H$ \textsc{stratego} not only verify the system correcteness
+        but also explore strategies which optimize the cost function, which include
+        the energy consumption and temperature distance.
+        \begin{figure}[!htb]        
+          \begin{subfigure}{0.51\textwidth}
+            \includegraphics[width=1.0\linewidth]{images/controllers}
+            \captionof{figure}{Temparatures comparison between safe greedy and 
+            safe stratego controller.} \label{fig:resulta}
+          \end{subfigure}
+          \hspace*{\fill}
+          \begin{subfigure}{0.51\textwidth}
+              \includegraphics[width=1.0\linewidth]{images/energycomparison.png}
+              \caption{Energy comparison between safe greedy and safe online stratego
+              controller.} \label{fig:resultb}
+          \end{subfigure}%            
+          \caption{Solar water heating 24h trajectories of two control strategies}
+        \end{figure}
+
+      For $\alpha = 0.5$, the temperature mean error in \autoref{fig:resulta} is 
+      smpc local:  $1.8$ and sompc uppaal:  $3.37$ and also in \autoref{fig:resultb} 
+      the saved energy consumption is $ \bigtriangleup E = 310.8Kw$. % 310800.0
+        
+          % \textbf{Evaluation Scenarios}
+          % \textbf{Controller Evaluation}

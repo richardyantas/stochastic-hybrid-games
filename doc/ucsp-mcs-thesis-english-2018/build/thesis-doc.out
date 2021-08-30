@@ -9,19 +9,23 @@
 \BOOKMARK [0][-]{chapter.2}{Related Works}{}% 9
 \BOOKMARK [1][-]{section.2.1}{Online and Compositional Learning of Controllers with Application to Floor Heating}{chapter.2}% 10
 \BOOKMARK [1][-]{section.2.2}{An Improved Algorithm for the Control Synthesis of Nonlinear Sampled Switched Systems}{chapter.2}% 11
-\BOOKMARK [1][-]{section.2.3}{Distributed Synthesis of State-Dependent Switching Control}{chapter.2}% 12
-\BOOKMARK [1][-]{section.2.4}{Final Considerations}{chapter.2}% 13
-\BOOKMARK [0][-]{chapter.3}{Background}{}% 14
-\BOOKMARK [1][-]{section.3.1}{Switched systems}{chapter.3}% 15
-\BOOKMARK [1][-]{section.3.2}{Safe patterns computation}{chapter.3}% 16
-\BOOKMARK [1][-]{section.3.3}{Near optimal Switched Controller synthesis}{chapter.3}% 17
-\BOOKMARK [1][-]{section.3.4}{Safe and near optimal controller for sthocastic hybrid games}{chapter.3}% 18
-\BOOKMARK [0][-]{chapter.4}{Safe and Near Optimal Controller Synthesis for Stochastic hybrid Games}{}% 19
-\BOOKMARK [1][-]{section.4.1}{Solar Water Heating Case study}{chapter.4}% 20
-\BOOKMARK [2][-]{subsection.4.1.1}{data analysis}{section.4.1}% 21
-\BOOKMARK [2][-]{subsection.4.1.2}{Hybrid Solar Water Heating as a Sthocastic Hybrid Game}{section.4.1}% 22
-\BOOKMARK [1][-]{section.4.2}{Experiments: }{chapter.4}% 23
-\BOOKMARK [2][-]{subsection.4.2.1}{Patterns computation}{section.4.2}% 24
-\BOOKMARK [2][-]{subsection.4.2.2}{Near optimal Experiments}{section.4.2}% 25
-\BOOKMARK [0][-]{chapter.5}{Discussion and Conclusions}{}% 26
-\BOOKMARK [1][-]{section.5.1}{Limitations and Future Work}{chapter.5}% 27
+\BOOKMARK [1][-]{section.2.3}{Final Considerations}{chapter.2}% 12
+\BOOKMARK [0][-]{chapter.3}{Background}{}% 13
+\BOOKMARK [1][-]{section.3.1}{Switched systems}{chapter.3}% 14
+\BOOKMARK [1][-]{section.3.2}{Online Stochastic Hybrid Controller Synthesis}{chapter.3}% 15
+\BOOKMARK [1][-]{section.3.3}{Uppaal Stratego}{chapter.3}% 16
+\BOOKMARK [1][-]{section.3.4}{Online Synthesis}{chapter.3}% 17
+\BOOKMARK [1][-]{section.3.5}{Safe patterns computation}{chapter.3}% 18
+\BOOKMARK [1][-]{section.3.6}{Safe and optimal strategies for stochastic hybrid games}{chapter.3}% 19
+\BOOKMARK [1][-]{section.3.7}{Workflow}{chapter.3}% 20
+\BOOKMARK [0][-]{chapter.4}{Safe and Near Optimal Controller Synthesis for Stochastic hybrid Games}{}% 21
+\BOOKMARK [1][-]{section.4.1}{Solar Water Heating Case study}{chapter.4}% 22
+\BOOKMARK [2][-]{subsection.4.1.1}{Data processing and generation}{section.4.1}% 23
+\BOOKMARK [2][-]{subsection.4.1.2}{Hybrid Solar Water Heating as a Sthocastic Hybrid Game}{section.4.1}% 24
+\BOOKMARK [1][-]{section.4.2}{Experiments: }{chapter.4}% 25
+\BOOKMARK [2][-]{subsection.4.2.1}{Patterns computation}{section.4.2}% 26
+\BOOKMARK [2][-]{subsection.4.2.2}{Real Time Model Predictive Controller}{section.4.2}% 27
+\BOOKMARK [2][-]{subsection.4.2.3}{Controllers Optimizations:}{section.4.2}% 28
+\BOOKMARK [0][-]{chapter.5}{Discussion and Conclusions}{}% 29
+\BOOKMARK [1][-]{section.5.1}{Conclusions}{chapter.5}% 30
+\BOOKMARK [1][-]{section.5.2}{Limitations and Future Work}{chapter.5}% 31

@@ -24,7 +24,6 @@ DT = STATIC_DATA["dt"]  # 1  # data_resample_time (in min)
 
 # NUMBER_STEPS = 15
 # OBS: we can use pandas propeties to process data or numpy, an also create an API
-
 # vars returns the __dict__ attribute of the given project
 
 

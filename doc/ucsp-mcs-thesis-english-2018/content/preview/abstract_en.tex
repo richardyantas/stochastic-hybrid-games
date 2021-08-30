@@ -1,30 +1,26 @@
 \begin{abstract}
 %----Image Teaser----%
 
-
 %\begin{figure}[!h]
 %    \begin{center}
 %        \includegraphics[width=\textwidth]{images/abstract_fig}
 %    \end{center}
 %\end{figure}
 
-Nowadays, hybrid systems are widely used in industry problems like
-optimization and safety are some of the most important, due to some 
-advances in machine learning and model Checking was possible to 
-implement a methodology to improve a real time system using reinforcement
-learning and boundary computation to explore limits in order to guarantee 
-a safe and near optimal behaviour. Hybrid systems that are most common in 
-engineering applications(\eg logic-dynamic controllers, internet 
-congestion even physical systems with impact,\etc). Hybrid systems 
-have been used to model several cyber-physical systems. For this purpose,
-in this document we implement a"Solar water heating" as case study in order 
-to analize metrics which allow us to evaluate our results comparing
-with traditional controllers. In additionm we present a toolbox 
-\textsc{Uppaal Stratego} to explore multiple strategy  in efficient 
-way and get patterns which allow us to optimize. 
+Stochastic hybrid systems are widely used in the energy industry, 
+problems such as optimization and safety are some of the most 
+important. We implement a methodology to improve a real time stochastic 
+hybrid system combining model checking, reinforcement learning and boundary
+computation.  We apply formal methods to synthetize (i.e derive automatically)
+a safe and near optimal controller. We model a solar water heating, including 
+the human interaction to access the water in it as stochastic. Additionally, 
+we use the tool \textsc{Uppaal Stratego} to synthetize a control strategy 
+minimizing a cost function composed by energy consumption(\emph{optimization})
+and temperature distance (\emph{safety}) while the last one also guaranteeing
+no overflow a max and min temperature defined previously.
 
 \begin{flushleft}
-\textbf{Keywords:} Control Theory, Game Theory,  Machine Learning, Model Checking.
+\textbf{Keywords:} Stochastic Hybrid Systems, Machine Learning and Model Checking.
 \end{flushleft}
 
 \end{abstract}
