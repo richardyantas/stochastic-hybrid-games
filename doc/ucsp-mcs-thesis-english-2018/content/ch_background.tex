@@ -1,16 +1,19 @@
 \chapter{Background}
 % proposal
 \label{ch:background}
-In this chapter we present basic concepts that are needed to understand better
-our work. In \autoref{sec:switchedsystems} we define some definitions about switched systems 
-and the difference between hybrid system a basic concept that we will use for our
-analysis, \cite{sanfelice2020hybrid}. In \autoref{sec:modelpredictivecontroller} we 
-describe the \ac{MPC} approach. In \autoref{sec:safepatterncomputation} we explains
-the method to find patterns. In \autoref{sec:uppaalstratego} we describe 
-\textsc{Uppaal Stratego}. In \autoref{sec:onlinestochastichybridcontroller} we describe
-a method to control stochastic hybrid games using online controller. In \autoref{sec:safeandoptimal}
-we explain the methodology to join the safe and optimal approach. Lastly in 
-\autoref{sec:workflow}, we show a general diagram that explain how the system works.
+In this chapter we present basic concepts that are needed 
+to understand better our work. In \autoref{sec:switchedsystems} 
+we define some definitions about switched systems and the 
+difference between hybrid system a basic concept that we 
+will use for our analysis, \cite{sanfelice2020hybrid}. 
+In \autoref{sec:safepatterncomputation} we explains the method 
+to find patterns. In \autoref{sec:uppaalstratego} we describe 
+\textsc{Uppaal Stratego}. In \autoref{sec:onlinestochastichybridcontroller}
+ we describe a method to control stochastic hybrid games using online 
+ controller. In \autoref{sec:safeandoptimal} we explain the 
+ methodology to join the safe and optimal approach. Lastly in 
+\autoref{sec:workflow}, we show a general diagram that explain 
+how the system works.
 \clearpage
   \section{Switched systems}
     \label{sec:switchedsystems}
@@ -78,23 +81,23 @@ we explain the methodology to join the safe and optimal approach. Lastly in
       \begin{subfigure}{0.60\textwidth}
         \centering
         \includegraphics[width=\linewidth]{images/oneroom1.png}
-        \caption{one room, $D(24h)=4200$.} \label{fig:1a}
+        \caption{Variable declarations.} \label{fig:1a}
       \end{subfigure}
       \hspace*{\fill}
       \begin{subfigure}{0.35\textwidth}
           \begin{subfigure}{\textwidth}
             \includegraphics[width=\linewidth]{images/heatingmodes.png}
-            \caption{b . $D(24h)=2750$.} \label{fig:1b}
+            \caption{Heating modes.} \label{fig:1b}
           \end{subfigure}
         % \hspace*{\fill}
           \begin{subfigure}{\textwidth}
             \includegraphics[width=\linewidth]{images/windowprofile.png}
-            \caption{b . $D(24h)=2750$.} \label{fig:1c}
+            \caption{Window profile.} \label{fig:1c}
           \end{subfigure}
           % \hspace*{\fill}
           \begin{subfigure}{\textwidth}
             \includegraphics[width=\linewidth]{images/distancetogoal.png}
-            \caption{b . $D(24h)=2750$.} \label{fig:1d}
+            \caption{Distance to goal temp.} \label{fig:1d}
           \end{subfigure}     
 
       \end{subfigure}
@@ -134,7 +137,7 @@ we explain the methodology to join the safe and optimal approach. Lastly in
 
 
 
-    \textbf{Definition 1.(Stochastic Hybrid Game).} A stochastic hybrid game $\mathcal{G}$ is a
+    \textbf{Definition 2.(Stochastic Hybrid Game).} A stochastic hybrid game $\mathcal{G}$ is a
     tuple $(\mathcal{C,U,X,F},\delta)$ where:
     \\
     \\
@@ -426,7 +429,9 @@ we explain the methodology to join the safe and optimal approach. Lastly in
     % hybrid system as defined in \autoref{eq:hybridsystem}. Given 
     % three sets R, S and B 
     
-    \textbf{Problem 1}\emph{(Safe Control Synthesis)}. Let us 
+    
+  
+    \textbf{Definition 3}\emph{(Safe Control Synthesis)}. Let us 
     consider a hybrid system defined in \autoref{eq:hybridsystem}. Given three sets R, S and B, 
     with ${R \cup B \in S}$  and ${R \cap B = \varnothing }$. % find a 
     The system is safe if there is a rule ${\sigma : \mathbb{R}^+ \rightarrow U}$ such that, 
@@ -446,39 +451,60 @@ we explain the methodology to join the safe and optimal approach. Lastly in
         \end{equation}
     \end{itemize}
 
-    \textbf{Definition 1} Initial Value Problem(IVP). Consider an ODE 
-    with a given initial condition.
+    \textbf{Definition 4}(Inclusion function). \emph{Consider a function 
+    $f :\mathbb{R}^n \rightarrow \mathbb{R}^m$, then $[f]:\mathbb{R}^n \rightarrow \mathbb{R}^m$}
+    is said to be an extension of f to intervals if
     \begin{eqnarray*}
-      \label{eq:ivp}
-      \dot{x} = f_{\sigma(t)}(x(t),d(t)), \\ with,
-      x(0) \in X_0, d(t) \in [d], \\      
+      \forall [x] \in \mathbb{R}, [f]([x]) \subseteq {f(x), x \in [x]}.      
+    \end{eqnarray*}
+
+    It is possible to define inclusion functions for all elementary 
+    functions such as x,sin,cos,exp, and so on. The \emph{natural}
+    inclusion function is the simplest to obtain: all occurrences 
+    of the real variables are replaced by their interval counterpart
+    and all arithmetic operations are evaluated using interval 
+    arithmetic. More sophisticated inclusion functions such as the 
+    centered form, or the taylor inclusion function may also be used.
+    We now introduce the Initial 
+
+    One of main features of this approach is the Initial Value Problem, 
+    which is introduced as follow:
+
+    \textbf{Definition 5} Initial Value Problem(IVP). Consider an ODE 
+    with a given initial condition.
+    \begin{eqnarray*}            
+      \label{eq:ivp}      
+      \dot{x} = f_{\sigma(t)}(x(t),d(t)), \\ 
+      with, x(0) \in X_0, d(t) \in [d],  \\
     \end{eqnarray*}
     with $f:\mathbb{R}^+ \times \mathbb{R}^n \times \mathbb{R}^m \rightarrow \mathbb{R}^n $
     assumed to be continuous in $t$ and $d$ and globally Lipschitz in $x$. we
     assume that parameters $d$ are bounded (used to represent the disturbance).
     An IVP consists in finding a function $x(t)$ described by \autoref{eq:ivp}
     for all $d(t)$ lying in $[d]$ and for all the initial conditions in $X_0$.
-
-    \textbf{Definition 2} Let $X \in \mathbb{R}^n$ be a box of the state
+    
+    \textbf{Definition 6} Let $X \in \mathbb{R}^n$ be a box of the state
     space. Let $\pi = (i_1,i_2,..,i_k) \in U^k$. The successor set of $X$
     via $\pi$, denoted by $Post_{\pi}(X)$, is the (over-approximation of the)
     images of $X$ induced by application of the pattern $\pi$, i.e, the 
     solution at time $t=k\tau$ of 
-
-    \begin{eqnarray*}      
+    \begin{eqnarray*}
       \dot{x} = f_{\sigma(t)}(x(t),d(t)), \\
       x(0) = x_0 \in X, \\
       \forall t \geqslant 0, d(t) \in [d], \\
       \forall j \in \lbrace 1,..,k \rbrace, \sigma(t) = i_j \in U \text{ for } t \in [(j-1)\tau,j\tau>
     \end{eqnarray*}
-
-    \textbf{Definition 4} Let $X \in \mathbb{R}^n$ be a box of the state
+    
+    \textbf{Definition 7} Let $X \in \mathbb{R}^n$ be a box of the state
     space. Let $\pi = (i_1,i_2,..,i_k) \in U^k$. We denote by $Tube_{\pi}(X)$4
     the union  of boxes covering the trajectories of IVP, whose construction 
     is detailed in 
     
     \textbf{Remark 1}. $Post_{\pi}(X)$ is an over-approximation at time 
-    $t=k\tau$ of the set of 
+    $ t=k\tau $ of the set of states originated from the set $X$ 
+    at time $t=0$, while $Tube_{\pi}(X)$ is an over-approximation
+    of the whole set of states between $t=0$ and $t=k\tau$ originated
+    from the set $X$ at time $t=0$.
 
     \begin{algorithm}    
         \caption{Decomposition}\label{decomposition}    
@@ -517,7 +543,7 @@ we explain the methodology to join the safe and optimal approach. Lastly in
             $\mathcal{L}= \lbrace (W,W,\emptyset) \rbrace$
             \While{$\mathcal{L} \neq \emptyset$}
               \State $e_{current} = takeHead(\mathcal{L})$
-              \For{$i \in U$}:                
+              \For{$i \in U$}:
                 \If {$ Post_{i}(e_{current}.Y_{current}) \subseteq R$ \textbf{and} $Tube_{i}(e_{current}.Y_{current}) \cup B = \emptyset $ \textbf{and} $Tube_{i}(e_{current}.Y_{current}) \cup B \subseteq S $ }
                   \State putTail($\mathcal{S}e_{current}.\prod + i$)
                 \Else
@@ -530,7 +556,7 @@ we explain the methodology to join the safe and optimal approach. Lastly in
                     \EndIf              
                   \EndIf
                 \EndIf
-              \EndFor          
+              \EndFor
             \EndWhile
             \State \textbf{return} $<_,False>$ \Comment{if no solution is found, or $<\prod,True>$, $\prod$ beaing any pattern validated in $Solution$.}
           \EndProcedure    
