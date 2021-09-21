@@ -1,81 +1,84 @@
 \chapter{Safe and Near Optimal Controller Synthesis for Stochastic hybrid Games}
   \label{ch:proposal} % In this part goes algorithm, case study and results
-  In this part, we propose a case study \emph{Sthocastic Hybrid Solar Water
-  Heating}, to apply our methodology, following the next procedure:
-  \emph{System modelling} using physics criteria \cite{tsilingiris1996solar}. The use of
-  mechanical concepts to have a \emph{stochastic
-  hybrid game}. Some engineering assumptions either int the model and
+  In this part, we propose as case study a \ac{SWH}, modelled as 
+  \ac{SHG}, applying the following procedure:
+  \emph{System modelling} using physics criteria \cite{tsilingiris1996solar} and
+  mechanical concepts to have a \ac{SHG}. Some engineering 
+  assumptions either in the model or
   the configuration parameters are considered to facilate our analysis.
   A fundamental characteristic  of the model is the incorporation 
-  of uncontrollable events for instance open the aperture valve or
-  close it. 
-  Secondly, our system interact with an environment, for this reason 
+  of uncontrollable events(perturbations) for instance the opening/closing of the valve.
+  Secondly, our system interact with a physical environment, for this reason 
   we set some paremeters to get the environment conditions so as 
   understand the temporal data such as \emph{Irradiance}, \emph{external and 
-  internal temperatures}, these perturbations are preprocessed to interact
-  with our simulator \autoref{sec:casestudy}. To establish a safe sthocastic hybrid system, we start to compute patterns as
+  internal temperatures}, these disturbances are preprocessed to interact
+  with our simulator that use \ac{MPC} to control the real-time system 
+  using strategies provided by optimizations methods \autoref{sec:casestudy}. 
+  To establish a safe sthocastic hybrid game model, we start to compute patterns as
   \autoref{sec:safepatterncomputation} explains. It is important to bear in mind
   the uncontrollable events in our patterns computation to verify the safety
   in our system.
   Lastly, the computation of a near optimal controller consist of an 
   exhaustive exploration of different strategies in order to either
   minimize or maximize a cost function of a random variable in a 
-  specific horizon and stochastic hybrid game, this computation is 
-  using \textsc{uppaal stratego}. In control experiments we found that
-  This methodology help to concatenate the two approaches implementing
-  a toolbox for real time simulation in \textsc{python} \cite{larsen2016online}.
+  specific horizon and a model as a stochastic hybrid game, this 
+  computation use \textsc{uppaal stratego}. In control experiments 
+  we found that this methodology help to concatenate the two 
+  approaches implementing a toolbox for a real time simulation in 
+  \textsc{python} \cite{larsen2016online}.
   \clearpage
-
-  \section{Solar Water Heating Case study}: 
+  \section{Solar Water Heating Case study}
     \label{sec:casestudy}
     Solar water heating (SWH) has a widely usage and applications in 
     both domestic and industrial sectors. Solar water heating is not only 
     environment friendly but requires minimal maintenance and operation 
     cost compared to other solar energy \cite{shukla2013recent}. Extensive
     research has been performed to further improve the thermal efficency of
-    solar water heating. This research presents a detailed review exclusively
-    on the system modelling as stochastic hybrid game and a new way to increase
-    efficency not from a colector material perspective but from the usage 
-    and control.
+    \ac{SWH}. This research presents a detailed review exclusively
+    on the system modelling as stochastic hybrid game and a new way to improve
+    the performance, these improvements are not provided from a colector design 
+    but from the system behaviour that automaticsally derived a mode of operations 
+    with this purpose. \\
     \begin{figure}[!hbt]
       \centering
       \input{content/sources/diag1.tex}
       \captionsetup{format=hang}
-      \caption{Solar Water Heating diagram}
+      \caption{Solar Water Heating diagram used to obtain the differential equations}
       \label{fig:casestudy}
-    \end{figure}
+    \end{figure} \\
     The system setup is about a hybrid solar water heating which involves 
     Auxiliar energy to heat the system and also a collector that transform 
     solar irradiance to heat energy, transfering it to the container. The system also
-    contain a piston which change the volume, the simplify the analysis 
+    contains a piston which change the volume, in order to simplify the analysis 
     we devide it in three levels as shown in \autoref{fig:casestudy}. We also 
-    considered some asumptions in the temperature because of the gradient change
-    along the volumen, for simplyfing our analysis we decide to work with 
+    consider some asumptions in the temperature because of the gradient change
+    along the volumen, to facilate the physical modelling we decide to work with 
     the mean temperature as one variable in the state.
     \clearpage 
     \subsection{Data processing and generation}      
       \textbf{Stochastic events as historical data}. In practice
-      we notice unpredictable discrete events which can perturbate a dynamical 
+      we notice unpredictable discrete events which can perturbate our dynamical
       system, these stochastic discrete perturbations we call uncontrallable actions and 
       is managed using a stochastic model approach and machine learning to optimize
-      the control. Generate this actions with a realistic criteria for our case study 
-      we choose three gaussian distributions with $\mu_1 = 7h$, $\mu_2 = 12h$ and $\mu_3 = 19h$
+      the control. To generate these perturbations with a realistic criteria for 
+      our case study we choose three gaussian distributions with 
+      $\mu_1 = 7h$, $\mu_2 = 12h$ and $\mu_3 = 19h$
       and $\sigma_1=12,\sigma_2=15, \sigma_3=10$ respectively. Finally we add 
       a uniform distribution around the day.
       \begin{figure}[!hbt]      
         \centering
         \includegraphics[width=1.2\linewidth]{images/uncontrollable}      
         \captionsetup{format=hang}
-        \captionof{figure}{State changes of valves along the day.}
+        \captionof{figure}{Valves perturbations generated along a day.}
         \label{fig:uncontrollable}
       \end{figure}
 
       \textbf{Solaris Data and preprocessing} The data collected is from 
       spain solaris, which consist of a set of environment features such as
-      environment temperature and irradiance that would be useful for the 
-      simulation. However, we preprocess the data for our purpose such us
-      modify the time step from 15 minutes to 1 minute trough interpolation. 
-      The data is collected in Spain, Almeria \cite{solargis}.
+      environment temperatures and irradiance that would be useful for the 
+      simulation. We preprocess the time series data modifying 
+      the time step from 15 minutes to 1 minute through interpolation.
+      The data is collected from Almeria in Spain \cite{solargis}.
 
       \begin{figure}[!hbt]
         \centering
@@ -86,7 +89,7 @@
       \clearpage
       
       \textbf{Prediction Data}.
-      To integrate a model predictive controller approach we configurate
+      To integrate a \ac{MPC} in our simulator we configurate
       a forecaster in real time in order to get a sequence of environment data
       on future which will be used to control future states an get the correct
       patterns on present. \textsc{arima} state model is used with a realtime 
@@ -123,7 +126,7 @@
           Variable& Description &Initial Value&Units\\    
           \hline    
           E & Energy consumption  & 0.0 & \si{\joule} \\
-          V & Container Volumen  & 0.13 &\si{\metre^3}\\
+          V & Container Volume  & 0.13 &\si{\metre^3}\\
           T & Container Temperature & 50.0 & \si{\degreeCelsius}  \\            
           \hline
           \multicolumn{4}{|c|}{Constants} \\
@@ -230,8 +233,8 @@
         \captionsetup{format=hang}
         \caption{Automaton with forbidden transitions because of the addition of a 
         discrete variable \emph{f} which facilate the system modelling either on
-        piston expansion or compression, the valve action is not considered
-        in this representation.}
+        piston expansion or compression, the perturbation of the valve is not considered
+        in this representation as discrete state but rather as interval box.}
         \label{fig:automaton}
       \end{figure}
       As we notice, there are eight operation modes, is because in this step
@@ -506,12 +509,14 @@
         \begin{figure}[!htb]        
           \begin{subfigure}{0.51\textwidth}
             \includegraphics[width=1.0\linewidth]{images/controllers}
+            \captionsetup{format=hang}
             \captionof{figure}{Temparatures comparison between safe greedy and 
             safe stratego controller.} \label{fig:resulta}
           \end{subfigure}
           \hspace*{\fill}
           \begin{subfigure}{0.51\textwidth}
               \includegraphics[width=1.0\linewidth]{images/energycomparison.png}
+              \captionsetup{format=hang}
               \caption{Energy comparison between safe greedy and safe online stratego
               controller.} \label{fig:resultb}
           \end{subfigure}%            
