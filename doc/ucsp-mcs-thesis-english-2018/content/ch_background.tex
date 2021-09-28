@@ -3,17 +3,20 @@
 \label{ch:background}
 In this chapter we present basic concepts that are needed 
 to understand better our work. In \autoref{sec:switchedsystems} 
-we describe definitions about switched systems and the 
-difference between hybrid system a basic concept that we 
-will use for our analysis, \cite{sanfelice2020hybrid}. 
+we describe definitions about switched systems, hybrid systems and  
+stochastic hybrid systems that we will use for our analysis 
+\cite{sanfelice2020hybrid}. 
 In \autoref{sec:safepatterncomputation} we show the
-find pattern algorithm. In \autoref{sec:uppaalstratego} we describe 
+find pattern algorithm widely studied in \cite{le2017improved}. 
+In \autoref{sec:uppaalstratego} we describe 
 \textsc{Uppaal Stratego}. In \autoref{sec:onlinestochastichybridcontroller}
- we describe a method to control stochastic hybrid games using online 
- controller. In \autoref{sec:safeandoptimal} we explain the 
- methodology to join the safe and optimal approach. Lastly in 
+ we describe a method to control a real time perturbated hybrid system in 
+ modelled as a stochastic hybrid game using \textsc{Uppaal Stratego}
+ that feed our online controller near optimal patterns. In 
+ \autoref{sec:safeandoptimal} we explain the 
+ methodology to join the safe and optimal approach using \textsc{Uppaal Stratego}. Lastly in 
 \autoref{sec:workflow}, we show a general diagram that explain 
-how the system works.
+how the addition of safe patterns linked to zonotopes feed the real time system.
 \clearpage
   \section{Switched systems}
     \label{sec:switchedsystems}
