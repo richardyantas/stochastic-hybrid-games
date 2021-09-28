@@ -93,7 +93,7 @@ def plot_controllers_results():
              linewidth=0.8, label='Uppaal')
     # plt.plot([start_time, life_time], [set_point, set_point], 'cyan',
     #          linewidth=0.4)
-    plt.ylabel('Energy(C)')
+    plt.ylabel('Energy(KJ)')
     plt.xlabel('time[hrs]')
     plt.legend()
     plt.grid(True, linewidth=0.6, linestyle='--')

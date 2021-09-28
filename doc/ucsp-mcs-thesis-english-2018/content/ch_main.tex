@@ -427,7 +427,7 @@
 
         \begin{equation}
           \begin{aligned}
-            \sigma^{H}_{opt} = \underset{\sigma \subseteq \sigma_{safe}}{\mathrm{argmin}}(\mathbb{E}^{\mathcal{G},\gamma}_{\sigma_{safe},H}(\alpha(E) + (1-\alpha)(T-T_g)))            
+            \sigma^{H}_{opt} = \underset{\sigma \subseteq \sigma_{safe}}{\mathrm{argmin}}(\mathbb{E}^{\mathcal{G},\gamma}_{\sigma_{safe},H}(\alpha(E) + (1-\alpha)(T-T_g)))
           \end{aligned}
           \label{eq:costfunction}
         \end{equation}
@@ -523,10 +523,13 @@
           \caption{Solar water heating 24h trajectories of two control strategies}
         \end{figure}
 
-      For $\alpha = 0.5$, the temperature mean error in the greedy method 
-      \autoref{fig:resulta} is : $1.8$ and the reinforcement learning optimization 
-      is:  $3.37$ and also the saved energy consumption using uppaal with respect to 
-      a greedy method is $ \bigtriangleup E = 310.8Kw$ as \autoref{fig:resultb} shows. % 310800.0
+      For $\alpha = 0.5$ defined in \autoref{eq:costfunction} that means we assign the same 
+      importance to the temperatures distance and the energy consumption saving in the 
+      optimization, the mean temperature error in the greedy method 
+      \autoref{fig:resulta} is : $2.07$ and the reinforcement learning optimization 
+      is:  $3.42$ and also the saved energy consumption using uppaal with respect to 
+      a greedy method is $ S = \bigtriangleup E_{greedy} - \bigtriangleup E_{uppaal} = 10800.0Kw$
+       as \autoref{fig:resultb} shows. % 310800.0
         
           % \textbf{Evaluation Scenarios}
           % \textbf{Controller Evaluation}
