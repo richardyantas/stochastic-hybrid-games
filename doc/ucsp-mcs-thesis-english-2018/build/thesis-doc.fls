@@ -679,9 +679,9 @@ INPUT content/sources/template1.tex
 INPUT content/sources/template1.tex
 INPUT content/sources/template2.tex
 INPUT content/sources/template2.tex
-INPUT images/controllers.png
-INPUT ./images/controllers.png
-INPUT ./images/controllers.png
+INPUT images/controllers1.png
+INPUT ./images/controllers1.png
+INPUT ./images/controllers1.png
 INPUT images/energycomparison.png
 INPUT ./images/energycomparison.png
 INPUT ./images/energycomparison.png

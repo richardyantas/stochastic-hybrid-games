@@ -34,18 +34,20 @@ def plot_controllers_results():
     data_config = data.config()
     life_time = data_config["life_time"]
     start_time = data_config["start_time"]
-    smpc_local = pd.read_csv(f"{DATA_DIR}/results_MPC.Greedy_data.csv")
-    sompc_uppaal = pd.read_csv(f"{DATA_DIR}/results_MPC.Uppaal_data.csv")
+    greedy = pd.read_csv(f"{DATA_DIR}/results_MPC.Greedy_data.csv")
+    uppaal = pd.read_csv(f"{DATA_DIR}/results_MPC.Uppaal_data.csv")
     static_data = json.load(open(f"{DATA_DIR}/static_data.json"))
     set_point = static_data["Tg"]
-    with open(f"{DATA_DIR}/uncontrollable_data.txt", 'r', newline='') as file:
+    num_actions = static_data["num_actions"]
+    standard_deviation = static_data["standard_deviation"]
+    with open(f"{DATA_DIR}/uncontrollable_data_{standard_deviation}_{num_actions}.txt", 'r', newline='') as file:
         lines = file.readlines()
     u_actions = [float(line[0:-1]) for line in lines]
-    u_actions = u_actions[start_time:start_time+len(smpc_local["t"])]
+    u_actions = u_actions[start_time:start_time+len(greedy["t"])]
     # with plt.style.context('dark_background'): #ggplot
 
     ######### time preprocess to visualize #########
-    time_plot = preprocess_time_hr_24_after(smpc_local["t"])
+    time_plot = preprocess_time_hr_24_after(greedy["t"])
     start_time = float(start_time-24*60)/60
     life_time = float(life_time-24*60)/60
     ################################################
@@ -53,17 +55,17 @@ def plot_controllers_results():
     ############### figure 1 #############################
     mean_T1 = 0
     mean_T2 = 0
-    l = len(smpc_local["T"])
+    l = len(greedy["T"])
     for i in range(0, l):
-        mean_T1 = mean_T1 + abs(smpc_local["T"][i]-55)
-        mean_T2 = mean_T2 + abs(sompc_uppaal["T"][i]-55)
+        mean_T1 = mean_T1 + abs(greedy["T"][i]-55)
+        mean_T2 = mean_T2 + abs(uppaal["T"][i]-55)
     print("Mean Temperature greedy: ", mean_T1/l)
     print("Mean Temperature uppaal: ", mean_T2/l)
 
     plt.axis([start_time, life_time, 0, 80])
-    plt.plot(time_plot, smpc_local["T"], 'cyan',
+    plt.plot(time_plot, greedy["T"], 'cyan',
              linewidth=0.8, label='Greedy')
-    plt.plot(time_plot, sompc_uppaal["T"], 'red',
+    plt.plot(time_plot, uppaal["T"], 'red',
              linewidth=0.8, label='Uppaal')
     # plt.plot([start_time, life_time], [set_point, set_point], 'cyan',
     #          linewidth=0.4)
@@ -80,14 +82,14 @@ def plot_controllers_results():
     #l = len(smpc_local["E"])
     # for i in range(0, l):
     #     mean_E = mean_E + smpc_local["E"][i]-sompc_uppaal["E"][i]
-    Ea = list(smpc_local["E"])
-    Eb = list(sompc_uppaal["E"])
+    Ea = list(greedy["E"])
+    Eb = list(uppaal["E"])
     print("Saved Energy: ", abs(Eb[-1]-Ea[-1]))
 
     plt.axis([start_time, life_time, 0, 25000])
-    plt.plot(time_plot, smpc_local["E"], 'cyan',
+    plt.plot(time_plot, greedy["E"], 'cyan',
              linewidth=0.8, label='Greedy')
-    plt.plot(time_plot, sompc_uppaal["E"], 'red',
+    plt.plot(time_plot, uppaal["E"], 'red',
              linewidth=0.8, label='Uppaal')
     # plt.plot([start_time, life_time], [set_point, set_point], 'cyan',
     #          linewidth=0.4)
@@ -116,9 +118,9 @@ def plot_controllers_results():
         grid = plt.GridSpec(4, 4, wspace=0.8, hspace=0.7)
         plt.subplot(grid[0:2, :4])
         plt.axis([start_time, life_time, 0, 80])
-        plt.plot(time_plot, smpc_local["T"], 'cyan',
+        plt.plot(time_plot, greedy["T"], 'cyan',
                  linewidth=0.8, label='Greedy')
-        plt.plot(time_plot, sompc_uppaal["T"], 'red',
+        plt.plot(time_plot, uppaal["T"], 'red',
                  linewidth=0.8, label='Uppaal')
         # plt.plot([start_time, life_time], [set_point, set_point], 'cyan',
         #          linewidth=0.4)
@@ -128,9 +130,9 @@ def plot_controllers_results():
         plt.grid(True, linewidth=0.6, linestyle='--')
 
         plt.subplot(grid[2, :4])
-        plt.plot(time_plot, smpc_local["E"], 'cyan',
+        plt.plot(time_plot, greedy["E"], 'cyan',
                  linewidth=0.8, label="Greedy")
-        plt.plot(time_plot, sompc_uppaal["E"], 'red',
+        plt.plot(time_plot, uppaal["E"], 'red',
                  linewidth=0.8, label="Uppaal")
         plt.ylabel('Energy[KJ]')
         plt.xlabel('time[hrs]')

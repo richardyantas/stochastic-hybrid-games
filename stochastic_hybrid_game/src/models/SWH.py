@@ -26,6 +26,9 @@ R_BOUNDARY = SAFE_DATA["R"]
 S_BOUNDARY = SAFE_DATA["S"]
 NUMBER_STEPS = SAFE_DATA["nrSteps"]
 
+NUM_ACTIONS = SAFE_DATA["num_actions"]
+STANDARD_DEVIATION = SAFE_DATA["standard_deviation"]
+
 
 #           p, r, f    -> this c_mode order is copied from c++ code model.cpp
 C_MODES = [[1, 0, 0],
@@ -36,32 +39,6 @@ C_MODES = [[1, 0, 0],
            [3, 1, 1],
            [2, 0, 1],
            [2, 1, 1]]
-
-
-def generate_uncontrollable_data():
-    data = BaseDataModule()
-    data_config = data.config()
-    life_time = data_config["life_time"]
-    start_time = data_config["start_time"]
-    u_modes = (np.zeros(int(life_time))).tolist()
-    num_actions = random.randrange(100, 200)
-    standard_deviation = 1*12  # 2
-    for i in range(0, num_actions):
-        u_modes[int(random.gauss(start_time +
-                                 7*60, standard_deviation))] += 1
-        u_modes[int(random.gauss(start_time +
-                                 13*60, standard_deviation))] += 1
-        u_modes[int(random.gauss(start_time +
-                                 19*60, standard_deviation))] += 1
-    num_actions = random.randrange(10, 20)
-    for i in range(0, num_actions):
-        u_modes[int(random.uniform(
-            start_time, life_time))] += 1
-    # write on file
-    with open(f"{DATA_DIR}/uncontrollable_data.txt", 'w', newline='') as file:
-        for e in u_modes:
-            file.write(str(e)+"\n")
-    return
 
 
 class SWH():
@@ -102,7 +79,7 @@ class SWH():
         return x
 
     def get_uncontrollable_actions(self):
-        with open(f"{DATA_DIR}/uncontrollable_data.txt", 'r', newline='') as file:
+        with open(f"{DATA_DIR}/uncontrollable_data_{STANDARD_DEVIATION}_{NUM_ACTIONS}.txt", 'r', newline='') as file:
             lines = file.readlines()
         lines = [float(line[0:-1]) for line in lines]
         return list(lines)
@@ -126,6 +103,33 @@ class SWH():
         parser.add_argument("--fc2", type=int, default=128)
         return parser
 
+    @ classmethod
+    def generate_uncontrollable_data(cls):
+        data = BaseDataModule()
+        data_config = data.config()
+        life_time = data_config["life_time"]
+        start_time = data_config["start_time"]
+        u_modes = (np.zeros(int(life_time))).tolist()
+        #num_actions = random.randrange(100, 200)
+        num_actions = NUM_ACTIONS
+        standard_deviation = STANDARD_DEVIATION  # 1*12  # 2
+        for i in range(0, num_actions):
+            u_modes[int(random.gauss(start_time +
+                                     7*60, standard_deviation))] += 1
+            u_modes[int(random.gauss(start_time +
+                                     13*60, standard_deviation))] += 1
+            u_modes[int(random.gauss(start_time +
+                                     19*60, standard_deviation))] += 1
+        num_actions2 = 10  # random.randrange(10, 20)
+        for i in range(0, num_actions2):
+            u_modes[int(random.uniform(start_time, life_time))] += 1
+        # write on file
+        with open(f"{DATA_DIR}/uncontrollable_data_{standard_deviation}_{num_actions}.txt", 'w', newline='') as file:
+            for e in u_modes:
+                file.write(str(e)+"\n")
+        return
+
 
 if __name__ == '__main__':
-    generate_uncontrollable_data()
+
+    SWH.generate_uncontrollable_data()

@@ -16,8 +16,8 @@ from stochastic_hybrid_game.src.models.SWH import C_MODES
 
 
 DATA_DIR = BaseDataModule.data_dirname()
-SAFE_RES = json.load(open(f"{DATA_DIR}/pattern_perturbations_12.json"))
-#SAFE_RES = json.load(open(f"{DATA_DIR}/pattern.json"))
+#SAFE_RES = json.load(open(f"{DATA_DIR}/pattern_perturbations_12.json"))
+SAFE_RES = json.load(open(f"{DATA_DIR}/pattern.json"))
 PATTERNS = SAFE_RES["patterns"]
 ZONOTOPES = SAFE_RES["zonotopes"]
 SAFE_DATA = json.load(open(f"{DATA_DIR}/static_data.json"))

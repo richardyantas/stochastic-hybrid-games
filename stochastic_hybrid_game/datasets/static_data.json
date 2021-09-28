@@ -34,5 +34,8 @@
   "start_time": 1440,
   "life_time": 2880,
   "data_sample_time": 15,
-  "dt": 1
+  "dt": 1,
+
+  "num_actions": 30,
+  "standard_deviation": 12
 }

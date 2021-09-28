@@ -508,7 +508,7 @@
         the energy consumption and temperature distance.
         \begin{figure}[!htb]        
           \begin{subfigure}{0.51\textwidth}
-            \includegraphics[width=1.0\linewidth]{images/controllers}
+            \includegraphics[width=1.0\linewidth]{images/controllers1.png}
             \captionsetup{format=hang}
             \captionof{figure}{Temparatures comparison between safe greedy and 
             safe stratego controller.} \label{fig:resulta}
@@ -523,9 +523,10 @@
           \caption{Solar water heating 24h trajectories of two control strategies}
         \end{figure}
 
-      For $\alpha = 0.5$, the temperature mean error in \autoref{fig:resulta} is 
-      smpc local:  $1.8$ and sompc uppaal:  $3.37$ and also in \autoref{fig:resultb} 
-      the saved energy consumption is $ \bigtriangleup E = 310.8Kw$. % 310800.0
+      For $\alpha = 0.5$, the temperature mean error in the greedy method 
+      \autoref{fig:resulta} is : $1.8$ and the reinforcement learning optimization 
+      is:  $3.37$ and also the saved energy consumption using uppaal with respect to 
+      a greedy method is $ \bigtriangleup E = 310.8Kw$ as \autoref{fig:resultb} shows. % 310800.0
         
           % \textbf{Evaluation Scenarios}
           % \textbf{Controller Evaluation}
