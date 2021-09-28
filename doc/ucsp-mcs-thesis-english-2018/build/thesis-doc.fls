@@ -685,8 +685,11 @@ INPUT ./images/controllers1.png
 INPUT images/energycomparison.png
 INPUT ./images/energycomparison.png
 INPUT ./images/energycomparison.png
+INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/ae/aecsc10.tfm
 INPUT content/ch_conclusions.tex
 INPUT content/ch_conclusions.tex
+INPUT /usr/share/texlive/texmf-dist/fonts/vf/public/ae/aecsc10.vf
+INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmcsc10.tfm
 INPUT build/thesis-doc.bbl
 INPUT build/thesis-doc.bbl
 INPUT /usr/share/texlive/texmf-dist/tex/latex/ae/t1aett.fd
