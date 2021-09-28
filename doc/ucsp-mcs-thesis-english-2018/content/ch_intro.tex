@@ -86,25 +86,28 @@
 
     \section{Contributions}
     \label{sec:contributions}
-        This thesis proposes a novel approach to solve 
-        switched systems guaranteeing safety and optimal
-        controller synthesis. 
-        %\usepackage[spanish, es-ucroman]{babel}}
-        %\usepackage[spanish, es-ucroman]{babel}e}
-        %\usepackage[spanish, es-ucroman]{babel}a synthesis controller with the next:
+        The methodology builds on top of two existing works:      
         \begin{itemize}
             \item Find safe patterns for our case study using
             decomposition algorithm (\cite{le2017improved}).
                 \begin{itemize}
-                    \item This paper implement a method to guarantee safe controller. This methods consider three regions to have reachability and safety in the system.
-                    \item This also demonstrate the utility of the proposed method comparing with traditional methods.
+                    \item The paper \cite{le2017improved} implements an algorithm to guarantee safe 
+                    controller that is applied to our case study previously modelled.
+                    \item Altough the algorithm allow to explore patterns(Sequence of operation modes) 
+                    in our case due to system conditions was necessary to modify the 
+                    algorithm doing it able to forbid some transitions between modes.                  
                 \end{itemize}
             \item Find a near optimal patterns to online control(\cite{larsen2016online}).
             \begin{itemize}
-                \item Implement an \textsc{api} between simulator and \textsc{uppaal}.
-                \item Build a timed automata \ac{MDP} in \textsc{uppaal} for a real time \ac{MPC}.
-            \end{itemize}
+                \item We use the online control method described in \cite{larsen2016online} to build our real time simulator, and also 
+                the stochastic hybrid game model proposed in the paper is used in this thesis 
+                to incorporate safe patterns as an input of \textsc{Uppaal Stratego}                
+            \end{itemize}            
         \end{itemize}
+        The implementation of an \textsc{api} between simulator and \textsc{uppaal stratego}, and 
+        the representation of the model as timed automata \ac{MDP} in \textsc{uppaal} 
+        for a real time \ac{MPC} in order to verify the methodology form 
+        the main contribution in this work.            
 
     \section{Outline}
     %\label{sec:outline}
@@ -115,10 +118,10 @@
     \autoref{ch:background} presents some basic concepts about the
     hybrid systems, traditional controllers,
     stability criteria and optimal controller technique. Next, in
-    Chapter x we describe in detail the corpus, techniques used 
-    by our pipeline and their evaluation results. Finally, the 
-    limitations, future works, and conclusions of this work are 
-    presented in Chapter.
+    \autoref{ch:proposal} we describe in detail the corpus, 
+    techniques used by our pipeline and their evaluation results. 
+    Finally, the limitations, future works, and conclusions of this work are 
+    presented in \autoref{ch:conclusions}.
 
 
 
