@@ -100,14 +100,16 @@
             \item Find a near optimal patterns to online control(\cite{larsen2016online}).
             \begin{itemize}
                 \item We use the online control method described in \cite{larsen2016online} to build our real time simulator, and also 
-                the stochastic hybrid game model proposed in the paper is used in this thesis 
-                to incorporate safe patterns as an input of \textsc{Uppaal Stratego}                
+                the stochastic hybrid game model proposed in the paper in order
+                to incorporate safe patterns as an input of \textsc{Uppaal Stratego}
             \end{itemize}            
         \end{itemize}
-        The implementation of an \textsc{api} between simulator and \textsc{uppaal stratego}, and 
-        the representation of the model as timed automata \ac{MDP} in \textsc{uppaal} 
-        for a real time \ac{MPC}, in order to verify the methodology, form 
-        the main contribution in this work.            
+        The patterns computed linked to state intervals are explored using 
+        a timed automata \ac{MDP} model as template in \textsc{Uppaal Stratego} and feed the controller 
+        with safe and optimal patterns. The implementation of an \textsc{api} between 
+        simulator and \textsc{uppaal stratego} that allows the feeding with 
+        these patterns the real time \ac{MPC}, in order to verify the methodology, all 
+        mentioned before form the main contribution of this work.            
 
     \section{Outline}
     %\label{sec:outline}
