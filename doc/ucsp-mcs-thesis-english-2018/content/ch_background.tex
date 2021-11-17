@@ -146,7 +146,7 @@ how the addition of safe patterns linked to zonotopes feed the real time system.
     \\
     \emph{1. $\mathcal{C}$ is a controller with a finite set of (controllable) modes C.} \\
     \emph{2. $\mathcal{U}$ is the environment with a finite set of (uncontrollable) modes U.} \\
-    \emph{3. $\mathcal{X} = \left\lbrace x_1,x_2,..x_n \right\rbrace$ is a finite set of
+    \emph{3. $\mathcal{X} = \left\lbrace x_1,x_2,..x_ n \right\rbrace$ is a finite set of
     continuous (real-valued) variables } \\
     \emph{4. for each c $\in$ C and $u \in U, \mathcal{F}_{c,u} : \mathbb{R}_{>0}
       \times \mathbb{R}^X \rightarrow\mathbb{R}^X$ 
@@ -336,47 +336,45 @@ how the addition of safe patterns linked to zonotopes feed the real time system.
     ($\gamma_{n-1}$) at time $(n-1)P$\footnote{Note that there way be several configurations
     between $\gamma_{n-1}$ and $\gamma_n$ due to the environment $\mathcal{U}$ changing
     the uncontrollable mode.}, which will be used as the basis for online
-    learning of short-horizon $(h << H)$ strategies.
+    learning of short-horizon $(h < H)$ strategies.
 
-    \begin{table}[H]
-    \caption{Performance evaluation of one room controller synthesis: offline-3(-6) methods
-        synthetize strategy for entire 72 hours (144 hours respectively ) at once,
-        strategy distance is evaluated on 70 simulations; online-3 methods synthetize
-        a strategy for 5 periods of 15 min ahead and repeat synthesis and execution until 
-        72 hours are covered, the distance is averaged over 70 online simulations.
-    }
-
-
-    \centering
-    \begin{tabular}{|c|l|r|r|r|r|r|r|}
-    \hline
-    % \parbox[t]{2mm}{\multirow{2}{*}{Synthesis method}}
-    & \multirow{2}{*}{ \textbf{\pbox{10cm}{Synthesis \\ method}} } & \multicolumn{3}{c|}{ \textbf{Purely dynamical model} } & \multicolumn{3}{c|}{ \textbf{Extra period counter} } \\
+    % \begin{table}[H]
+    % \caption{Performance evaluation of one room controller synthesis: offline-3(-6) methods
+    %     synthetize strategy for entire 72 hours (144 hours respectively ) at once,
+    %     strategy distance is evaluated on 70 simulations; online-3 methods synthetize
+    %     a strategy for 5 periods of 15 min ahead and repeat synthesis and execution until 
+    %     72 hours are covered, the distance is averaged over 70 online simulations.
+    % }
+    % \centering
+    % \begin{tabular}{|c|l|r|r|r|r|r|r|}
     % \hline
-    & & \multicolumn{1}{c|}{ \textbf{Distance} } & \multicolumn{1}{c|}{ \textbf{cpu,s} } & \multicolumn{1}{c|}{ \textbf{mem,kB}} & \multicolumn{1}{c|}{ \textbf{Distance} } & \multicolumn{1}{c|}{ \textbf{cpu,s} } & \multicolumn{1}{c|}{ \textbf{mem,kB} } \\
-    \hline
-    \bfseries \parbox[t]{2mm}{\multirow{4}{*}{\rotatebox[origin=c]{90}{Offline-3}}}
-    & naive & 10227.8 & 1555.15& 11884& 3671.84 & 566.4 & 9448 \\
-    & splitting & 517.9 & 1640.06 & 13424& 2361.80 & 1608.48 & 90740\\
-    & covariance & 10227.8 & 1298.66& 11896& 1091.81 & 1668.45 & 22820 \\
-    & regression & 10227.8 & 1368.34 & 11480& 1387.84 & 1767.50 & 19196 \\
-    \hline
-    \bfseries \parbox[t]{2mm}{\multirow{4}{*}{\rotatebox[origin=c]{90}{Offline-6}}}
-    & naive & 19668.8 & 1855.36 & 11836 & 8032.86 & 1316.08 & 20820\\
-    & splitting & 593.7 & 3200.38 & 13112 & 8260.19 & 3120.03 & 167308 \\
-    & covariance & 20234.3 & 2039.30 & 11528 & 2468.91 & 3258.09 & 39580 \\
-    & regression & 19007.2 & 2525.13 & 12148 & 3425.62 &  3488.26 & 28416 \\
-    \hline
-    % ±
-    \bfseries \parbox[t]{2mm}{\multirow{4}{*}{\rotatebox[origin=c]{90}{Online-3}}}
-    & naive & 584.7$\pm$1.0 & 1046.5$\pm$5.0 & 7240 & 526.6$\pm$0.5 & 1227.1$\pm$3.2 & 7328 \\
-    & splitting & 547.7$\pm$0.6 & 1136.4$\pm$3.6 & 7384 & 526.1$\pm$0.6 & 1240.8$\pm$2.5 & 7384 \\
-    & covariance & 587.5$\pm$1.2 & 1084.0$\pm$3.9 & 7272 & 527.1$\pm$0.6 & 1158.5$\pm$2.5 & 7624 \\
-    & regression & 585.3$\pm$1.0 & 1173.9$\pm$3.4 & 9052 & 527.9$\pm$0.5 & 1337.1$\pm$2.5 & 7380 \\
-    \hline
-    \end{tabular}
-    \label{table:t1}
-    \end{table}
+    % % \parbox[t]{2mm}{\multirow{2}{*}{Synthesis method}}
+    % & \multirow{2}{*}{ \textbf{\pbox{10cm}{Synthesis \\ method}} } & \multicolumn{3}{c|}{ \textbf{Purely dynamical model} } & \multicolumn{3}{c|}{ \textbf{Extra period counter} } \\
+    % % \hline
+    % & & \multicolumn{1}{c|}{ \textbf{Distance} } & \multicolumn{1}{c|}{ \textbf{cpu,s} } & \multicolumn{1}{c|}{ \textbf{mem,kB}} & \multicolumn{1}{c|}{ \textbf{Distance} } & \multicolumn{1}{c|}{ \textbf{cpu,s} } & \multicolumn{1}{c|}{ \textbf{mem,kB} } \\
+    % \hline
+    % \bfseries \parbox[t]{2mm}{\multirow{4}{*}{\rotatebox[origin=c]{90}{Offline-3}}}
+    % & naive & 10227.8 & 1555.15& 11884& 3671.84 & 566.4 & 9448 \\
+    % & splitting & 517.9 & 1640.06 & 13424& 2361.80 & 1608.48 & 90740\\
+    % & covariance & 10227.8 & 1298.66& 11896& 1091.81 & 1668.45 & 22820 \\
+    % & regression & 10227.8 & 1368.34 & 11480& 1387.84 & 1767.50 & 19196 \\
+    % \hline
+    % \bfseries \parbox[t]{2mm}{\multirow{4}{*}{\rotatebox[origin=c]{90}{Offline-6}}}
+    % & naive & 19668.8 & 1855.36 & 11836 & 8032.86 & 1316.08 & 20820\\
+    % & splitting & 593.7 & 3200.38 & 13112 & 8260.19 & 3120.03 & 167308 \\
+    % & covariance & 20234.3 & 2039.30 & 11528 & 2468.91 & 3258.09 & 39580 \\
+    % & regression & 19007.2 & 2525.13 & 12148 & 3425.62 &  3488.26 & 28416 \\
+    % \hline
+    % % ±
+    % \bfseries \parbox[t]{2mm}{\multirow{4}{*}{\rotatebox[origin=c]{90}{Online-3}}}
+    % & naive & 584.7$\pm$1.0 & 1046.5$\pm$5.0 & 7240 & 526.6$\pm$0.5 & 1227.1$\pm$3.2 & 7328 \\
+    % & splitting & 547.7$\pm$0.6 & 1136.4$\pm$3.6 & 7384 & 526.1$\pm$0.6 & 1240.8$\pm$2.5 & 7384 \\
+    % & covariance & 587.5$\pm$1.2 & 1084.0$\pm$3.9 & 7272 & 527.1$\pm$0.6 & 1158.5$\pm$2.5 & 7624 \\
+    % & regression & 585.3$\pm$1.0 & 1173.9$\pm$3.4 & 9052 & 527.9$\pm$0.5 & 1337.1$\pm$2.5 & 7380 \\
+    % \hline
+    % \end{tabular}
+    % \label{table:t1}
+    % \end{table}
 
     Formally:
     \begin{equation*}
