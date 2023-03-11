@@ -19,7 +19,7 @@
 # policy 
 
 # git push bitbucket HEAD
-
+# git push individual main
 
 # https://www.youtube.com/watch?v=wI2w0GwNcGs&ab_channel=SimonsInstitute
 

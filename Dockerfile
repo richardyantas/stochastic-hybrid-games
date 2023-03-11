@@ -58,9 +58,6 @@ RUN apt-get install -y tar tree nano
 # install dynibex
 
 
-#curl -d '{"Name":"richard", "JobTitle":"research", "Company": "ucsp", "Email": "richardyantas5@gmail.com"}' -H "Content-Type: application/json" -x POST  https://www.it.uu.se/research/group/darts/uppaal/download/registration.php?id=0&subid=17
-
-#   curl -d '{"Name":"richard", "JobTitle":"research", "Company": "ucsp", "Email": "richardyantas5@gmail.com"}' -H "Content-Type: application/json" -x POST  https://www.it.uu.se/research/group/darts/uppaal/download/registration.php?id=0&subid=17
-
-
-# wget --method=post -O- -q --body-data='{"Name":"richard", "JobTitle":"research", "Company": "ucsp", "Email": "richardyantas5@gmail.com"}' --header=Content-Type:application/json https://www.it.uu.se/research/group/darts/uppaal/download/form.php?
+#curl -d '{"Name":"richard", "JobTitle":"research", "Company": "ucsp", 
+# "Email": "richardyantas5@gmail.com"}' -H "Content-Type: application/json" 
+# -x POST  https://www.it.uu.se/research/group/darts/uppaal/download/registration.php?id=0&subid=17
