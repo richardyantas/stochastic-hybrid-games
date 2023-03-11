@@ -14,9 +14,8 @@ from stochastic_hybrid_game.src.data.SOLAR import SOLAR
 from stochastic_hybrid_game.src.models.SWH import SWH
 from stochastic_hybrid_game.src.models.SWH import C_MODES
 
-
 DATA_DIR = BaseDataModule.data_dirname()
-#SAFE_RES = json.load(open(f"{DATA_DIR}/pattern_perturbations_12.json"))
+# SAFE_RES = json.load(open(f"{DATA_DIR}/pattern_perturbations_12.json"))
 SAFE_RES = json.load(open(f"{DATA_DIR}/pattern.json"))
 PATTERNS = SAFE_RES["patterns"]
 ZONOTOPES = SAFE_RES["zonotopes"]
@@ -27,6 +26,9 @@ TAU = SAFE_DATA["tau"]  # 300 should be fixed by safe patterns
 
 
 class MPC():
+    """_summary_
+    """
+
     def __init__(self, model: Any, data_config: Dict[str, Any], disturbs: Dict[str, Any], args: argparse.Namespace = None):
         self.start_time = data_config["start_time"]
         self.disturbs = disturbs
@@ -63,15 +65,15 @@ class MPC():
         return
 
     def control(self, state, index):
-        if(len(self.pat) == 0):
+        if (len(self.pat) == 0):
             self.pat = self.queue.get()
             self.controllable_mode = self.pat.pop(0)
-        elif(len(self.pat) == 1):
+        elif (len(self.pat) == 1):
             self.controllable_mode = self.pat.pop(0)
             process = multiprocessing.Process(target=self.predict, args=(
                 int(self.controllable_mode), state, index))
             process.start()
-        elif(len(self.pat) > 1):
+        elif (len(self.pat) > 1):
             self.controllable_mode = self.pat.pop(0)
         print("W")
         self.c_actions.append(C_MODES[self.controllable_mode])

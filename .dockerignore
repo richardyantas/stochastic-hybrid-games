@@ -1,0 +1,7 @@
+/lib
+/doc
+/sources
+.git
+.vscode
+.pytest_cache
+/build

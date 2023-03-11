@@ -17,8 +17,8 @@
 \contentsline {section}{\numberline {3.3}Uppaal Stratego}{12}{section.3.3}
 \contentsline {section}{\numberline {3.4}Online Synthesis}{14}{section.3.4}
 \contentsline {section}{\numberline {3.5}Safe patterns computation}{16}{section.3.5}
-\contentsline {section}{\numberline {3.6}Safe and optimal strategies for stochastic hybrid games}{19}{section.3.6}
-\contentsline {section}{\numberline {3.7}Workflow}{20}{section.3.7}
+\contentsline {section}{\numberline {3.6}Safe and optimal strategies for stochastic hybrid games}{20}{section.3.6}
+\contentsline {section}{\numberline {3.7}Workflow}{21}{section.3.7}
 \contentsline {chapter}{\numberline {4}Safe and Near Optimal Controller Synthesis for Stochastic hybrid Games}{23}{chapter.4}
 \contentsline {section}{\numberline {4.1}Solar Water Heating Case study}{24}{section.4.1}
 \contentsline {subsection}{\numberline {4.1.1}Data processing and generation}{25}{subsection.4.1.1}
@@ -29,6 +29,6 @@
 \contentsline {subsection}{\numberline {4.2.3}Controllers Optimizations:}{32}{subsection.4.2.3}
 \contentsline {subsubsection}{\numberline {4.2.3.1} \emph {Greedy optimization}}{32}{subsubsection.4.2.3.1}
 \contentsline {subsubsection}{\numberline {4.2.3.2} \emph {Reinforcement learning optimization} }{33}{subsubsection.4.2.3.2}
-\contentsline {chapter}{\numberline {5}Discussion and Conclusions}{37}{chapter.5}
-\contentsline {section}{\numberline {5.1}Conclusions}{37}{section.5.1}
-\contentsline {section}{\numberline {5.2}Limitations and Future Work}{37}{section.5.2}
+\contentsline {chapter}{\numberline {5}Discussion and Conclusions}{39}{chapter.5}
+\contentsline {section}{\numberline {5.1}Conclusions}{39}{section.5.1}
+\contentsline {section}{\numberline {5.2}Limitations and Future Work}{39}{section.5.2}

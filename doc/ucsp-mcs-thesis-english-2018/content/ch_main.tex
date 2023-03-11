@@ -1,4 +1,4 @@
-3\chapter{Safe and Near Optimal Controller Synthesis for Stochastic hybrid Games}
+\chapter{Safe and Near Optimal Controller Synthesis for Stochastic hybrid Games}
   \label{ch:proposal} % In this part goes algorithm, case study and results
   In this part, we propose as case study a \ac{SWH}, modelled as 
   \ac{SHG}, applying the following procedure:
@@ -476,7 +476,7 @@
         We defined another $y_{clock}$ to limit the processing 
         until it reach the horizon $H$.
 
-      
+        % here !!!!!!!
         \begin{figure}[!hbt]
           \centering
           \input{content/sources/template2.tex}
@@ -484,8 +484,20 @@
           \caption{The model generating stochastic perturbations as valve aperturing and closing}
           \label{fig:perturbationsgeneration}
         \end{figure}
-        
+                
+        % \textbf{\textcolor{red}{\hl{Agregar explicacion de 
+        % diagrama}}}
+        As shown in the diagram, the process contains two 
+        steps, the first one for calculating the stochastic events 
+        using probability density functions along the day,
+        such as (1u) defines the probability of get an uncontrollable 
+        change that alter the mode if $u \rightarrow u'$ then the valve 
+        paremeter wil increase in 1 such as (2u).
 
+        The second one is about the controllable computation, after to 
+        select a mode corresponding to the current zonotope, 
+
+        x is before argmin
         \clearpage
 
         After to define the automaton as \ac{SHG} \textsc{Uppaal Stratego}
@@ -523,13 +535,24 @@
           \caption{Solar water heating 24h trajectories of two control strategies}
         \end{figure}
 
-      For $\alpha = 0.5$ defined in \autoref{eq:costfunction} that means we assign the same 
-      importance to the temperatures distance and the energy consumption saving in the 
-      optimization, the mean temperature error in the greedy method 
-      \autoref{fig:resulta} is : $2.07$ and the reinforcement learning optimization 
-      is:  $3.42$ and also the saved energy consumption using uppaal with respect to 
+      For $\alpha = 0.5$ defined in \autoref{eq:costfunction} that means we assign the same
+      importance to the temperatures distance and the energy consumption saving in the optimization, 
+      the mean temperature error in the greedy method \autoref{fig:resulta} is : $2.07$ 
+      and the reinforcement learning optimization is:  $3.42$ and also the saved energy 
+      consumption using uppaal with respect to 
       a greedy method is $ S = \bigtriangleup E_{greedy} - \bigtriangleup E_{uppaal} = 10800.0Kw$
-       as \autoref{fig:resultb} shows. % 310800.0
-        
-          % \textbf{Evaluation Scenarios}
-          % \textbf{Controller Evaluation}
+      as \autoref{fig:resultb} shows. % 310800.0
+
+      % \textbf{Evaluation Scenarios}
+      % \textbf{Controller Evaluation}
+
+
+
+
+
+
+
+
+
+
+

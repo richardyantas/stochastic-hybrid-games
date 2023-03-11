@@ -6,16 +6,16 @@
 \contentsline {figure}{\numberline {3.2}{\ignorespaces \textsc {Uppaal Stratego} model of one room with one window\relax }}{10}{figure.caption.17}
 \contentsline {figure}{\numberline {3.3}{\ignorespaces \textsc {Uppaal Stratego}, facilitates generation, optimization, comparison as well as consequence and performance exploration of strategies for stochastic priced timed games in a user-friendly manner.\relax }}{13}{figure.caption.18}
 \contentsline {figure}{\numberline {3.4}{\ignorespaces One-room 24h trajectories of various control strategies\relax }}{14}{figure.caption.19}
-\contentsline {figure}{\numberline {3.5}{\ignorespaces \ac {MPC} with \textsc {Uppaal} optimization in a horizon $H$ subject to normal and uniform distributions as stochastic perturbations for $t=6$ in a real time simulation.\relax }}{20}{figure.caption.20}
-\contentsline {figure}{\numberline {3.6}{\ignorespaces A general overview about the procedure to control a \ac {SHG}\relax }}{21}{figure.caption.21}
+\contentsline {figure}{\numberline {3.5}{\ignorespaces \ac {MPC} with \textsc {Uppaal} optimization in a horizon $H$ subject to normal and uniform distributions as stochastic perturbations for $t=6$ in a real time simulation.\relax }}{21}{figure.caption.21}
+\contentsline {figure}{\numberline {3.6}{\ignorespaces A general overview about the procedure to control a \ac {SHG}\relax }}{22}{figure.caption.22}
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Solar Water Heating diagram used to obtain the differential equations\relax }}{24}{figure.caption.22}
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Valves perturbations generated along a day.\relax }}{25}{figure.caption.23}
-\contentsline {figure}{\numberline {4.3}{\ignorespaces Weather time series, irradiance and temperature \relax }}{25}{figure.caption.24}
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Solar Water Heating diagram used to obtain the differential equations\relax }}{24}{figure.caption.23}
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Valves perturbations generated along a day.\relax }}{25}{figure.caption.24}
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Weather time series, irradiance and temperature \relax }}{25}{figure.caption.25}
 \contentsline {figure}{\numberline {4.4}{\ignorespaces An example of prediction using \textsc {arima} forecaster\relax }}{26}{figure.4.4}
-\contentsline {figure}{\numberline {4.5}{\ignorespaces Automaton with forbidden transitions because of the addition of a discrete variable \emph {f} which facilate the system modelling either on piston expansion or compression, the perturbation of the valve is not considered in this representation as discrete state but rather as interval box.\relax }}{29}{figure.caption.26}
-\contentsline {figure}{\numberline {4.6}{\ignorespaces This algorithm is modified to ignore forbidden transitions and is improved filtering invalid transition in the line 9.\relax }}{30}{figure.caption.27}
-\contentsline {figure}{\numberline {4.8}{\ignorespaces The model of the controller. The \textbf {select} statement is a simplification of having a set of edges with one for each value in the select range.\relax }}{34}{figure.caption.29}
-\contentsline {figure}{\numberline {4.9}{\ignorespaces The model generating stochastic perturbations as valve aperturing and closing\relax }}{35}{figure.caption.30}
-\contentsline {figure}{\numberline {4.10}{\ignorespaces Solar water heating 24h trajectories of two control strategies\relax }}{36}{figure.caption.31}
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Automaton with forbidden transitions because of the addition of a discrete variable \emph {f} which facilate the system modelling either on piston expansion or compression, the perturbation of the valve is not considered in this representation as discrete state but rather as interval box.\relax }}{29}{figure.caption.27}
+\contentsline {figure}{\numberline {4.6}{\ignorespaces This algorithm is modified to ignore forbidden transitions and is improved filtering invalid transition in the line 9.\relax }}{30}{figure.caption.28}
+\contentsline {figure}{\numberline {4.8}{\ignorespaces The model of the controller. The \textbf {select} statement is a simplification of having a set of edges with one for each value in the select range.\relax }}{34}{figure.caption.30}
+\contentsline {figure}{\numberline {4.9}{\ignorespaces The model generating stochastic perturbations as valve aperturing and closing\relax }}{36}{figure.caption.31}
+\contentsline {figure}{\numberline {4.10}{\ignorespaces Solar water heating 24h trajectories of two control strategies\relax }}{37}{figure.caption.32}
 \addvspace {10\p@ }

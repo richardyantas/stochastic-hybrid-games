@@ -15,9 +15,9 @@ import sys
 # import "../build/lib/libconfig.so" {
 #     double get_num();
 # };
-#command_line = "../lib/uppaal/bin-Linux/verifyta foo.xml foo.q --learning-method 5"
-#command_line = "../lib/uppaal/bin-Linux/veri sfyta " + f[0] + " " + f[1] + " --learning-method 5"
-#command_line = "/home/serendipita/Documents/uppaalLibrary/lib/uppaal/bin-Linux/verifyta " + f[0] + " " + f[1] + " --learning-method 5"
+# command_line = "../lib/uppaal/bin-Linux/verifyta foo.xml foo.q --learning-method 5"
+# command_line = "../lib/uppaal/bin-Linux/veri sfyta " + f[0] + " " + f[1] + " --learning-method 5"
+# command_line = "/home/serendipita/Documents/uppaalLibrary/lib/uppaal/bin-Linux/verifyta " + f[0] + " " + f[1] + " --learning-method 5"
 # f = ["foo.xml","foo.q"]
 # callUppaal(f)
 # print(callUppaal(f))

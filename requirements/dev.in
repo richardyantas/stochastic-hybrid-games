@@ -1,10 +1,8 @@
-numpy
+-c prod.txt
 matplotlib
 pandas
-statsmodels
 pytest
-pyinterval
 autopep8
 pep8
 jsbeautifier
-# ibex
+

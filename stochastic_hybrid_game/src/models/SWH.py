@@ -58,7 +58,7 @@ class SWH():
         self.x = INITIAL_STATE
         R = R_BOUNDARY
         S = S_BOUNDARY
-        #self.u_modes = (np.zeros(int(self.life_time))).tolist()
+        # self.u_modes = (np.zeros(int(self.life_time))).tolist()
 
     def post(self, mode: int, u_action: int, x: list, index: int) -> list:  # u_action: int
         c_actions = C_MODES[mode]
@@ -110,7 +110,7 @@ class SWH():
         life_time = data_config["life_time"]
         start_time = data_config["start_time"]
         u_modes = (np.zeros(int(life_time))).tolist()
-        #num_actions = random.randrange(100, 200)
+        # num_actions = random.randrange(100, 200)
         num_actions = NUM_ACTIONS
         standard_deviation = STANDARD_DEVIATION  # 1*12  # 2
         for i in range(0, num_actions):

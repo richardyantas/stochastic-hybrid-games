@@ -679,6 +679,8 @@ INPUT content/sources/template1.tex
 INPUT content/sources/template1.tex
 INPUT content/sources/template2.tex
 INPUT content/sources/template2.tex
+INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm
+INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmbx7.tfm
 INPUT images/controllers1.png
 INPUT ./images/controllers1.png
 INPUT ./images/controllers1.png
@@ -700,6 +702,7 @@ INPUT build/thesis-doc.aux
 INPUT build/thesis-doc.out
 INPUT build/thesis-doc.out
 INPUT /usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc
+INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb
