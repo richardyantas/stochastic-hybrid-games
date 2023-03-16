@@ -1,0 +1,28 @@
+services:
+  uppaal:
+    build:
+      context: "./uppaal"
+      dockerfile: Dockerfile
+    container_name: uppaal
+    ports:
+      - "2368:2368"
+    volumes:
+      - /home/serendipita/Documents/tesis/ucsp-solar/uppaal/templates:/app/templates
+      - /home/serendipita/Documents/tesis/ucsp-solar/data:/app/data
+    tty: true
+    stdin_open: true
+
+  patterns:
+    build:
+      context: "./patterns"
+      dockerfile: Dockerfile
+    container_name: patterns
+    # restart: always
+    #    environment: LD_LIBRARY_PATH=/usr/local/lib
+    volumes:
+      - /home/serendipita/Documents/tesis/ucsp-solar/data/solar-water-heating:/app/data
+    tty: true
+# docker-compose up -d --build
+# docker-compose ps -a
+# docker-compose exec uppaal bash
+# docker-compose exec uppaal ./uppaal/bin/verifyta templates/swh.xml templates/swh.q

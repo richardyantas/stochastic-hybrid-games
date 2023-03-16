@@ -31,3 +31,5 @@ lint:
 # python stochastic_hybrid_game/src/run_experiment.py --controller=MPC.Greedy #--perturbations=
 # python stochastic_hybrid_game/src/run_experiment.py --controller=MPC.Uppaal
 # python stochastic_hybrid_game/src/viz/visualizer.py
+
+# stochastic_hybrid_game

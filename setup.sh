@@ -1,4 +1,7 @@
 
+# #!/bin/bash
+# docker rm $(docker ps -aq)
+# docker rmi $(docker images | grep "^<none>" | awk '{print $3}')
 
 # model
 
@@ -82,3 +85,44 @@ elif [ $1 = "uppaal" ]; then
 else
   echo "No option Found ..\n"
 fi
+
+
+# export PYTHONPATH=.
+# python ./stochastic_hybrid_game/src/run_experiment.py
+
+# cd build && cmake .. && make
+
+# python stochastic_hybrid_game/src/models/SWH.py  # to generate perturbations
+
+# python stochastic_hybrid_game/src/run_experiment.py --controller=MPC.Greedy
+# python stochastic_hybrid_game/src/run_experiment.py --controller=MPC.Uppaal
+
+# python stochastic_hybrid_game/src/viz/visualizer.py
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# restart: always
+  #    environment: LD_LIBRARY_PATH=/home/app/uppaal/bin/
+  #   volumes:
+  #     - /home/serendipita/Documents/tesis/ucsp-solar/uppaal/templates:/app/templates
+  #     - /home/serendipita/Documents/tesis/ucsp-solar/data:/app/data
+  # patterns:
+  #   build:
+  #     context: "./patterns"
+  #     dockerfile: Dockerfile
+  #   container_name: patterns
+  #   # restart: always
+  #   #    environment: LD_LIBRARY_PATH=/usr/local/lib
+  #   volumes:
+  #     - /home/serendipita/Documents/tesis/ucsp-solar/data/solar-water-heating:/app/data

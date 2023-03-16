@@ -1,0 +1,8 @@
+services:
+  patterns:
+    image: patterns:latest
+    volumes: -.:/home
+  uppaal:
+    image: uppaal:latest
+    volumes:
+      - .:/home
